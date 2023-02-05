@@ -32,10 +32,15 @@ class faqCog(commands.Cog):
 
         while True:
             await ctx.send(faq.getMessage())
+            if faq.isEnd: break
 
-            if not faq.isContinue: break
+            def check(m):
+                isSameUser = m.author == ctx.author
+                isSameChannel = m.channel == ctx.channel
+                return isSameUser and isSameChannel
+
             try:
-                msg = await bot.wait_for("message", timeout=120)
+                msg = await bot.wait_for("message", timeout=120, check=check)
             except asyncio.TimeoutError:
                 await ctx.send("Timed out!")
                 return

@@ -12,9 +12,10 @@ class FAQ:
             self._label = aliases[startingLabel]['label']
         else:
             self._message = f"No FAQ found with name '{startingLabel}'"
-            self.isContinue = False
+            self.isEnd = True
             return
-        self.isContinue = True
+        self.caseSensitive = False
+        self.isEnd = False
         self.updateMessage()
 
     def getMessage(self): return self._message 
@@ -25,11 +26,15 @@ class FAQ:
 
     def check(self, msg):
         if msg.content.strip() == "!stop_faq":
-            self.isContinue, self._message = False, "FAQ stopped"
+            self.isEnd, self._message = True, "FAQ stopped"
             return
         labelData = self._data[self._label]
         answers = labelData["ANSWERS"]
-        if (answer := msg.content.strip()) in answers:
+        answer = msg.content.strip()
+        if not self.caseSensitive:
+            answer = answer.upper()
+            answers = {answer.upper(): answers[answer] for answer in answers}
+        if answer in answers:
             self.switchToLabel(answers[answer])
             prefix = choice(correct) if "MATCH" not in labelData else labelData["MATCH"]
             self.updateMessage(prefix)
@@ -39,4 +44,6 @@ class FAQ:
     def switchToLabel(self, label):
         self._label = label
         labelData = self._data[self._label]
-        if "END" in labelData and labelData["END"]: self.isContinue = False
+        self.caseSensitive = False
+        if "CASE" in labelData: self.caseSensitive = labelData["CASE"]
+        if "END" in labelData and labelData["END"]: self.isEnd = False
