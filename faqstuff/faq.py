@@ -1,22 +1,6 @@
 import yaml
 from random import choice
-
-correct = [
-    "Goed zo",
-    "Prima",
-    "Puik werk",
-    "Helemaal juist",
-    "Dat klopt",
-    "Inderdaad",
-    "Toppie",
-    "👍",
-    ":ja_goed:"
-]
-
-wrong = [
-    "U r bad !!",
-    "Loezer !!"
-]
+from faqResponses import correct, wrong
 
 class FAQ:
     def __init__(self, startingLabel):
@@ -25,7 +9,7 @@ class FAQ:
         with open("faqdata/faqaliases.yaml") as file:
             aliases = yaml.load(file, Loader=yaml.Loader)
         if (startingLabel := startingLabel.lower()) in aliases:
-            self._label = aliases[startingLabel]
+            self._label = aliases[startingLabel]['label']
         else:
             self._message = f"No FAQ found with name '{startingLabel}'"
             self.isContinue = False
@@ -37,7 +21,7 @@ class FAQ:
 
     def updateMessage(self, prefix=""):
         message = self._data[self._label]["MESSAGE"]
-        self._message = f"{prefix} {message}".strip()
+        self._message = f"{prefix}\n{message}".strip()
 
     def check(self, msg):
         if msg.content.strip() == "!stop_faq":

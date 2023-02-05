@@ -113,3 +113,64 @@ VTT_GEBRUIK_3:
 KLAAR:
     MESSAGE: "U r dun !"
     END: true
+
+heelveel0:
+    MESSAGE: |
+        **Heel** = super...
+
+        + adjectief
+        _De test is **heel** moeilijk..._
+        _Je Nederlands is **heel** goed!_
+        _Het wordt morgen **heel** warm._
+
+        + adverbium (bijwoord)
+        _Je spreekt **heel** snel._
+        _Ik lees **heel** graag._
+
+        Schrijf de zin met "heel":
+        _De les is interessant._
+    ANSWERS:
+        'De les is heel interessant': heelveel1
+        'De les is heel interessant.': heelveel1
+    NO_MATCH: Fout :( probeer nog eens!
+    MATCH: Puik werk, kanjer!
+
+heelveel1:
+    MESSAGE: |
+        **Veel** = grote kwantiteit
+
+        + substantief
+        _Meneer en mevrouw Cuypers hebben **veel** kinderen._
+        _Ik drink **veel** koud water._
+        _**Veel** collega's komen met de bus._
+
+        + verbum (werkwoord)
+        _Eet jij **veel**?_
+        _Baby's slapen **veel**._
+
+        Schrijf de zin met "veel":
+        _Een miljonair heeft geld._
+    ANSWERS:
+        'Een miljonair heeft veel geld': heelveel2
+        'Een miljonair heeft veel geld.': heelveel2
+    NO_MATCH: Helemaal fout, idioot!
+    MATCH: Bravo, maatsko!
+
+heelveel2:
+    MESSAGE: |
+        Laatste puntje!
+        "Bedankt" of "dank je" combineer je **niet** met heel of veel. Dan zeg je:
+        Hartelijk bedankt!
+
+        Wat zeg je hier: heel of veel? Schrijf a, b, c of d.
+        _De studenten hebben ... vragen._
+        _Het gaat ... goed._
+
+        a. heel, veel
+        b. veel, heel
+        c. 2x heel
+        d. 2x veel
+    ANSWERS:
+        'b': KLAAR
+    NO_MATCH: ':foutje:'
+    MATCH: ':ja_goed:'

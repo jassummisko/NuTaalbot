@@ -1,6 +1,18 @@
 ---
-perfectum: START_PERFECTUM
-vtt: START_PERFECTUM
+perfectum: 
+  label: START_PERFECTUM
+  description: Introduction to the _perfectum_ or _vtt_.
+vtt: 
+  label: START_PERFECTUM
+  description: Introduction to the _perfectum_ or _vtt_.
 
-presens: START_PRES_CONJ
-ott: START_PRES_CONJ
+presens: 
+  label: START_PRES_CONJ
+  description: Introduction to the _presens_ or _ott_.
+ott: 
+  label: START_PRES_CONJ
+  description: Introduction to the _presens_ or _ott_.
+
+heelveel:
+  label: heelveel0
+  description: What is the difference between _heel_ and _veel_?
