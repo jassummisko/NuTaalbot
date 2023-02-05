@@ -1,1 +1,4 @@
 .token
+**/*.cpython
+**/*.pyc
+**/settings.json
