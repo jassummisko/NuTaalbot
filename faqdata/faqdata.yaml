@@ -1,0 +1,115 @@
+---
+START_PRES_CONJ:
+    MESSAGE: |
+        What do you want to know about verb conjugation?
+        1 - When do I add -t, -en or nothing?
+        2 - Why do I sometimes add or remove letters? (weten > weet)
+        3 - When do I use the present tense?
+    ANSWERS:
+        '1': PRES_CONJ1
+    NO_MATCH: Please type one of the three options.
+    MATCH: No problem!
+
+PRES_CONJ1:
+    MESSAGE: 'Fill in the blank: "Hij _____ (gaan)"'
+    ANSWERS:
+        gaat: PRES_CONJ2
+    NO_MATCH: That's not right. Try again!
+    MATCH: Good job!
+
+PRES_CONJ2:
+    MESSAGE: Blabla...
+    END: true
+
+START_PERFECTUM:
+    MESSAGE: |
+        Dit is het perfectum of de voltooid tegenwoordige tijd (VTT):
+        _Ik **heb** gisteren twee uur Nederlands **gestudeerd**._
+        _M'n moeder **heeft** nog nooit **gezwommen**._
+        _Ze **zijn vergeten** dat het je verjaardag is._
+        _Hij **is** vorig weekend **gevallen** met zijn fiets._
+
+        Heb je nog vragen? Zo ja, schrijf het nummer in de chat. Zo niet, schrijf "nee".
+        1. Wanneer gebruik je het?
+        2. Zinsstructuur
+        3. Hebben of zijn?
+        4. Voltooid deelwoord (participium)
+    ANSWERS:
+        '1': VTT_GEBRUIK_1
+        '2': PERFECTUM_2
+        '3': PERFECTUM_3
+        '4': PARTICIPIUM_1
+    MATCH: ''
+    NO_MATCH: Gelieve een van de opties te kiezen. 
+
+PARTICIPIUM_1:
+    MESSAGE: |
+        "Gewerkt" is het voltooid deelwoord of participium van "werken". Hoe maak je dit participium?
+
+        Eerst moet je weten wat scheidbare werkwoorden of separabele verba zijn. Weet je dit? We zullen eens testen! Wat schrijf je op de lijn:
+        _opstaan: "Ik ... om half acht."_ 
+
+        Weet je niet wat scheidbare werkwoorden zijn? Stop deze FAQ dan en lees eerst `!faq scheidbaar`.
+    ANSWERS:
+        'sta op': PARTICIPIUM_2
+    MATCH: Goed zo!
+    NO_MATCH: Loezer !!!
+
+VTT_GEBRUIK_1:
+    MESSAGE: |
+        Het perfectum of de VTT gebruik je voor acties in het verleden (de tijd voor nu). Bijvoorbeeld:
+
+        _Wat heb je gisteren gedaan?_
+        _Ik heb twee uur Nederlands gestudeerd en ik ben naar de supermarkt gegaan._
+
+        Bij welk van deze woorden gebruik je dus **geen** perfectum?
+        1. vorige maand
+        2. vanmorgen
+        3. in 2019
+        4. straks
+        5. eergisteren
+    ANSWERS:
+        '4': VTT_GEBRUIK_2 
+        'straks': VTT_GEBRUIK_2
+    MATCH: Goed zo!!!
+    NO_MATCH: Loezer !!!
+
+VTT_GEBRUIK_2:
+    MESSAGE: |
+        Maar... voor frequente acties of routines in het verleden gebruik je **geen** perfectum. Dan gebruik je een imperfectum:
+
+        _In 2020 keek ik elke dag een film, want ik had 's avonds niets anders te doen._
+
+        Het perfectum gebruik je dan alleen als het resultaat belangrijk is, of het een soort prestatie is.
+
+        _In 2020 heb ik elke dag een film gekeken. Ik ken nu veel films._ /
+        _In 2020 heb ik elke dag een film gekeken... bijna 400 films in totaal!_
+
+        Op welke zin antwoord je met "gefeliciteerd"?
+        1. Ik las vorig jaar elke dag een boek.
+        2. Ik heb vorig jaar elke dag een boek gelezen.
+    ANSWERS:
+        '2': VTT_GEBRUIK_3
+    MATCH: Goed zo!
+    NO_MATCH: Loezer !!!
+
+VTT_GEBRUIK_3:
+    MESSAGE: |
+        Oké, we hebben het al gezegd: het perfectum is voor acties in het verleden. Dit betekent ook dat je geen perfectum gebruikt als het nu nog zo is.
+        Bijvoorbeeld:
+
+        _Lotte woont al vijf jaar in Haarlem. (= Ze woont hier nu nog steeds.)_
+        maar:
+        _Lotte heeft vijf jaar in Haarlem gewoond, maar toen is ze naar Breda verhuisd._
+
+        Met andere woorden, als je zegt:
+        _Ik heb anderhalf jaar Nederlands gestudeerd._
+        Studeer je het dan nu nog? (ja/nee)
+    ANSWERS:
+        nee: KLAAR
+    MATCH: Goed zo!
+    NO_MATCH: Loezer !!!
+
+KLAAR:
+    MESSAGE: "U r dun !"
+    END: true
