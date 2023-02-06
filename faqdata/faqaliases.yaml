@@ -16,3 +16,7 @@ ott:
 heelveel:
   label: heelveel0
   description: What is the difference between _heel_ and _veel_?
+
+spelling_th:
+  label: spellingth0
+  description: Over de digraaf 'th' in het Nederlands.

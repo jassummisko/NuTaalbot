@@ -114,6 +114,8 @@ KLAAR:
     MESSAGE: "U r dun !"
     END: true
 
+############################
+
 heelveel0:
     MESSAGE: |
         **Heel** = super...
@@ -174,3 +176,41 @@ heelveel2:
         'b': KLAAR
     NO_MATCH: ':foutje:'
     MATCH: ':ja_goed:'
+
+########################
+
+spellingth0:
+    MESSAGE: |
+        Internationale woorden hebben soms "th" in het Engels (theater) of Frans (thèse). Dit is niet altijd "th" in het Nederlands!
+
+        :a: Voor een klinker (a, e, o, ...) schrijf je een **th**:
+        _apotheek, marathon, methode_
+
+        Uitzonderingen (excepties):
+        - _thriller, Goliath_
+        - Na f of ch: _autochtoon, diftong_ 
+
+        :b: Anders schrijf je alleen een **t**:
+        _astma, labyrint, etniciteit_
+
+        Uitzonderingen (excepties) zijn:
+        _gotisch, retorisch, postuum, antraciet._ 
+
+        Schrijf je hier een t of th?
+        _Een a...leet is een sportman._
+    ANSWERS:
+        't': spellingth1
+    NO_MATCH: Je krijgt nog een kans.
+    MATCH: Goed gedaan!
+
+spellingth1:
+    MESSAGE: |
+        Nederlandse woorden hebben normaal altijd "t". Er zijn maar een paar woorden waar dat niet zo is:
+
+        - thuis (dit komt van "te + huis")
+        - thans (dit komt van "te + hands")
+        - Drenthe
+
+        ... maar ook hier is het voor een klinker.
+        _Nochtans_ (na "ch") en _Drents_ (op het einde) zijn zonder de "h".
+    END: true
