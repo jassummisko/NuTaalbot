@@ -1,120 +1,57 @@
 ---
-START_PRES_CONJ:
+
+CONJUGATION_GIJ_0:
     MESSAGE: |
-        What do you want to know about verb conjugation?
-        1 - When do I add -t, -en or nothing?
-        2 - Why do I sometimes add or remove letters? (weten > weet)
-        3 - When do I use the present tense?
-    ANSWERS:
-        '1': PRES_CONJ1
-    NO_MATCH: Please type one of the three options.
-    MATCH: No problem!
+        To conjugate verbs for the pronoun "gij", do the following:
+            1. Take the plural form of the verb.
+            2. Remove the -(e)n.
+            3. Apply spelling rules to retain the sound (double the vowel, turn z/v into s/f).
+            4. Add -t.
+        
+        This applies to all verbs in all tenses, regardless of the position of "gij" (both before or after the verb, unlike "jij").
 
-PRES_CONJ1:
-    MESSAGE: 'Fill in the blank: "Hij _____ (gaan)"'
+        Examples:
+            - Gij zijt (jij bent)
+            - Gij woudt (jij wou)
+            - Gij laast (jij las)
+        
+        Fill in the blank:
+        `Jij kon = gij ______`
+    
     ANSWERS:
-        gaat: PRES_CONJ2
-    NO_MATCH: That's not right. Try again!
+        'kondt': CONJUGATION_GIJ_1
     MATCH: Good job!
+    NO_MATCH: Try again!
 
-PRES_CONJ2:
-    MESSAGE: Blabla...
+CONJUGATION_GIJ_1:
+    MESSAGE: |
+        Easy, isn't it?
+        The one exception to this are weak (regular) past tenses:
+            - Gij maakte
+            - Gij pakte
+            - Gij werkte
+
+        Otherwise, there are seriously **no** exceptions to this, including:
+            - Inversion:  gij zijt - zijt gij (**not**: \*zij gij)
+            - Irregular past tenses: gij kwaamt (**not**: \*gij kwam)
+            - Modal verbs: gij moogt (**not**: \*gij mag)
+
+        Enjoy your newly acquired enlightenment.
+
     END: true
 
-START_PERFECTUM:
-    MESSAGE: |
-        Dit is het perfectum of de voltooid tegenwoordige tijd (VTT):
-        _Ik **heb** gisteren twee uur Nederlands **gestudeerd**._
-        _M'n moeder **heeft** nog nooit **gezwommen**._
-        _Ze **zijn vergeten** dat het je verjaardag is._
-        _Hij **is** vorig weekend **gevallen** met zijn fiets._
 
-        Heb je nog vragen? Zo ja, schrijf het nummer in de chat. Zo niet, schrijf "nee".
-        1. Wanneer gebruik je het?
-        2. Zinsstructuur
-        3. Hebben of zijn?
-        4. Voltooid deelwoord (participium)
-    ANSWERS:
-        '1': VTT_GEBRUIK_1
-        '2': PERFECTUM_2
-        '3': PERFECTUM_3
-        '4': PARTICIPIUM_1
-    MATCH: ''
-    NO_MATCH: Gelieve een van de opties te kiezen. 
 
-PARTICIPIUM_1:
-    MESSAGE: |
-        "Gewerkt" is het voltooid deelwoord of participium van "werken". Hoe maak je dit participium?
-
-        Eerst moet je weten wat scheidbare werkwoorden of separabele verba zijn. Weet je dit? We zullen eens testen! Wat schrijf je op de lijn:
-        _opstaan: "Ik ... om half acht."_ 
-
-        Weet je niet wat scheidbare werkwoorden zijn? Stop deze FAQ dan en lees eerst `!faq scheidbaar`.
-    ANSWERS:
-        'sta op': PARTICIPIUM_2
-    MATCH: Goed zo!
-    NO_MATCH: Loezer !!!
-
-VTT_GEBRUIK_1:
-    MESSAGE: |
-        Het perfectum of de VTT gebruik je voor acties in het verleden (de tijd voor nu). Bijvoorbeeld:
-
-        _Wat heb je gisteren gedaan?_
-        _Ik heb twee uur Nederlands gestudeerd en ik ben naar de supermarkt gegaan._
-
-        Bij welk van deze woorden gebruik je dus **geen** perfectum?
-        1. vorige maand
-        2. vanmorgen
-        3. in 2019
-        4. straks
-        5. eergisteren
-    ANSWERS:
-        '4': VTT_GEBRUIK_2 
-        'straks': VTT_GEBRUIK_2
-    MATCH: Goed zo!!!
-    NO_MATCH: Loezer !!!
-
-VTT_GEBRUIK_2:
-    MESSAGE: |
-        Maar... voor frequente acties of routines in het verleden gebruik je **geen** perfectum. Dan gebruik je een imperfectum:
-
-        _In 2020 keek ik elke dag een film, want ik had 's avonds niets anders te doen._
-
-        Het perfectum gebruik je dan alleen als het resultaat belangrijk is, of het een soort prestatie is.
-
-        _In 2020 heb ik elke dag een film gekeken. Ik ken nu veel films._ /
-        _In 2020 heb ik elke dag een film gekeken... bijna 400 films in totaal!_
-
-        Op welke zin antwoord je met "gefeliciteerd"?
-        1. Ik las vorig jaar elke dag een boek.
-        2. Ik heb vorig jaar elke dag een boek gelezen.
-    ANSWERS:
-        '2': VTT_GEBRUIK_3
-    MATCH: Goed zo!
-    NO_MATCH: Loezer !!!
-
-VTT_GEBRUIK_3:
-    MESSAGE: |
-        Oké, we hebben het al gezegd: het perfectum is voor acties in het verleden. Dit betekent ook dat je geen perfectum gebruikt als het nu nog zo is.
-        Bijvoorbeeld:
-
-        _Lotte woont al vijf jaar in Haarlem. (= Ze woont hier nu nog steeds.)_
-        maar:
-        _Lotte heeft vijf jaar in Haarlem gewoond, maar toen is ze naar Breda verhuisd._
-
-        Met andere woorden, als je zegt:
-        _Ik heb anderhalf jaar Nederlands gestudeerd._
-        Studeer je het dan nu nog? (ja/nee)
-    ANSWERS:
-        nee: KLAAR
-    MATCH: Goed zo!
-    NO_MATCH: Loezer !!!
+### These are all the generics. Global labels to be used by any FAQ go here.
 
 KLAAR:
-    MESSAGE: "U r dun !"
+    MESSAGE: "FAQ Finished"
     END: true
 
-############################
+
+
+
+# Written by: Yata
 
 heelveel0:
     MESSAGE: |
@@ -177,7 +114,21 @@ heelveel2:
     NO_MATCH: ':foutje:'
     MATCH: ':ja_goed:'
 
-########################
+
+
+ONS_ONZE_0:
+    MESSAGE: |
+        When `ons` is an object pronoun (English "us"), it is always `ons` and never `onze`.
+        Ex. 'Hij heeft ons gezien' - He saw us.
+
+        When 'ons' is possessive (English "our(s)"), then the rule is as follows:
+            1. Before het-words, use 'ons': ons huis, ons jongste kind
+            2. Before de-words, use 'onze': onze ouders, onze nieuwe keuken
+            3. When used independently (with de/het), use 'onze': 'Die auto is de onze', 'Dat huis is het onze'
+    
+    END: true
+
+
 
 spellingth0:
     MESSAGE: |
@@ -200,9 +151,9 @@ spellingth0:
         _Een a...leet is een sportman._
     ANSWERS:
         't': spellingth1
+        'atleet': spellingth1
     NO_MATCH: Je krijgt nog een kans.
     MATCH: Goed gedaan!
-
 spellingth1:
     MESSAGE: |
         Nederlandse woorden hebben normaal altijd "t". Er zijn maar een paar woorden waar dat niet zo is:
@@ -213,4 +164,35 @@ spellingth1:
 
         ... maar ook hier is het voor een klinker.
         _Nochtans_ (na "ch") en _Drents_ (op het einde) zijn zonder de "h".
+    END: true
+
+
+
+uitspraakc0:
+    MESSAGE: |
+        :lips: Hoe zeg je de letter **c**?
+        :ear: Als een **s** of als een **k**?
+
+        :eyes: **c + e/i/y → :lips: s** 
+        _ac**c**ent, **c**el, pleisto**c**een, **c**ircus, hya**c**int, **c**yclus, **c**yberveiligheid_
+
+        :eyes: **c + rest → :lips: k** 
+        _a**c**cent, a**cc**u, toxi**c**oloog, **c**a**c**tus, fa**c**tor, indu**c**tievuur_
+
+        Hoe zeg je _succes_?
+        1. met ss
+        2. met kk
+        3. met ks
+    ANSWERS:
+        '3': uitspraakc1
+        'ks': uitspraakc1
+        'met ks': uitspraakc1
+    NO_MATCH: Je krijgt nog een kans.
+    MATCH: Goed gedaan!
+uitspraakc1:
+    MESSAGE: |
+        :warning: **c + h** is een vaste lettercombinatie.
+
+        Luister naar de audio voor ka**ch**el:
+        <https://forvo.com/word/kachel/#nl>
     END: true

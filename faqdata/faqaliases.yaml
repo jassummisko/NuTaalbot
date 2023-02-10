@@ -1,18 +1,4 @@
 ---
-perfectum: 
-  label: START_PERFECTUM
-  description: Introduction to the _perfectum_ or _vtt_.
-vtt: 
-  label: START_PERFECTUM
-  description: Introduction to the _perfectum_ or _vtt_.
-
-presens: 
-  label: START_PRES_CONJ
-  description: Introduction to the _presens_ or _ott_.
-ott: 
-  label: START_PRES_CONJ
-  description: Introduction to the _presens_ or _ott_.
-
 heelveel:
   label: heelveel0
   description: What is the difference between _heel_ and _veel_?
@@ -20,3 +6,15 @@ heelveel:
 spelling_th:
   label: spellingth0
   description: Over de digraaf 'th' in het Nederlands.
+
+uitspraak_c:
+  label: uitspraakc0
+  description: Hoe spreek je 'c' uit?
+
+ons_onze:
+  label: ONS_ONZE_0
+  description: What's the difference between 'ons' and 'onze'?
+
+conjugation_gij:
+  label: CONJUGATION_GIJ_0
+  description: Hoe maak ik de gij-vorm van werkwoorden?

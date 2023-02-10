@@ -17,8 +17,15 @@ class FAQ:
         self.caseSensitive = False
         self.isEnd = False
         self.updateMessage()
+        self.checkParams()
 
     def getMessage(self): return self._message 
+
+    def checkParams(self):
+        labelData = self._data[self._label]
+        self.caseSensitive = False
+        if "CASE" in labelData: self.caseSensitive = labelData["CASE"]
+        if "END" in labelData and labelData["END"]: self.isEnd = True
 
     def updateMessage(self, prefix=""):
         message = self._data[self._label]["MESSAGE"]
@@ -40,10 +47,7 @@ class FAQ:
             self.updateMessage(prefix)
         else:
             self._message = choice(wrong) if "NO_MATCH" not in labelData else labelData["NO_MATCH"]
-        
+    
     def switchToLabel(self, label):
         self._label = label
-        labelData = self._data[self._label]
-        self.caseSensitive = False
-        if "CASE" in labelData: self.caseSensitive = labelData["CASE"]
-        if "END" in labelData and labelData["END"]: self.isEnd = False
+        self.checkParams()
