@@ -18,3 +18,7 @@ ons_onze:
 conjugation_gij:
   label: CONJUGATION_GIJ_0
   description: Hoe maak ik de gij-vorm van werkwoorden?
+
+weten_kennen:
+  label: WETEN_KENNEN_0
+  description: What is the difference between 'weten' and 'kennen'?
