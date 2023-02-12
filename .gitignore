@@ -164,3 +164,4 @@ cython_debug/
 **/settings.json
 **/faqdata.yaml
 **/faqaliases.yaml
+**/*.pickle
