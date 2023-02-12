@@ -196,3 +196,42 @@ uitspraakc1:
         Luister naar de audio voor ka**ch**el:
         <https://forvo.com/word/kachel/#nl>
     END: true
+
+
+
+WETEN_KENNEN_0:
+  MESSAGE: |
+    "Weten" and "kennen" both translate to "to know", but they convey a difference that is mostly grammatical.
+
+    Use "weten" when the thing known is a clause, or a pronoun referring to a clause.
+    Ex:
+    "Weet je **of hij Spaans spreekt?**" ||"Do you know **if he speaks Spanish**?"||
+    "**Dat** weet ik niet." ||"I don't know."||
+
+    Use "kennen" when the thing known is a concrete noun, or a pronoun referring to a noun.
+    Ex:
+    "Ken je **dat liedje**?" ||"Do you know **that song**?"||
+    "Ja, ik ken het." ||"Yes, I know it"||
+    
+    Now, fill in the blanks:
+    `_____ je wie Geert is? -- Ja, ik _____ Geert`
+    
+    a. ken, weet
+    b. ken, ken
+    c. weet, ken
+    d. weet, weet
+
+  MATCH: Good job!
+  NO_MATCH: Try again!
+  ANSWERS:
+    'c': WETEN_KENNEN_1
+
+WETEN_KENNEN_1:
+  MESSAGE: |
+    When the referent is an abstract noun, for instance "weg" (way), "naam" (name) or "nummer" (number), both may be used, and the choice between them is dependent on the region and individual speaker's preferences.
+    Ex:
+    "Weet/ken je de weg?" ||"Do you know the way?"||
+
+    Speakers of Flanders seem to prefer "kennen" in such situations, while speakers of the Netherlands seem to prefer "weten".
+
+  END: true

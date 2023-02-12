@@ -2,13 +2,13 @@ from discord.ext import commands
 from data import kelderID
 import beginners
 
-class testCog(commands.Cog):
+class mainCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Cog testCog is ready")
+        print("Main Cog is ready")
 
     @commands.command()
     async def hi(self, ctx):
@@ -32,8 +32,7 @@ class testCog(commands.Cog):
             await ctx.send("Gebruik: !limiet <WOORD>")
             return
 
-        channelID = kelderID
-        channel = self.bot.get_channel(channelID)
+        channel = self.bot.get_channel(kelderID)
         member = ctx.author
 
         if not (member in channel.members):
@@ -49,4 +48,4 @@ class testCog(commands.Cog):
         await ctx.send(f"De limiet is nu {newLimit}.")
 
 async def setup(bot):
-    await bot.add_cog(testCog(bot))
+    await bot.add_cog(mainCog(bot))
