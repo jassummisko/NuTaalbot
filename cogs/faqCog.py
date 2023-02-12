@@ -43,6 +43,10 @@ class faqCog(commands.Cog):
     async def faq(self, ctx):
         bot = self.bot
         label = " ".join(ctx.message.content.split()[1:])
+
+        if label == '':
+            await ctx.send("Gebruik: !faq <FAQ_NAAM>")
+            return
         
         faq = FAQ(label)
         while True:
