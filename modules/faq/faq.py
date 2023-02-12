@@ -16,10 +16,11 @@ def getFaqTitlesFromWiki(url):
 
     return [element['title'] for element in jsonTitles]
 
-def checkFaqLastUpdated(forceUpdate=False):
+def checkToBeUpdated(forceUpdate=False):
+    picklePath = f"{faqDataPath}/.faqlastupdated.pickle"
     date = ""
-    if os.path.isfile(".faqlastupdated.pickle"):
-        with open(".faqlastupdated.pickle", "rb") as file:
+    if os.path.isfile(picklePath):
+        with open(picklePath, "rb") as file:
             date = pickle.load(file)
 
     rawData = requests.get(wikiApiUrl, params=faqUpdateParams).text
@@ -29,7 +30,7 @@ def checkFaqLastUpdated(forceUpdate=False):
     isToBeUpdated = False
     if (date != lastUpdated) or forceUpdate:
         isToBeUpdated = True
-        with open(".faqlastupdated.pickle", "wb") as file:
+        with open(picklePath, "wb") as file:
             pickle.dump(lastUpdated, file)
 
     return isToBeUpdated

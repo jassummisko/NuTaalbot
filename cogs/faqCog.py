@@ -11,7 +11,7 @@ class faqCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("FAQ Cog is ready") 
-        if checkFaqLastUpdated(forceUpdate=True):
+        if checkToBeUpdated(forceUpdate=True):
             getFaqsFromWiki()
             print("FAQ Updated")
         else:
