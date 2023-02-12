@@ -18,7 +18,6 @@ class channelCheckerCog(commands.Cog):
         channel = self.bot.get_channel(channelID)
         role = channel.guild.get_role(roleID)
         today = dt.datetime.now(dt.timezone.utc)
-        today = dt.datetime.now()
 
         def getHistory(): 
             return channel.history(limit=None, after=today - dt.timedelta(days=60))

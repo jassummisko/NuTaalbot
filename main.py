@@ -1,10 +1,7 @@
 import asyncio
-import sys
 import os
 import discord
 from discord.ext import commands
-sys.path.append('./functions')
-sys.path.append('./faqstuff')
 
 with open(".token", "r") as file:
     TOKEN = file.read()

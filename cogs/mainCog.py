@@ -1,6 +1,6 @@
 from discord.ext import commands
 from data import kelderID
-import beginners
+import modules.beginners.beginners as beginners
 
 class mainCog(commands.Cog):
     def __init__(self, bot):

@@ -1,7 +1,9 @@
 import yaml, json, requests, os, pickle, re
 from random import choice
-from faqResponses import correct, wrong
+from modules.faq.faqResponses import correct, wrong
 from data import wikiApiUrl, faqTitlesParams, faqTitlesTemplate, faqUpdateParams
+
+faqDataPath = "./modules/faq/data"
 
 def updateFaqFile(filename, data):
     with open(filename, 'w') as file:
@@ -44,13 +46,19 @@ def getFaqsFromWiki():
             )
         )
 
-    updateFaqFile('faqdata/faqdata.yaml', "---\n"+"\n\n".join(faqPosts))
+    updateFaqFile(f'{faqDataPath}/faqdata.yaml', "---\n"+"\n\n".join(faqPosts))
+
+def getListOfFaqAliases():
+    with open(f"{faqDataPath}/faqaliases.yaml") as file:
+        aliases = yaml.load(file, Loader=yaml.Loader)
+    faqList = [(key, aliases[key]['description']) for key in sorted(aliases.keys())]
+    return faqList
 
 class FAQ:
     def __init__(self, startingLabel):
-        with open("faqdata/faqdata.yaml") as file:
+        with open(f"{faqDataPath}/faqdata.yaml") as file:
             self._data = yaml.load(file, Loader=yaml.Loader)
-        with open("faqdata/faqaliases.yaml") as file:
+        with open(f"{faqDataPath}/faqaliases.yaml") as file:
             aliases = yaml.load(file, Loader=yaml.Loader)
         if (startingLabel := startingLabel.lower()) in aliases:
             self._label = aliases[startingLabel]['label']
