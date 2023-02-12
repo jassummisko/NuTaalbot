@@ -162,7 +162,5 @@ cython_debug/
 *.cpython
 .token
 **/settings.json
-**/faqdata.yaml
-**/faqaliases.yaml
+**/*.yaml
 **/*.pickle
-modules/faq/data/faqdata.yaml
