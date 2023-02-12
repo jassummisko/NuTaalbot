@@ -1,7 +1,8 @@
-import yaml, json, requests, os, pickle, re
+import json, requests, os, pickle, re
 from random import choice
+from utils import loadYaml
 from modules.faq.faqResponses import correct, wrong
-from data import wikiApiUrl, faqTitlesParams, faqTitlesTemplate, faqUpdateParams
+from data import wikiApiUrl, getRecentChangesParams
 
 faqDataPath = "./modules/faq/data"
 
@@ -10,6 +11,7 @@ def updateFaqFile(filename, data):
         file.write(data)
 
 def getFaqTitlesFromWiki(url):
+    from data import faqTitlesParams
     jsonTitles = json.loads(
         requests.get(url, params=faqTitlesParams).text
     )['query']['prefixsearch']
@@ -17,25 +19,31 @@ def getFaqTitlesFromWiki(url):
     return [element['title'] for element in jsonTitles]
 
 def checkToBeUpdated(forceUpdate=False):
+    from data import faqUpdateParams
     picklePath = f"{faqDataPath}/.faqlastupdated.pickle"
-    date = ""
+    storedDates = ""
     if os.path.isfile(picklePath):
         with open(picklePath, "rb") as file:
-            date = pickle.load(file)
+            storedDates = pickle.load(file)
 
-    rawData = requests.get(wikiApiUrl, params=faqUpdateParams).text
-    updateData = json.loads(rawData)
-    lastUpdated = updateData['query']['recentchanges'][0]['timestamp']
+    scrapedDates = ""
+    allFaqTitles = getFaqTitlesFromWiki(wikiApiUrl)
+    for faqTitle in allFaqTitles:
+        rawData = requests.get(wikiApiUrl, params=getRecentChangesParams(faqTitle)).text
+        updateData = json.loads(rawData)
+        lastUpdated = updateData['query']['recentchanges'][0]['timestamp']
+        scrapedDates += faqTitle+"|"+lastUpdated+"||"
     
     isToBeUpdated = False
-    if (date != lastUpdated) or forceUpdate:
+    if (storedDates != scrapedDates) or forceUpdate:
         isToBeUpdated = True
         with open(picklePath, "wb") as file:
-            pickle.dump(lastUpdated, file)
+            pickle.dump(scrapedDates, file)
 
     return isToBeUpdated
 
 def getFaqsFromWiki():
+    from data import faqTitlesTemplate
     faqPosts = []
     for title in getFaqTitlesFromWiki(wikiApiUrl):
         faqPosts.append(
@@ -50,17 +58,14 @@ def getFaqsFromWiki():
     updateFaqFile(f'{faqDataPath}/faqdata.yaml', "---\n"+"\n\n".join(faqPosts))
 
 def getListOfFaqAliases():
-    with open(f"{faqDataPath}/faqaliases.yaml") as file:
-        aliases = yaml.load(file, Loader=yaml.Loader)
+    aliases = loadYaml(f"{faqDataPath}/faqaliases.yaml")
     faqList = [(key, aliases[key]['description']) for key in sorted(aliases.keys())]
     return faqList
 
 class FAQ:
     def __init__(self, startingLabel):
-        with open(f"{faqDataPath}/faqdata.yaml") as file:
-            self._data = yaml.load(file, Loader=yaml.Loader)
-        with open(f"{faqDataPath}/faqaliases.yaml") as file:
-            aliases = yaml.load(file, Loader=yaml.Loader)
+        self._data = loadYaml(f"{faqDataPath}/faqdata.yaml")
+        aliases = loadYaml(f"{faqDataPath}/faqaliases.yaml") 
         if (startingLabel := startingLabel.lower()) in aliases:
             self._label = aliases[startingLabel]['label']
         else:

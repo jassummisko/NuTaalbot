@@ -1,4 +1,4 @@
-import functools
+import functools, yaml
 
 def tryexcept(func):
     @functools.wraps(func)
@@ -12,7 +12,9 @@ def tryexcept(func):
 
 def isStaff(user):
     from data import staffRoles
-    for role in user.roles:
-        if role.id in staffRoles:
-            return True
-    return False
+    staffRoleIDs = [staffRole.value for staffRole in staffRoles]
+    return len(set([role.id for role in user.roles]).intersection(staffRoleIDs))>0 
+
+def loadYaml(path):
+    with open(path) as file:
+        return yaml.load(file, Loader=yaml.Loader)

@@ -1,6 +1,7 @@
 from discord.ext import commands
 from data import kelderID
 import modules.beginners.beginners as beginners
+from utils import tryexcept
 
 class mainCog(commands.Cog):
     def __init__(self, bot):
@@ -11,10 +12,12 @@ class mainCog(commands.Cog):
         print("Main Cog is ready")
 
     @commands.command()
+    @tryexcept
     async def hi(self, ctx):
         await ctx.send("Elk zinnen dah!")
 
     @commands.command(aliases=["🦵"])
+    @tryexcept
     async def b1(self, ctx):
         args = ctx.message.content.split()
         if len(args) <= 1:
@@ -26,6 +29,7 @@ class mainCog(commands.Cog):
         await ctx.send(message)
 
     @commands.command()
+    @tryexcept
     async def limiet(self, ctx):
         args = ctx.message.content.split()
         if len(args) <= 1:

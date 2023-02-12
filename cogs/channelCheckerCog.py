@@ -1,6 +1,5 @@
 from discord.ext import commands
 import datetime as dt
-import pickle
 from utils import tryexcept
 
 channelID = 1071803725343101048
