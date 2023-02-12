@@ -12,7 +12,8 @@ bot = commands.Bot(
     command_prefix="!", 
     intents=intents, 
     member_cache_flags=discord.MemberCacheFlags.all(), 
-    help_command=None
+    help_command=None,
+    case_insensitive=True
 )
 
 async def load():

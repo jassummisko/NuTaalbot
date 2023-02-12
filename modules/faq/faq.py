@@ -90,7 +90,7 @@ class FAQ:
         self._message = f"{prefix}\n{message}".strip()
 
     def check(self, msg):
-        if msg.content.strip() == "!stop_faq":
+        if msg.content.strip().lower() in ["!stop_faq", "!stopfaq", "!faqstop", "!faq_stop"]:
             self.isEnd, self._message = True, "FAQ stopped"
             return
         labelData = self._data[self._label]

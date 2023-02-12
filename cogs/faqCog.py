@@ -27,7 +27,7 @@ class faqCog(commands.Cog):
         getFaqsFromWiki()
         await ctx.send("FAQs Updated")
 
-    @commands.command()
+    @commands.command(aliases=["faq_list"])
     @tryexcept
     async def faqlist(self, ctx):
         message = "**__Here is a list of all FAQ's:__**\n"

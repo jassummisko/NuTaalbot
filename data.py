@@ -26,9 +26,9 @@ def getRecentChangesParams(title):
         "rctitle": title
     }
 
-
 class staffRoles(Enum): 
     Moderator = 527510064941105183
     Developer = 656502076062564382
     Mentor = 259993681950408704
     Admin = 1074343711602917396
+    Staff = 1074395170423980046
