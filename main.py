@@ -17,9 +17,9 @@ bot = commands.Bot(
 )
 
 COGNAMES = [
-    #"faqCog",
+    "faqCog",
     "mainCog",
-    "channelCheckerCog",
+    #"channelCheckerCog",
     "channelManagerCog",
 ]
 

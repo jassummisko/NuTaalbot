@@ -13,9 +13,11 @@ class mainCog(commands.Cog):
     @tryexcept
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        message = ''
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"Gebruik: {ctx.prefix}{ctx.command.name} {ctx.command.signature}")
-            if ctx.command.name == "faq": await ctx.send("Met `!faqlist` zie je alle faqs.")
+            message += f"Gebruik: `{ctx.prefix}{ctx.command.name} {ctx.command.signature}`"
+            if ctx.command.name == "faq": message += "\nMet `!faqlist` zie je alle faqs."
+            await ctx.send(message)
 
     @commands.command(description="Says hi to the bot!")
     @tryexcept
@@ -31,10 +33,17 @@ class mainCog(commands.Cog):
     @commands.command(aliases=["help"], description="Lists all bot commands.")
     @tryexcept
     async def hulp(self, ctx):
-        helptext = ""
-        commands = sorted([command for command in self.bot.commands], key=lambda x: x.name)
-        for command in commands: helptext += f"**{command}** -- {command.description}\n"
-        await ctx.send(helptext)
+        commands = [
+            f"**{command}** -- {command.description}" 
+                for command in self.bot.commands
+                if not "debug_" in command.name
+        ]       + ["**stopfaq** -- Stop currently running faq."]
+        commands = sorted(commands)
+
+        await ctx.send(
+            "__Here is a list of all bot commands:__\n"
+            + "\n".join(commands)
+        )
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot))

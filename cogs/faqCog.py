@@ -10,12 +10,14 @@ class faqCog(commands.Cog):
     @tryexcept
     @commands.Cog.listener()
     async def on_ready(self):
-        print("FAQ Cog is ready") 
+        print("Checking if FAQ is to be updated...")
         if checkToBeUpdated(forceUpdate=False):
+            print("Updating FAQ...")
             getFaqsFromWiki()
             print("FAQ Updated")
         else:
             print("FAQ in no need of update")
+        print("FAQ Cog is ready")
 
     @commands.command(description="Updates list of faqs. Staff only.")
     @tryexcept
