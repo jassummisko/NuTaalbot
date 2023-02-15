@@ -16,10 +16,16 @@ bot = commands.Bot(
     case_insensitive=True
 )
 
+COGNAMES = [
+    #"faqCog",
+    "mainCog",
+    "channelCheckerCog",
+    "channelManagerCog",
+]
+
 async def load():
-    for filename in os.listdir('./cogs'):
-        if filename.endswith('.py'):
-            await bot.load_extension(f'cogs.{filename[:-3]}')
+    for cogname in COGNAMES:
+        await bot.load_extension(f'cogs.{cogname}')
 
 async def main():
     await load()

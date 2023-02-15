@@ -1,5 +1,4 @@
 from discord.ext import commands
-from data import kelderID
 import modules.beginners.beginners as beginners
 from utils import tryexcept
 
@@ -28,24 +27,6 @@ class mainCog(commands.Cog):
     async def b1(self, ctx, woord):
         message = beginners.ScrapeB1(woord)
         await ctx.send(message)
-
-    @commands.command(description="Sets the user limit of #kelder VC")
-    @tryexcept
-    async def limiet(self, ctx, limiet):
-        channel = self.bot.get_channel(824353793915224125)
-        member = ctx.author
-
-        if not (member in channel.members):
-            await ctx.send("Je zit niet in #kelder.")
-            return
-
-        newLimit = int(limiet)
-        if newLimit < 3 or newLimit > 8:
-            await ctx.send("De limiet moet tussen 3 en 8 liggen.")
-            return
-        
-        await channel.edit(user_limit = newLimit)
-        await ctx.send(f"De limiet is nu {newLimit}.")
 
     @commands.command(aliases=["help"], description="Lists all bot commands.")
     @tryexcept
