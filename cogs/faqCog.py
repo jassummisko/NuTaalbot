@@ -17,7 +17,7 @@ class faqCog(commands.Cog):
         else:
             print("FAQ in no need of update")
 
-    @commands.command()
+    @commands.command(description="Updates list of faqs. Staff only.")
     @tryexcept
     async def updateFaqs(self, ctx):
         if not isStaff(ctx.author):
@@ -27,7 +27,7 @@ class faqCog(commands.Cog):
         getFaqsFromWiki()
         await ctx.send("FAQs Updated")
 
-    @commands.command(aliases=["faq_list"])
+    @commands.command(aliases=["faq_list"], description="Lists all available FAQs.")
     @tryexcept
     async def faqlist(self, ctx):
         message = "**__Here is a list of all FAQ's:__**\n"
@@ -38,20 +38,17 @@ class faqCog(commands.Cog):
 
         await ctx.send(message)
 
-    @commands.command()
+    @commands.command(description="Starts specific FAQ.")
     @tryexcept
-    async def faq(self, ctx):
+    async def faq(self, ctx, label):
         bot = self.bot
-        label = " ".join(ctx.message.content.split()[1:])
 
-        if label == '':
-            await ctx.send("Gebruik: !faq <FAQ_NAAM>")
-            return
-        
         faq = FAQ(label)
         while True:
             await ctx.send(faq.getMessage())
-            if faq.isEnd: break
+            if faq.isEnd: 
+                await ctx.send("FAQ ended.")
+                break
 
             def check(m):
                 isSameUser = m.author == ctx.author
@@ -64,6 +61,43 @@ class faqCog(commands.Cog):
                 return
 
             faq.check(msg)
-            
+    
+    @commands.command(description="Register an FAQ from the wiki. Staff only.")
+    @tryexcept
+    async def registerfaq(self, ctx, name, label, description):
+        if not isStaff(ctx.author):
+            ctx.send("You must be a staff member to use this command.")
+            return
+
+        addFaqAlias(name, label, description)
+
+    @commands.command(debug=True)
+    @tryexcept
+    async def debug_faq(self, ctx, label):
+        if not isStaff(ctx.author):
+            await ctx.send("You must be a staff member to use this command.")
+            return
+
+        bot = self.bot
+        
+        faq = FAQ(label, debug=True)
+        while True:
+            await ctx.send(faq.getMessage())
+            if faq.isEnd: 
+                await ctx.send("FAQ ended.")
+                break
+
+            def check(m):
+                isSameUser = m.author == ctx.author
+                isSameChannel = m.channel == ctx.channel
+                return isSameUser and isSameChannel
+
+            try: msg = await bot.wait_for("message", timeout=120, check=check)
+            except asyncio.TimeoutError:
+                await ctx.send("Timed out!")
+                return
+
+            faq.check(msg)
+
 async def setup(bot):
     await bot.add_cog(faqCog(bot))
