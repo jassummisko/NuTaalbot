@@ -21,7 +21,13 @@ class channelManagerCog(commands.Cog):
             return
 
         answeredTag = ctx.channel.parent.get_tag(tagAnsweredID)
-        
+
+        isOwner = ctx.channel.owner == ctx.message.author
+
+        if not (isOwner or isStaff(ctx.message.author)):
+            await ctx.send("You must be the owner of the post or a staff member")
+            return
+
         if answeredTag in ctx.channel.applied_tags:
             await ctx.send("Thread already marked as answered")
             return

@@ -72,6 +72,7 @@ class faqCog(commands.Cog):
             return
 
         addFaqAlias(name, label, description)
+        await ctx.send(f"FAQ '{name}' registered starting from label '{label}'")
 
     @commands.command(debug=True)
     @tryexcept
