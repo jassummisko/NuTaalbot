@@ -1,5 +1,3 @@
-import asyncio
-import os
 import discord
 from discord.ext import commands
 from localdata import applicationID, serverID
@@ -27,7 +25,7 @@ class Taalbot(commands.Bot):
             case_insensitive=True
         )
     
-    async def setup_hook(self) -> None:
+    async def setup_hook(self):
         for cogname in COGNAMES:
             await bot.load_extension(f'cogs.{cogname}')
             await bot.tree.sync(guild = discord.Object(id = serverID))

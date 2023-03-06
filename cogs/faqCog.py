@@ -1,7 +1,7 @@
 from discord.ext import commands
 import asyncio
 from modules.faq.faq import *
-from utils import isStaff
+from utils.utils import isStaff
 
 class faqCog(commands.Cog):
     def __init__(self, bot):
