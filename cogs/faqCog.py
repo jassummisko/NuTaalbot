@@ -4,7 +4,6 @@ from discord import app_commands
 import asyncio
 from modules.faq.faq import *
 from localdata import serverID
-from utils import isStaff
 from utils.utils import isStaff
 
 class faqCog(commands.Cog):
