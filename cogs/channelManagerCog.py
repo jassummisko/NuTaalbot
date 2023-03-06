@@ -1,7 +1,6 @@
 from discord.ext import commands
 from discord import ForumChannel
 from data import kelderID, tagAnsweredID
-from utils import tryexcept
 import utils
 
 class channelManagerCog(commands.Cog):
@@ -15,7 +14,6 @@ class channelManagerCog(commands.Cog):
     @commands.command(
         aliases=["answered"], 
         description="Mark forum post as answered.")
-    @tryexcept
     async def beantwoord(self, ctx):
         if not isinstance(ctx.channel.parent, ForumChannel):
             await ctx.send("Not in forum")
@@ -39,7 +37,6 @@ class channelManagerCog(commands.Cog):
     
     @commands.command(
         description="Get IDs of tags in forum. Staff only.")
-    @tryexcept
     async def debug_gettagids(self, ctx):
         if not utils.isStaff(ctx.message.author):
             await ctx.send("This command is staff-only.")
@@ -54,7 +51,6 @@ class channelManagerCog(commands.Cog):
 
     @commands.command(
         description="Sets the user limit of #kelder VC")
-    @tryexcept
     async def limiet(self, ctx, limiet):
         channel = self.bot.get_channel(kelderID)
         member = ctx.author

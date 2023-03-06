@@ -164,3 +164,4 @@ cython_debug/
 **/settings.json
 **/*.yaml
 **/*.pickle
+localdata.py

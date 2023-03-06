@@ -1,6 +1,5 @@
 from discord.ext import commands
 import datetime as dt
-from utils import tryexcept
 
 channelID = 1071803725343101048
 roleID = 837470147404496898
@@ -9,7 +8,6 @@ class channelCheckerCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @tryexcept
     @commands.Cog.listener()
     async def on_ready(self):
         print("Channel Checker Cog is ready")
