@@ -3,8 +3,12 @@ import discord
 from discord import app_commands
 import asyncio
 from modules.faq.faq import *
+<<<<<<< HEAD
 from localdata import serverID
 from utils import isStaff
+=======
+from utils.utils import isStaff
+>>>>>>> a7a6a74d0af620296cc79194623e348e027b0d09
 
 class faqCog(commands.Cog):
     def __init__(self, bot):

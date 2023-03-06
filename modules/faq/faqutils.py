@@ -1,6 +1,6 @@
-import json, requests, os, pickle, re, yaml
-from utils import loadYaml, saveYaml
-from data import wikiApiUrl, getRecentChangesParams
+import json, requests, os, pickle, re
+from utils.utils import loadYaml, saveYaml
+import utils.queries as queries
 
 faqDataPath = "./modules/faq/data"
 faqFilePath = f"{faqDataPath}/faqaliases.yaml"
@@ -10,15 +10,13 @@ def updateFaqFile(filename, data):
         file.write(data)
 
 def getFaqTitlesFromWiki(url):
-    from data import faqTitlesParams
     jsonTitles = json.loads(
-        requests.get(url, params=faqTitlesParams).text
+        requests.get(url, params=queries.faqTitlesParams).text
     )['query']['prefixsearch']
 
     return [element['title'] for element in jsonTitles]
 
 def checkToBeUpdated(forceUpdate=False):
-    from data import faqUpdateParams
     picklePath = f"{faqDataPath}/.faqlastupdated.pickle"
     storedDates = ""
     if os.path.isfile(picklePath):
@@ -26,9 +24,9 @@ def checkToBeUpdated(forceUpdate=False):
             storedDates = pickle.load(file)
 
     scrapedDates = ""
-    allFaqTitles = getFaqTitlesFromWiki(wikiApiUrl)
+    allFaqTitles = getFaqTitlesFromWiki(queries.wikiApiUrl)
     for faqTitle in allFaqTitles:
-        rawData = requests.get(wikiApiUrl, params=getRecentChangesParams(faqTitle)).text
+        rawData = requests.get(queries.wikiApiUrl, params=queries.getRecentChangesParams(faqTitle)).text
         updateData = json.loads(rawData)
         lastUpdated = updateData['query']['recentchanges'][0]['timestamp']
         scrapedDates += faqTitle+"|"+lastUpdated+"||"
@@ -42,14 +40,13 @@ def checkToBeUpdated(forceUpdate=False):
     return isToBeUpdated
 
 def getFaqsFromWiki():
-    from data import faqTitlesTemplate
     faqPosts = []
-    for title in getFaqTitlesFromWiki(wikiApiUrl):
+    for title in getFaqTitlesFromWiki(queries.wikiApiUrl):
         faqPosts.append(
             re.sub(
                 "</?pre>", "", 
                 requests.get(
-                    faqTitlesTemplate.format(title)
+                    queries.faqTitlesTemplate.format(title)
                 ).text
             )
         )

@@ -1,6 +1,5 @@
-import json, requests, os, pickle, re
 from random import choice
-from utils import loadYaml
+from utils.utils import loadYaml
 from modules.faq.faqResponses import correct, wrong
 from modules.faq.faqutils import *
 

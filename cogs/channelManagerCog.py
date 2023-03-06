@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import ForumChannel
 from data import kelderID, tagAnsweredID
-import utils
+import utils.utils as utils
 
 class channelManagerCog(commands.Cog):
     def __init__(self, bot):
