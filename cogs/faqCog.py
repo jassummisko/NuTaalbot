@@ -1,6 +1,9 @@
 from discord.ext import commands
+import discord
+from discord import app_commands
 import asyncio
 from modules.faq.faq import *
+from localdata import serverID
 from utils import isStaff
 
 class faqCog(commands.Cog):
@@ -18,24 +21,24 @@ class faqCog(commands.Cog):
             print("FAQ in no need of update")
         print("FAQ Cog is ready")
 
-    @commands.command(description="Updates list of faqs. Staff only.")
-    async def updatefaqs(self, ctx):
-        if not isStaff(ctx.author):
-            await ctx.send("You have no permissions to use this command.")
+    @app_commands.command(name="updatefaqs", description="FAQ updaten.")
+    async def updatefaqs(self, interaction):
+        if not isStaff(interaction.user):
+            await interaction.response.send_message("You have no permissions to use this command.")
             return
-        await ctx.send("Updating FAQs...")
+        await interaction.response.send_message("Updating FAQs...")
         getFaqsFromWiki()
-        await ctx.send("FAQs Updated")
+        await interaction.response.send_message("FAQs Updated")
 
-    @commands.command(aliases=["faq_list"], description="Lists all available FAQs.")
-    async def faqlist(self, ctx):
+    @app_commands.command(name="faqlist", description="Lists all available FAQs.")
+    async def faqlist(self, interaction):
         message = "**__Here is a list of all FAQ's:__**\n"
         for alias in getListOfFaqAliases():
             name, description = alias
             message += f"**{name}** - {description}\n"
         message += "\nTo start an FAQ, type `!faq` followed by the name: ex. `!faq heelveel`"
 
-        await ctx.send(message)
+        await interaction.response.send_message(message)
 
     @commands.command(description="Starts specific FAQ.")
     async def faq(self, ctx, label):
@@ -59,26 +62,28 @@ class faqCog(commands.Cog):
 
             faq.check(msg)
     
-    @commands.command(description="Register an FAQ from the wiki. Staff only.")
-    async def registerfaq(self, ctx, name, label, description):
-        if not isStaff(ctx.author):
-            await ctx.send("You must be a staff member to use this command.")
+    @app_commands.command(name="registerfaq", description="FAQ registreren.")
+    @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
+    async def registerfaq(self, interaction, naam: str, label: str, beschrijving: str):
+        if not isStaff(interaction.user):
+            await interaction.response.send_message("You must be a staff member to use this command.")
             return
 
-        addFaqAlias(name, label, description)
-        await ctx.send(f"FAQ '{name}' registered starting from label '{label}'")
+        addFaqAlias(naam, label, beschrijving)
+        await interaction.response.send_message(f"FAQ '{naam}' is geregistreerd met label '{label}' als begin.")
 
-    @commands.command(description="Deregister a FAQ. Staff only.")
-    async def deregisterfaq(self, ctx, name):
-        if not isStaff(ctx.author):
-            await ctx.send("You must be a staff member to use this command.")
+    @app_commands.command(name="deregisterfaq", description="FAQ verwijderen van register.")
+    @app_commands.describe(naam="Naam van faq")
+    async def deregisterfaq(self, interaction, naam: str):
+        if not isStaff(interaction.user):
+            await interaction.response.send_message("Je mag dit commando niet gebruiken omdat je geen staff bent.")
             return
 
-        if not removeFaqAlias(name):
-            await ctx.send(f"No FAQ found with name '{name}'")            
+        if not removeFaqAlias(naam):
+            await interaction.response.send_message(f"Er zit geen FAQ met de '{naam}' in de lijst.")            
             return
         
-        await ctx.send(f"FAQ '{name}' deregistered.")
+        await interaction.response.send_message(f"FAQ '{naam}' verwijderd.")
        
     @commands.command(debug=True)
     async def debug_faq(self, ctx, label):
@@ -108,4 +113,4 @@ class faqCog(commands.Cog):
             faq.check(msg)
 
 async def setup(bot):
-    await bot.add_cog(faqCog(bot))
+    await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverID))

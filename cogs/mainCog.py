@@ -1,4 +1,7 @@
 from discord.ext import commands
+from discord import app_commands
+import discord
+from localdata import serverID
 import modules.beginners.beginners as beginners
 
 class mainCog(commands.Cog):
@@ -21,10 +24,11 @@ class mainCog(commands.Cog):
     async def hi(self, ctx):
         await ctx.send("Elk zinnen dah!")
 
-    @commands.command(aliases=["🦵"], description="Checks if a word is B1 using ishetb1.nl.")
-    async def b1(self, ctx, woord):
+    @app_commands.command(name="b1", description="Checks if a word a word is B1 using ishetb1.nl")
+    @app_commands.describe(woord="Word to check.")
+    async def b1(self, interaction, woord: str):
         message = beginners.ScrapeB1(woord)
-        await ctx.send(message)
+        await interaction.response.send_message(message)
 
     @commands.command(aliases=["help"], description="Lists all bot commands.")
     async def hulp(self, ctx):
@@ -41,4 +45,4 @@ class mainCog(commands.Cog):
         )
 
 async def setup(bot):
-    await bot.add_cog(mainCog(bot))
+    await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverID)])
