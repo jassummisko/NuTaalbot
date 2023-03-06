@@ -1,7 +1,8 @@
 from discord.ext import commands
 from discord import ForumChannel
 from data import kelderID, tagAnsweredID
-from utils import tryexcept, isStaff
+from utils import tryexcept
+import utils
 
 class channelManagerCog(commands.Cog):
     def __init__(self, bot):
@@ -23,8 +24,9 @@ class channelManagerCog(commands.Cog):
         answeredTag = ctx.channel.parent.get_tag(tagAnsweredID)
 
         isOwner = ctx.channel.owner == ctx.message.author
+        isStaff = utils.isStaff(ctx.message.author)
 
-        if not (isOwner or isStaff(ctx.message.author)):
+        if not (isOwner or isStaff):
             await ctx.send("You must be the owner of the post or a staff member")
             return
 
@@ -39,7 +41,7 @@ class channelManagerCog(commands.Cog):
         description="Get IDs of tags in forum. Staff only.")
     @tryexcept
     async def debug_gettagids(self, ctx):
-        if not isStaff(ctx.message.author):
+        if not utils.isStaff(ctx.message.author):
             await ctx.send("This command is staff-only.")
             return
 

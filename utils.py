@@ -18,3 +18,8 @@ def isStaff(user):
 def loadYaml(path):
     with open(path) as file:
         return yaml.load(file, Loader=yaml.Loader)
+
+def saveYaml(dict, path):
+    with open(path, "w") as file:
+        file.write(yaml.dump(dict))
+

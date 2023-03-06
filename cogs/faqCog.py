@@ -21,7 +21,7 @@ class faqCog(commands.Cog):
 
     @commands.command(description="Updates list of faqs. Staff only.")
     @tryexcept
-    async def updateFaqs(self, ctx):
+    async def updatefaqs(self, ctx):
         if not isStaff(ctx.author):
             await ctx.send("You have no permissions to use this command.")
             return
@@ -44,7 +44,6 @@ class faqCog(commands.Cog):
     @tryexcept
     async def faq(self, ctx, label):
         bot = self.bot
-
         faq = FAQ(label)
         while True:
             await ctx.send(faq.getMessage())
@@ -68,12 +67,25 @@ class faqCog(commands.Cog):
     @tryexcept
     async def registerfaq(self, ctx, name, label, description):
         if not isStaff(ctx.author):
-            ctx.send("You must be a staff member to use this command.")
+            await ctx.send("You must be a staff member to use this command.")
             return
 
         addFaqAlias(name, label, description)
         await ctx.send(f"FAQ '{name}' registered starting from label '{label}'")
 
+    @commands.command(description="Deregister a FAQ. Staff only.")
+    @tryexcept
+    async def deregisterfaq(self, ctx, name):
+        if not isStaff(ctx.author):
+            await ctx.send("You must be a staff member to use this command.")
+            return
+
+        if not removeFaqAlias(name):
+            await ctx.send(f"No FAQ found with name '{name}'")            
+            return
+        
+        await ctx.send(f"FAQ '{name}' deregistered.")
+       
     @commands.command(debug=True)
     @tryexcept
     async def debug_faq(self, ctx, label):

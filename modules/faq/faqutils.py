@@ -1,8 +1,9 @@
 import json, requests, os, pickle, re, yaml
-from utils import loadYaml
+from utils import loadYaml, saveYaml
 from data import wikiApiUrl, getRecentChangesParams
 
 faqDataPath = "./modules/faq/data"
+faqFilePath = f"{faqDataPath}/faqaliases.yaml"
 
 def updateFaqFile(filename, data):
     with open(filename, 'w') as file:
@@ -61,11 +62,16 @@ def getListOfFaqAliases():
     return faqList
 
 def addFaqAlias(name, label, description):
-    faqFilePath = f"{faqDataPath}/faqaliases.yaml"
     aliases = loadYaml(faqFilePath)
     aliases[name] = {
         "label": label,
         "description": description
     }
-    with open(faqFilePath, "w") as file:
-        file.write(yaml.dump(aliases))
+    saveYaml(aliases, faqFilePath)
+
+def removeFaqAlias(name):
+    aliases = loadYaml(faqFilePath)
+    popped = aliases.pop(name, False)
+    saveYaml(aliases, faqFilePath)
+  
+    return popped

@@ -6,7 +6,8 @@ faqTitlesParams = {
     "format": "json",
     "list": "prefixsearch",
     "action": "query",
-    "pssearch": "Taalbot/faq/"
+    "pssearch": "Taalbot/faq/",
+    "pslimit": 500
 }
 wikiApiUrl = 'https://dutch.miraheze.org/w/api.php'
 faqUpdateParams = {
