@@ -40,9 +40,11 @@ class faqCog(commands.Cog):
 
         await interaction.response.send_message(message)
 
-    @commands.command(description="Starts specific FAQ.")
-    async def faq(self, ctx, label):
+    @app_commands.command(name="faq", description="Calls an FAQ.")
+    async def faq(self, interaction, label: str):
         bot = self.bot
+        ctx = await bot.get_context(interaction)
+        await interaction.response.send_message(f"Running FAQ {label}")
         faq = FAQ(label)
         while True:
             await ctx.send(faq.getMessage())
@@ -85,14 +87,14 @@ class faqCog(commands.Cog):
         
         await interaction.response.send_message(f"FAQ '{naam}' verwijderd.")
        
-    @commands.command(debug=True)
-    async def debug_faq(self, ctx, label):
+    @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
+    async def debug_faq(self, interaction, label: str): 
         if not isStaff(ctx.author):
-            await ctx.send("You must be a staff member to use this command.")
+            await interaction.response.send_message("You must be a staff member to use this command.")
             return
 
         bot = self.bot
-        
+        ctx = await bot.get_context(interaction)
         faq = FAQ(label, debug=True)
         while True:
             await ctx.send(faq.getMessage())

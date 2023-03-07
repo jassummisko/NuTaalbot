@@ -1,5 +1,5 @@
 from discord.ext import commands
-from discord import ForumChannel
+from discord import ForumChannel, app_commands
 from data import kelderID, tagAnsweredID
 import utils.utils as utils
 
@@ -49,23 +49,23 @@ class channelManagerCog(commands.Cog):
         for tag in ctx.channel.parent.available_tags:
             await ctx.send(f"{tag.id} - {tag.emoji}")
 
-    @commands.command(
+    @app_commands.command(name="limiet",
         description="Sets the user limit of #kelder VC")
-    async def limiet(self, ctx, limiet):
+    async def limiet(self, interaction, limiet: int):
         channel = self.bot.get_channel(kelderID)
-        member = ctx.author
+        member = interaction.user
 
         if not (member in channel.members):
-            await ctx.send("Je zit niet in #kelder.")
+            await interaction.response.send_message("Je zit niet in #kelder.")
             return
 
-        newLimit = int(limiet)
+        newLimit = limiet
         if newLimit < 3 or newLimit > 8:
-            await ctx.send("De limiet moet tussen 3 en 8 liggen.")
+            await interaction.response.send_message("De limiet moet tussen 3 en 8 liggen.")
             return
         
         await channel.edit(user_limit = newLimit)
-        await ctx.send(f"De limiet is nu {newLimit}.")
+        await interaction.response.send_message(f"De limiet is nu {newLimit}.")
 
 async def setup(bot):
     await bot.add_cog(channelManagerCog(bot))
