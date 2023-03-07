@@ -12,14 +12,13 @@ class mainCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Main Cog is ready")
+        for cmd in await self.bot.tree.fetch_commands():
+            print(cmd.name)
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        message = ''
-        if isinstance(error, commands.MissingRequiredArgument):
-            message += f"Gebruik: `{ctx.prefix}{ctx.command.name} {ctx.command.signature}`"
-            if ctx.command.name == "faq": message += "\nMet `!faqlist` zie je alle faqs."
-            await ctx.send(message)
+    async def on_message(self, msg):
+        if msg.content[0] == "!":
+            await msg.reply(content=f"We have migrated to slash commands. Please use `/command` instead of `!command`.")
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx):
@@ -28,23 +27,9 @@ class mainCog(commands.Cog):
     @app_commands.command(name="b1", description="Checks if a word a word is B1 using ishetb1.nl")
     @app_commands.describe(woord="Word to check.")
     @utils.catcherrors
-    async def b1(self, interaction, woord: str):
+    async def b1(self, i9n, woord: str):
         message = beginners.ScrapeB1(woord)
-        await interaction.response.send_message(message)
-
-    @commands.command(aliases=["help"], description="Lists all bot commands.")
-    async def hulp(self, ctx):
-        commands = [
-            f"**{command}** -- {command.description}" 
-                for command in self.bot.commands
-                if not "debug_" in command.name
-        ]       + ["**stopfaq** -- Stop currently running faq."]
-        commands = sorted(commands)
-
-        await ctx.send(
-            "__Here is a list of all bot commands:__\n"
-            + "\n".join(commands)
-        )
+        await i9n.response.send_message(message)
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverID)])

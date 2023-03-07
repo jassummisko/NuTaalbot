@@ -1,12 +1,13 @@
 import functools, yaml
 from discord.ext.commands import CommandError
+from discord import Interaction
 
 def catcherrors(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
-        interaction = args[1]
+        i9n: Interaction = args[1]
         try: await func(*args, **kwargs)
-        except CommandError as e: await interaction.response.send_message(e.args[0])         
+        except CommandError as e: await i9n.response.send_message(e.args[0], ephemeral=True)
         except Exception as e: print(e)
     return wrapper
 
