@@ -1,13 +1,13 @@
 import functools, yaml
+from discord.ext.commands import CommandError
 
-def tryexcept(func):
+def catcherrors(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
-        try:
-            await func(*args, **kwargs)
-        except Exception as e:
-            print(e)
-
+        ctx, errorMessage = args[1], e.args[0]
+        try: await func(*args, **kwargs)
+        except CommandError as e: await ctx.send(errorMessage)         
+        except Exception as e: print(e)
     return wrapper
 
 def isStaff(user):
