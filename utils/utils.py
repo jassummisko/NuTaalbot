@@ -4,9 +4,9 @@ from discord.ext.commands import CommandError
 def catcherrors(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
-        ctx, errorMessage = args[1], e.args[0]
+        interaction = args[1]
         try: await func(*args, **kwargs)
-        except CommandError as e: await ctx.send(errorMessage)         
+        except CommandError as e: await interaction.response.send_message(e.args[0])         
         except Exception as e: print(e)
     return wrapper
 

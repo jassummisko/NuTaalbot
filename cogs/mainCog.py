@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord import app_commands
 import discord
 from localdata import serverID
+import utils.utils as utils
 import modules.beginners.beginners as beginners
 
 class mainCog(commands.Cog):
@@ -26,6 +27,7 @@ class mainCog(commands.Cog):
 
     @app_commands.command(name="b1", description="Checks if a word a word is B1 using ishetb1.nl")
     @app_commands.describe(woord="Word to check.")
+    @utils.catcherrors
     async def b1(self, interaction, woord: str):
         message = beginners.ScrapeB1(woord)
         await interaction.response.send_message(message)
