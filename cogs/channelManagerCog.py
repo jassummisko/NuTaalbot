@@ -1,4 +1,5 @@
 from discord.ext import commands
+from discord.ext.commands import CommandError
 from discord import ForumChannel
 from data import kelderID, tagAnsweredID
 import utils.utils as utils
@@ -14,58 +15,44 @@ class channelManagerCog(commands.Cog):
     @commands.command(
         aliases=["answered"], 
         description="Mark forum post as answered.")
+    @utils.catcherrors
     async def beantwoord(self, ctx):
-        if not isinstance(ctx.channel.parent, ForumChannel):
-            await ctx.send("Not in forum")
-            return
+        if not isinstance(ctx.channel.parent, ForumChannel): raise CommandError("Not in forum")
 
         answeredTag = ctx.channel.parent.get_tag(tagAnsweredID)
 
         isOwner = ctx.channel.owner == ctx.message.author
         isStaff = utils.isStaff(ctx.message.author)
 
-        if not (isOwner or isStaff):
-            await ctx.send("You must be the owner of the post or a staff member")
-            return
-
-        if answeredTag in ctx.channel.applied_tags:
-            await ctx.send("Thread already marked as answered")
-            return
+        if not (isOwner or isStaff): raise CommandError("You must be the owner of the post or a staff member")
+        if answeredTag in ctx.channel.applied_tags: raise CommandError("Thread already marked as answered")
         
         await ctx.channel.add_tags(answeredTag)
         await ctx.send("Thread marked as answered")
     
     @commands.command(
         description="Get IDs of tags in forum. Staff only.")
+    @utils.catcherrors
     async def debug_gettagids(self, ctx):
-        if not utils.isStaff(ctx.message.author):
-            await ctx.send("This command is staff-only.")
-            return
-
-        if not isinstance(ctx.channel.parent, ForumChannel):
-            await ctx.send("Not in forum")
-            return
+        if not utils.isStaff(ctx.message.author): raise CommandError("This command is staff-only.")
+        if not isinstance(ctx.channel.parent, ForumChannel): raise CommandError("Not in forum")
 
         for tag in ctx.channel.parent.available_tags:
             await ctx.send(f"{tag.id} - {tag.emoji}")
 
     @commands.command(
         description="Sets the user limit of #kelder VC")
+    @utils.catcherrors
     async def limiet(self, ctx, limiet):
-        channel = self.bot.get_channel(kelderID)
-        member = ctx.author
+        #channel = self.bot.get_channel(kelderID)
+        channel = self.bot.get_channel(538388162557247502)
 
-        if not (member in channel.members):
-            await ctx.send("Je zit niet in #kelder.")
-            return
-
-        newLimit = int(limiet)
-        if newLimit < 3 or newLimit > 8:
-            await ctx.send("De limiet moet tussen 3 en 8 liggen.")
-            return
+        if not (ctx.author in channel.members): raise CommandError("Je zit niet in #kelder")
+        if int(limiet) < 3 or int(limiet) > 8: raise CommandError("De limiet moet tussen 3 en 8 liggen.")
         
-        await channel.edit(user_limit = newLimit)
-        await ctx.send(f"De limiet is nu {newLimit}.")
+        await channel.edit(user_limit = int(limiet))
+        await ctx.send(f"De limiet is nu {limiet}.")
+
 
 async def setup(bot):
     await bot.add_cog(channelManagerCog(bot))
