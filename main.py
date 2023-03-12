@@ -12,6 +12,7 @@ COGNAMES = [
     "mainCog",
     #"channelCheckerCog",
     "channelManagerCog",
+    "roleCog",
 ]
 
 class Taalbot(commands.Bot):
