@@ -6,7 +6,10 @@ from modules.faq.faq import *
 from localdata import serverID
 from utils.utils import isStaff
 import utils.utils as utils
+import data.quotes as quotes
 from discord.ext.commands import CommandError
+
+AssertionError = CommandError
 
 class faqCog(commands.Cog):
     def __init__(self, bot):
@@ -25,11 +28,11 @@ class faqCog(commands.Cog):
     @app_commands.command(name="updatefaqs", description="FAQ updaten.")
     @utils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
-        if not isStaff(i9n.user): raise CommandError("You have no permissions to use this command.")
-        await i9n.response.send_message("Updating FAQs...")
+        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
+        await i9n.response.send_message(quotes.UPDATING_FAQ)
         getFaqsFromWiki()
         msg = await i9n.original_response()
-        await msg.edit(content="FAQs Updated")
+        await msg.edit(content=quotes.FAQ_UPDATED)
 
     @app_commands.command(name="faqlist", description="Lists all available FAQs.")
     @utils.catcherrors
@@ -48,12 +51,12 @@ class faqCog(commands.Cog):
     async def faq(self, i9n, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
-        await i9n.response.send_message(f"Running FAQ {label}")
+        await i9n.response.send_message(quotes.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
             await ctx.send(faq.getMessage())
             if faq.isEnd: 
-                await ctx.send("FAQ ended.")
+                await ctx.send(quotes.FAQ_ENDED)
                 break
 
             def check(m):
@@ -63,40 +66,40 @@ class faqCog(commands.Cog):
 
             try: msg = await bot.wait_for("message", timeout=120, check=check)
             except asyncio.TimeoutError:
-                await ctx.send("Timed out!")
+                await ctx.send(quotes.TIMED_OUT)
                 return
 
             faq.check(msg)
-    
-    @app_commands.command(name="registerfaq", description="FAQ registreren.")
-    @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
-    @utils.catcherrors
-    async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
-        if not isStaff(i9n.user): raise CommandError("You must be a staff member to use this command.")
 
-        addFaqAlias(naam, label, beschrijving)
-        await i9n.response.send_message(f"FAQ '{naam}' is geregistreerd met label '{label}' als begin.")
+    @app_commands.command(name="registerfaq", description="FAQ registreren.")
+    @app_commands.describe(name="Naam van faq", label="Beginlabel van faq", desc="Beschrijving van faq")
+    @utils.catcherrors
+    async def registerfaq(self, i9n, name: str, label: str, desc: str):
+        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
+
+        addFaqAlias(name, label, desc)
+        await i9n.response.send_message(quotes.FAQ_REGISTERED.format(name, label))
 
     @app_commands.command(name="deregisterfaq", description="FAQ verwijderen van register.")
-    @app_commands.describe(naam="Naam van faq")
+    @app_commands.describe(name="Naam van faq")
     @utils.catcherrors
-    async def deregisterfaq(self, i9n, naam: str):
-        if not isStaff(i9n.user): raise CommandError("Je mag dit commando niet gebruiken omdat je geen staff bent.") 
-        if not removeFaqAlias(naam): raise CommandError(f"Er zit geen FAQ met de '{naam}' in de lijst.")            
-        await i9n.response.send_message(f"FAQ '{naam}' verwijderd.")
+    async def deregisterfaq(self, i9n, name: str):
+        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
+        assert removeFaqAlias(name), quotes.NOT_FAQ_ERROR.format(name) 
+        await i9n.response.send_message(quotes.FAQ_DEREGISTERED.format(name))
        
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
     @app_commands.describe(label="Name of FAQ.")
     @utils.catcherrors
     async def debug_faq(self, i9n, label: str): 
-        if not isStaff(ctx.author): raise CommandError("You must be a staff member to use this command.")
+        assert isStaff(ctx.author), quotes.NOT_STAFF_ERROR
 
         ctx = await self.bot.get_context(i9n)
         faq = FAQ(label, debug=True)
         while True:
             await ctx.send(faq.getMessage())
             if faq.isEnd: 
-                await ctx.send("FAQ ended.")
+                await ctx.send(quotes.FAQ_ENDED)
                 break
 
             def check(m):
@@ -106,7 +109,7 @@ class faqCog(commands.Cog):
 
             try: msg = await self.bot.wait_for("message", timeout=120, check=check)
             except asyncio.TimeoutError:
-                await ctx.send("Timed out!")
+                await ctx.send(quotes.TIMED_OUT)
                 return
 
             faq.check(msg)
