@@ -14,6 +14,15 @@ commandNames = [
     'limiet'
 ] 
 
+### TEMPORARY ###
+commandNames = [
+    'faq',
+    'faqlist',
+    'b1',
+    'beantwoord',
+    'limiet'
+] 
+
 class mainCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -27,8 +36,7 @@ class mainCog(commands.Cog):
         if len(msg.content) <= 1: return
         cmd = msg.content.split()[0]
         if (cmd[0] == "!") and (cmd[1:] in commandNames):
-            msg.content[1:]
-            await msg.reply(content=f"We have migrated to slash commands. Please use `/{msg.content[1:]}`.")
+            await msg.reply(content=f"We have migrated to slash commands. Please use `/{msg.content[1:]}` instead of `!{msg.content[1:]}`.")
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx):
