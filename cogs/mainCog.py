@@ -5,6 +5,15 @@ from localdata import serverID
 import utils.utils as utils
 import modules.beginners.beginners as beginners
 
+### TEMPORARY ###
+commandNames = [
+    'faq',
+    'faqlist',
+    'b1',
+    'beantwoord',
+    'limiet'
+] 
+
 class mainCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -12,13 +21,14 @@ class mainCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Main Cog is ready")
-        for cmd in await self.bot.tree.fetch_commands():
-            print(cmd.name)
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.content[0] == "!":
-            await msg.reply(content=f"We have migrated to slash commands. Please use `/command` instead of `!command`.")
+        if len(msg.content) <= 1: return
+        cmd = msg.content.split()[0]
+        if (cmd[0] == "!") and (cmd[1:] in commandNames):
+            msg.content[1:]
+            await msg.reply(content=f"We have migrated to slash commands. Please use `/{msg.content[1:]}`.")
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx):
