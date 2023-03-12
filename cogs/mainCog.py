@@ -14,15 +14,6 @@ commandNames = [
     'limiet'
 ] 
 
-### TEMPORARY ###
-commandNames = [
-    'faq',
-    'faqlist',
-    'b1',
-    'beantwoord',
-    'limiet'
-] 
-
 class mainCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
