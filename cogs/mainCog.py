@@ -36,9 +36,16 @@ class mainCog(commands.Cog):
     @app_commands.command(name="b1", description="Checks if a word a word is B1 using ishetb1.nl")
     @app_commands.describe(woord="Word to check.")
     @utils.catcherrors
-    async def b1(self, i9n, woord: str):
+    async def b1(self, i9n: discord.Interaction, woord: str):
         message = beginners.ScrapeB1(woord)
         await i9n.response.send_message(message)
+
+    @app_commands.command(name="debug_textinput", description="Try text input")
+    @utils.catcherrors
+    async def debug_textInput(self, i9n: discord.Interaction):
+        textbox = discord.ui.TextInput(required=True)
+        view = discord.ui.View()
+        await i9n.response.send_message("Done.", view=view)
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverID)])

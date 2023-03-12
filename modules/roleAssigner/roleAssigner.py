@@ -1,6 +1,6 @@
 import discord
 
-async def roleSelectionView(guild: discord.guild, filterKey, max_values: int = 25):
+async def roleSelectionView(guild: discord.guild, filterKey: callable, max_values: int = 25):
     roleFilter = filter(filterKey, guild.roles)
     roles = [role for role in roleFilter]
     testDropdown = discord.ui.Select(

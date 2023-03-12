@@ -1,3 +1,4 @@
+from typing import List
 from discord.ext import commands
 import discord
 from discord import app_commands
@@ -45,7 +46,7 @@ class faqCog(commands.Cog):
     @app_commands.command(name="faq", description="Calls an FAQ.")
     @app_commands.describe(label="Name of FAQ.")
     @utils.catcherrors
-    async def faq(self, i9n, label: str):
+    async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
         await i9n.response.send_message(f"Running FAQ {label}")
@@ -67,6 +68,11 @@ class faqCog(commands.Cog):
                 return
 
             faq.check(msg)
+
+    @faq.autocomplete('label')
+    async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
+        registeredFaqs = [f[0] for f in getListOfFaqAliases()]
+        return [app_commands.Choice(name=f, value=f) for f in registeredFaqs]
     
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
     @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
