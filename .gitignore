@@ -163,5 +163,6 @@ cython_debug/
 .token
 **/settings.json
 **/*.yaml
+**/*.pkl
 **/*.pickle
 localdata.py

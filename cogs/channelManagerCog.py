@@ -56,4 +56,4 @@ class channelManagerCog(commands.Cog):
         await i9n.response.send_message(quotes.KELDER_LIMIER_UPDATED.format(limit))
 
 async def setup(bot):
-    await bot.add_cog(channelManagerCog(bot), guild = discord.Object(id = serverID))
+    await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverID)])

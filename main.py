@@ -10,7 +10,7 @@ intents.members = True
 COGNAMES = [
     "faqCog",
     "mainCog",
-    #"channelCheckerCog",
+    "roleManagerCog",
     "channelManagerCog",
 ]
 
