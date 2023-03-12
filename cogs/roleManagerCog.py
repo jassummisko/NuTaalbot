@@ -22,7 +22,6 @@ class PendingEntry:
 class roleManagerCog(commands.Cog):
     def __init__(self, bot):
         self.bot : discord.Client = bot
-        self.guild = self.bot.get_guild(serverID)
         self.rolesPendingRemoval = []
 
     @commands.Cog.listener()
@@ -34,15 +33,21 @@ class roleManagerCog(commands.Cog):
                 self.rolesPendingRemoval = pickle.load(f)
 
         async def removeRole(pendingEntry: PendingEntry):
-            duration: dt.timedelta = dt.datetime.now() - pendingEntry.time
-            await asyncio.sleep(duration.seconds)
-            user = self.guild.get_member(pendingEntry.userId)
-            role = self.guild.get_role(pendingEntry.roleId)
-            user.remove_roles(role)
+            now = dt.datetime.now()
+            due = pendingEntry.time
+            duration: dt.timedelta = pendingEntry.time - dt.datetime.now()
+            await asyncio.sleep(0 if due < now else duration.seconds)
+            user = self.bot.get_guild(serverID).get_member(pendingEntry.userId)
+            role = self.bot.get_guild(serverID).get_role(pendingEntry.roleId)
+            await user.remove_roles(role)
+            await user.send(content=quotes.ROLE_REMOVED.format(role.name))
 
         for pendingEntry in self.rolesPendingRemoval:
             await removeRole(pendingEntry)
 
+        self.rolesPendingRemoval = []
+        with open(filepath, 'w+b') as f:
+            pickle.dump(self.rolesPendingRemoval, f)
 
 
         # channel = self.bot.get_channel(channelID)
@@ -79,7 +84,7 @@ class roleManagerCog(commands.Cog):
         await user.add_roles(role)
         await i9n.response.send_message(quotes.ROLE_GIVEN.format(role.name))
         msg = await i9n.original_response()
-        t = dt.datetime.now() + dt.timedelta(duration)
+        t = dt.datetime.now() + dt.timedelta(minutes = duration)
         self.rolesPendingRemoval.append(PendingEntry(user.id, role.id, t))
         with open(filepath, 'w+b') as f:
             pickle.dump(self.rolesPendingRemoval, f)
