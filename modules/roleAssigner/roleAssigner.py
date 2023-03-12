@@ -1,20 +1,21 @@
 import discord
 
-async def roleSelectionView(guild: discord.guild, filterKey: callable, max_values: int = 25):
+async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_values: int = 25):
     roleFilter = filter(filterKey, guild.roles)
     roles = [role for role in roleFilter]
-    testDropdown = discord.ui.Select(
+    dropdown = discord.ui.Select(
         max_values = min([len(roles), max_values]),
         placeholder = "Choose a language",
         options = [discord.SelectOption(label=role.name) for role in roles]
     )
     
     async def callback(i9n: discord.Interaction):
-        rolesToAdd = [role for role in roles if role.name in testDropdown.values]
-        await i9n.user.add_roles(*rolesToAdd)
+        rolesToAdd = [role for role in roles if role.name in dropdown.values]
+        member = guild.get_member(i9n.user.id)
+        await member.add_roles(*rolesToAdd)
         await i9n.response.send_message(f"Added roles {', '.join([role.name for role in rolesToAdd])}")
 
-    testDropdown.callback = callback
+    dropdown.callback = callback
     view = discord.ui.View()
-    view.add_item(testDropdown)
+    view.add_item(dropdown)
     return view
