@@ -1,6 +1,6 @@
 from enum import Enum
 
-kelderID = 824352622605500416
+kelderId = 824352622605500416
 
 class staffRoles(Enum): 
     Moderator = 527510064941105183
@@ -10,5 +10,5 @@ class staffRoles(Enum):
     Staff = 1074395170423980046
     DebugAdmin = 809432815275606067
 
-emojiAnsweredID = 1075380174381649963
-tagAnsweredID = 1075378374043771001 #TO BE REPLACED
+emojiAnsweredId = 1075380174381649963
+tagAnsweredId = 1075378374043771001 #TO BE REPLACED

@@ -1,55 +1,34 @@
-import discord, pickle, os, asyncio
-from localdata import serverID
-from discord import Interaction, Role, Member
+import discord, asyncio
+import data.quotes as quotes, utils.utils as utils
+from localdata import serverId, leerkrachtRoleId
+from discord import Interaction, Member, app_commands
 from discord.ext import commands
-from discord import app_commands
-from dataclasses import dataclass
-import utils.utils as utils
-import data.quotes as quotes
 from utils.utils import isStaff
-import datetime as dt
-
-channelID = 1071803725343101048
-roleID = 837470147404496898
-filepath = "data/rolesPendingRemoval.pkl"
-
-@dataclass
-class PendingEntry:
-    userId: int
-    roleId: int
-    time: dt.datetime
+from modules.roleManager.roleManager import *
 
 class roleManagerCog(commands.Cog):
     def __init__(self, bot):
         self.bot : discord.Client = bot
-        self.rolesPendingRemoval = []
+        self.rolesPendingRemoval = getRolesPendingRemoval()
 
     @commands.Cog.listener()
     async def on_ready(self):
         print("Role Manager Cog is ready")
 
-        if os.path.isfile(filepath) and os.path.getsize(filepath) > 0:
-            with open(filepath, 'r+b') as f:
-                self.rolesPendingRemoval = pickle.load(f)
+        queue = queuePendingRemovals(self.bot.get_guild(serverId), self.rolesPendingRemoval)
+        if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True)
 
-        async def removeRole(pendingEntry: PendingEntry):
-            now = dt.datetime.now()
-            due = pendingEntry.time
-            duration: dt.timedelta = pendingEntry.time - dt.datetime.now()
-            await asyncio.sleep(0 if due < now else duration.seconds)
-            user = self.bot.get_guild(serverID).get_member(pendingEntry.userId)
-            role = self.bot.get_guild(serverID).get_role(pendingEntry.roleId)
-            await user.remove_roles(role)
-            await user.send(content=quotes.ROLE_REMOVED.format(role.name))
+    @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
+    @app_commands.describe(user="username", role="role name", duration="duration in minutes")
+    @utils.catcherrors
+    async def giveleerkrachtrole(self, i9n: Interaction, user : Member, duration : int = 180) -> None:
+        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
+        await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, i9n.guild.get_role(leerkrachtRoleId), duration)
 
-        for pendingEntry in self.rolesPendingRemoval:
-            await removeRole(pendingEntry)
+async def setup(bot):
+    await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])
 
-        self.rolesPendingRemoval = []
-        with open(filepath, 'w+b') as f:
-            pickle.dump(self.rolesPendingRemoval, f)
-
-
+### IGNORE FOR NOW ###
         # channel = self.bot.get_channel(channelID)
         # role = channel.guild.get_role(roleID)
         # today = dt.datetime.now(dt.timezone.utc)
@@ -71,26 +50,3 @@ class roleManagerCog(commands.Cog):
 
         #     await user.send("U r dum")
         #     warnedUsers.append(user)
-
-    @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
-    @app_commands.describe(user="username", role="role name", duration="duration in minutes")
-    @utils.catcherrors
-    async def giveleerkrachtrole(self, i9n: Interaction, user : Member, role : Role, duration : int = 180) -> None:
-        await self.giverole(i9n, user, role, duration)
-
-    async def giverole(self, i9n: Interaction, user : Member, role : Role, duration : int) -> None:
-        # assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
-        SECONDS_PER_MINUTE : int = 60
-        await user.add_roles(role)
-        await i9n.response.send_message(quotes.ROLE_GIVEN.format(role.name))
-        msg = await i9n.original_response()
-        t = dt.datetime.now() + dt.timedelta(minutes = duration)
-        self.rolesPendingRemoval.append(PendingEntry(user.id, role.id, t))
-        with open(filepath, 'w+b') as f:
-            pickle.dump(self.rolesPendingRemoval, f)
-        await asyncio.sleep(duration*SECONDS_PER_MINUTE)
-        await user.remove_roles(role)
-        await user.send(content=quotes.ROLE_REMOVED.format(role.name))
-
-async def setup(bot):
-    await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverID)])

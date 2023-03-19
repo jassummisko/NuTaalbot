@@ -2,8 +2,8 @@ from discord.ext import commands
 from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
 import discord
-from dataIds import kelderID, tagAnsweredID
-from localdata import serverID
+from dataIds import kelderId, tagAnsweredId
+from localdata import serverId
 import utils.utils as utils
 import data.quotes as quotes
 
@@ -28,7 +28,7 @@ class channelManagerCog(commands.Cog):
         isOwnerOrStaff = (i9n.channel.owner == i9n.user) or utils.isStaff(i9n.user)
         assert isOwnerOrStaff, quotes.NOT_POST_OWNER_OR_STAFF_ERROR
 
-        answeredTag = i9n.channel.parent.get_tag(tagAnsweredID)
+        answeredTag = i9n.channel.parent.get_tag(tagAnsweredId)
         assert answeredTag not in i9n.channel.applied_tags, quotes.THREAD_ANSWERED
 
         await i9n.channel.add_tags(answeredTag)
@@ -46,7 +46,7 @@ class channelManagerCog(commands.Cog):
         description="Sets the user limit of #kelder VC")
     @utils.catcherrors
     async def limiet(self, i9n: discord.Interaction, limit: int):
-        channel = self.bot.get_channel(kelderID)
+        channel = self.bot.get_channel(kelderId)
         assert (i9n.user in channel.members), quotes.NOT_IN_KELDER_ERROR
 
         LOWER_LIMIT, UPPER_LIMIT = 3, 8
@@ -56,4 +56,4 @@ class channelManagerCog(commands.Cog):
         await i9n.response.send_message(quotes.KELDER_LIMIER_UPDATED.format(limit))
 
 async def setup(bot):
-    await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverID)])
+    await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverId)])
