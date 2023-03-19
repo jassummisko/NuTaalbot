@@ -22,8 +22,7 @@ class roleCog(commands.Cog):
     @app_commands.command(name="niveaurol", description="Assign level roles")
     @utils.catcherrors
     async def niveaurol(self, i9n: discord.Interaction):
-        user = i9n.user
-        await user.remove_roles(*[role for role in user.roles if "Niveau" in role.name])
+        await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
         view = await roleSelectionView(i9n.guild, lambda x:"Niveau" in x.name, 1)
         await i9n.response.send_message("Here you go!", view=view)
 
