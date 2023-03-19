@@ -19,7 +19,7 @@ class roleManagerCog(commands.Cog):
         if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True)
 
     @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
-    @app_commands.describe(user="username", role="role name", duration="duration in minutes")
+    @app_commands.describe(user="username", duration="duration in minutes")
     @utils.catcherrors
     async def giveleerkrachtrole(self, i9n: Interaction, user : Member, duration : int = 180) -> None:
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
