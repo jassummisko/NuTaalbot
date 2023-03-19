@@ -26,7 +26,7 @@ class roleCog(commands.Cog):
         await user.remove_roles(*[role for role in user.roles if "Niveau" in role.name])
         view = await roleSelectionView(i9n.guild, lambda x:"Niveau" in x.name, 1)
         await i9n.response.send_message("Here you go!", view=view)
-
+"""
     @app_commands.command(name="debug_onboard", description="OK")
     @utils.catcherrors
     async def debug_onboard(self, i9n: discord.Interaction, member: discord.Member):
@@ -69,6 +69,7 @@ class roleCog(commands.Cog):
         view = discord.ui.View()
         view.add_item(dropdown)
         await i9n.user.send(content="f", view=view)
+"""
 
 async def setup(bot):
     await bot.add_cog(roleCog(bot), guilds = [discord.Object(id = serverID)])
