@@ -40,7 +40,6 @@ class faqCog(commands.Cog):
             name, description = alias
             message += f"**{name}** - {description}\n"
         message += "\nTo start an FAQ, type `!faq` followed by the name: ex. `!faq heelveel`"
-
         await i9n.response.send_message(message)
 
     @app_commands.command(name="faq", description="Calls an FAQ.")
@@ -63,11 +62,8 @@ class faqCog(commands.Cog):
                 return isSameUser and isSameChannel
 
             try: msg = await bot.wait_for("message", timeout=120, check=check)
-            except asyncio.TimeoutError:
-                await ctx.send("Timed out!")
-                return
-
-            faq.check(msg)
+            except asyncio.TimeoutError: await ctx.send("Timed out!")
+            else: faq.check(msg)
 
     @faq.autocomplete('label')
     async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
@@ -79,7 +75,6 @@ class faqCog(commands.Cog):
     @utils.catcherrors
     async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
         if not isStaff(i9n.user): raise CommandError("You must be a staff member to use this command.")
-
         addFaqAlias(naam, label, beschrijving)
         await i9n.response.send_message(f"FAQ '{naam}' is geregistreerd met label '{label}' als begin.")
 
@@ -111,11 +106,8 @@ class faqCog(commands.Cog):
                 return isSameUser and isSameChannel
 
             try: msg = await self.bot.wait_for("message", timeout=120, check=check)
-            except asyncio.TimeoutError:
-                await ctx.send("Timed out!")
-                return
-
-            faq.check(msg)
+            except asyncio.TimeoutError: await ctx.send("Timed out!")
+            else: faq.check(msg)
 
 async def setup(bot):
     await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverID))

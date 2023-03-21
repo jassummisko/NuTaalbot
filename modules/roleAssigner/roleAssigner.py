@@ -1,8 +1,7 @@
 import discord
 
 async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_values: int = 25):
-    roleFilter = filter(filterKey, guild.roles)
-    roles = [role for role in roleFilter]
+    roles = [role for role in filter(filterKey, guild.roles)]
     dropdown = discord.ui.Select(
         max_values = min([len(roles), max_values]),
         placeholder = "Choose a language",
