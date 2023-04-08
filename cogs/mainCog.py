@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord import app_commands
 import discord
 from localdata import serverID
+import data.quotes as quotes
 import utils.utils as utils
 import modules.beginners.beginners as beginners
 
@@ -27,11 +28,12 @@ class mainCog(commands.Cog):
         if len(msg.content) <= 1: return
         cmd = msg.content.split()[0]
         if (cmd[0] == "!") and (cmd[1:] in commandNames):
-            await msg.reply(content=f"We have migrated to slash commands. Please use `/{msg.content[1:]}` instead of `!{msg.content[1:]}`.")
+            cmdName = msg.content[1:]
+            await msg.reply(content=quotes.USE_SLASH_COMMANDS.format(cmdName, cmdName))
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx):
-        await ctx.send("Elk zinnen dah!")
+        await ctx.send(quotes.ELK_ZINNEN_DAH)
 
     @app_commands.command(name="b1", description="Checks if a word a word is B1 using ishetb1.nl")
     @app_commands.describe(woord="Word to check.")
