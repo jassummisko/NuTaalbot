@@ -11,7 +11,6 @@ class channelCheckerCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Channel Checker Cog is ready")
-
         
 async def setup(bot):
     await bot.add_cog(channelCheckerCog(bot))
