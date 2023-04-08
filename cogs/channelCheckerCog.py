@@ -12,6 +12,12 @@ class channelCheckerCog(commands.Cog):
     async def on_ready(self):
         print("Channel Checker Cog is ready")
 
+        
+async def setup(bot):
+    await bot.add_cog(channelCheckerCog(bot))
+
+### TEMPORARY ###
+"""
         channel = self.bot.get_channel(channelID)
         role = channel.guild.get_role(roleID)
         today = dt.datetime.now(dt.timezone.utc)
@@ -33,6 +39,4 @@ class channelCheckerCog(commands.Cog):
 
             await user.send("U r dum")
             warnedUsers.append(user)
-        
-async def setup(bot):
-    await bot.add_cog(channelCheckerCog(bot))
+"""
