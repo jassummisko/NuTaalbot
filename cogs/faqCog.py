@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 import asyncio
 from modules.faq.faq import *
-from localdata import serverID
+from localdata import serverId
 from utils.utils import isStaff
 import utils.utils as utils
 import data.quotes as quotes
@@ -113,4 +113,4 @@ class faqCog(commands.Cog):
             else: faq.check(msg)
 
 async def setup(bot):
-    await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverID))
+    await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverId))

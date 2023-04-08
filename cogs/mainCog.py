@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import app_commands
 import discord
-from localdata import serverID
+from localdata import serverId
 import data.quotes as quotes
 import utils.utils as utils
 import modules.beginners.beginners as beginners
@@ -50,4 +50,4 @@ class mainCog(commands.Cog):
         await i9n.response.send_message("Done.", view=view)
 
 async def setup(bot):
-    await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverID)])
+    await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])

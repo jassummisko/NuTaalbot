@@ -3,7 +3,7 @@ from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
 import discord
 from dataIds import kelderID, tagAnsweredID
-from localdata import serverID
+from localdata import serverId
 import utils.utils as utils
 import data.quotes as quotes
 
@@ -56,4 +56,4 @@ class channelManagerCog(commands.Cog):
         await i9n.response.send_message(quotes.KELDER_LIMIER_UPDATED.format(limit))
 
 async def setup(bot):
-    await bot.add_cog(channelManagerCog(bot), guild = discord.Object(id = serverID))
+    await bot.add_cog(channelManagerCog(bot), guild = discord.Object(id = serverId))

@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from localdata import serverID, countryRoleColor
+from localdata import serverId, countryRoleColor
 from discord.ext import commands
 import utils.utils as utils
 from modules.roleAssigner.roleAssigner import *
@@ -27,4 +27,4 @@ class roleCog(commands.Cog):
         await i9n.response.send_message("Here you go!", view=view)
 
 async def setup(bot):
-    await bot.add_cog(roleCog(bot), guilds = [discord.Object(id = serverID)])
+    await bot.add_cog(roleCog(bot), guilds = [discord.Object(id = serverId)])
