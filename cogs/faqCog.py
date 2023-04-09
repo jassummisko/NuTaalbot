@@ -74,7 +74,7 @@ class faqCog(commands.Cog):
         return [app_commands.Choice(name=f, value=f) for f in registeredFaqs]
     
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
-    @app_commands.describe(name="Naam van faq", label="Beginlabel van faq", desc="Beschrijving van faq")
+    @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
     @utils.catcherrors
     async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
         if not isStaff(i9n.user): raise CommandError("You must be a staff member to use this command.")
