@@ -1,3 +1,4 @@
+from typing import List
 from discord.ext import commands
 import discord
 from discord import app_commands
@@ -42,13 +43,12 @@ class faqCog(commands.Cog):
             name, description = alias
             message += f"**{name}** - {description}\n"
         message += "\nTo start an FAQ, type `!faq` followed by the name: ex. `!faq heelveel`"
-
         await i9n.response.send_message(message)
 
     @app_commands.command(name="faq", description="Calls an FAQ.")
     @app_commands.describe(label="Name of FAQ.")
     @utils.catcherrors
-    async def faq(self, i9n, label: str):
+    async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
         await i9n.response.send_message(quotes.RUNNING_FAQ.format(label))
@@ -65,20 +65,21 @@ class faqCog(commands.Cog):
                 return isSameUser and isSameChannel
 
             try: msg = await bot.wait_for("message", timeout=120, check=check)
-            except asyncio.TimeoutError:
-                await ctx.send(quotes.TIMED_OUT)
-                return
+            except asyncio.TimeoutError: await ctx.send("Timed out!")
+            else: faq.check(msg)
 
-            faq.check(msg)
-
+    @faq.autocomplete('label')
+    async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
+        registeredFaqs = [f[0] for f in getListOfFaqAliases()]
+        return [app_commands.Choice(name=f, value=f) for f in registeredFaqs]
+    
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
     @app_commands.describe(name="Naam van faq", label="Beginlabel van faq", desc="Beschrijving van faq")
     @utils.catcherrors
-    async def registerfaq(self, i9n, name: str, label: str, desc: str):
-        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
-
-        addFaqAlias(name, label, desc)
-        await i9n.response.send_message(quotes.FAQ_REGISTERED.format(name, label))
+    async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
+        if not isStaff(i9n.user): raise CommandError("You must be a staff member to use this command.")
+        addFaqAlias(naam, label, beschrijving)
+        await i9n.response.send_message(f"FAQ '{naam}' is geregistreerd met label '{label}' als begin.")
 
     @app_commands.command(name="deregisterfaq", description="FAQ verwijderen van register.")
     @app_commands.describe(name="Naam van faq")
@@ -108,11 +109,8 @@ class faqCog(commands.Cog):
                 return isSameUser and isSameChannel
 
             try: msg = await self.bot.wait_for("message", timeout=120, check=check)
-            except asyncio.TimeoutError:
-                await ctx.send(quotes.TIMED_OUT)
-                return
-
-            faq.check(msg)
+            except asyncio.TimeoutError: await ctx.send("Timed out!")
+            else: faq.check(msg)
 
 async def setup(bot):
     await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverId))
