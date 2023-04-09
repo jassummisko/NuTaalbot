@@ -55,8 +55,7 @@ def getFaqsFromWiki():
 
 def getListOfFaqAliases():
     aliases = loadYaml(f"{faqDataPath}/faqaliases.yaml")
-    faqList = [(key, aliases[key]['description']) for key in sorted(aliases.keys())]
-    return faqList
+    return [(key, aliases[key]['description']) for key in sorted(aliases.keys())]
 
 def addFaqAlias(name, label, description):
     aliases = loadYaml(faqFilePath)
