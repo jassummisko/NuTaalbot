@@ -1,7 +1,9 @@
 import discord
 from discord import app_commands
+from discord.app_commands import Choice
 from localdata import serverId, countryRoleColor
 from discord.ext import commands
+from fuzzywuzzy import fuzz
 import utils.utils as utils
 from modules.roleAssigner.roleAssigner import *
 
@@ -18,21 +20,16 @@ class roleCog(commands.Cog):
     @utils.catcherrors
     async def landrol(self, i9n: discord.Interaction, land: str):
         responseMsg = "Alsjeblieft!"
-        countryRoles = [role for role in i9n.guild.roles if role.color == countryRoleColor]
-        role = [role for role in countryRoles if role.name.upper() == land.upper()]
-        if len(role) > 0: await i9n.user.add_roles(role[0])
-        else: responseMsg = f"Er is geen land met de naam {land}"
+        await i9n.user.add_roles([role for role in i9n.guild.roles if role.name == land][0])
         await i9n.response.send_message(responseMsg)
 
-   # @landrol.autocomplete('land')
-   # async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
-   #     try: 
-   #         landen = [role.name for role in i9n.guild.roles if role.color == countryRoleColor]
-   #         roleOptions = [land for land in landen if current.lower() == land[0:len(current)].lower()]
-   #         nOptions = min(8, len(roleOptions))
-   #         return roleOptions[0:nOptions]
-   #     except Exception as e:
-   #         print(e)
+    @landrol.autocomplete('land')
+    async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
+        try: 
+            roles = [role.name for role in i9n.guild.roles if role.color == countryRoleColor]
+            roles = sorted(roles, key=(lambda role: fuzz.ratio(role.lower(), current.lower())), reverse=True)
+            return [Choice(name=role, value=role) for role in roles[:10]] 
+        except Exception as e: print(e)
 
     @app_commands.command(name="niveaurol", description="Assign level roles")
     @utils.catcherrors
