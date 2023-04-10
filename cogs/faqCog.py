@@ -10,7 +10,7 @@ import utils.utils as utils
 import data.quotes as quotes
 from discord.ext.commands import CommandError
 from discord.app_commands import Choice
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz, process
 
 AssertionError = CommandError
 
