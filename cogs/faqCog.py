@@ -74,8 +74,8 @@ class faqCog(commands.Cog):
     async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
         registeredFaqs = [f[0] for f in getListOfFaqAliases()]
         registeredFaqs = sorted(registeredFaqs, key=(lambda role: fuzz.ratio(role.lower(), current.lower())), reverse=True)
-        return [Choice(name=role, value=role) for role in registeredFaqs[:10]] 
-        return [app_commands.Choice(name=f, value=f) for f in registeredFaqs]
+        amountOfSuggestions = min(len(registeredFaqs), 10)
+        return [Choice(name=faqname, value=faqname) for faqname in registeredFaqs[:amountOfSuggestions]] 
     
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
     @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
