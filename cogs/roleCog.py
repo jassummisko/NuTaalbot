@@ -26,8 +26,11 @@ class roleCog(commands.Cog):
     @landrol.autocomplete('land')
     async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
         try: 
-            roles = [role.name for role in i9n.guild.roles if role.color == countryRoleColor]
-            roles = sorted(roles, key=(lambda role: fuzz.ratio(role.lower(), current.lower())), reverse=True)
+            roles = sorted(
+                [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
+                key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
+                reverse=True
+            )
             return [Choice(name=role, value=role) for role in roles[:10]] 
         except Exception as e: print(e)
 
