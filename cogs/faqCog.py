@@ -5,8 +5,8 @@ from discord import app_commands
 import asyncio
 from modules.faq.faq import *
 from localdata import serverId
-from utils.utils import isStaff
-import utils.utils as utils
+from utils.genUtils import isStaff
+import utils.genUtils as genUtils
 import data.quotes as quotes
 from discord.ext.commands import CommandError
 from discord.app_commands import Choice
@@ -29,7 +29,7 @@ class faqCog(commands.Cog):
         print("FAQ Cog is ready")
 
     @app_commands.command(name="updatefaqs", description="FAQ updaten.")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
         await i9n.response.send_message(quotes.UPDATING_FAQ)
@@ -38,8 +38,8 @@ class faqCog(commands.Cog):
         await msg.edit(content=quotes.FAQ_UPDATED)
 
     @app_commands.command(name="faqlist", description="Lists all available FAQs.")
-    @utils.catcherrors
-    async def faqlist(self, i9n):
+    @genUtils.catcherrors
+    async def faqlist(self, i9n: discord.Interaction):
         message = "**__Here is a list of all FAQ's:__**\n"
         for alias in getListOfFaqAliases():
             name, description = alias
@@ -49,7 +49,7 @@ class faqCog(commands.Cog):
 
     @app_commands.command(name="faq", description="Calls an FAQ.")
     @app_commands.describe(label="Name of FAQ.")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
@@ -81,7 +81,7 @@ class faqCog(commands.Cog):
     
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
     @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
         if not isStaff(i9n.user): raise CommandError("You must be a staff member to use this command.")
         addFaqAlias(naam, label, beschrijving)
@@ -89,7 +89,7 @@ class faqCog(commands.Cog):
 
     @app_commands.command(name="deregisterfaq", description="FAQ verwijderen van register.")
     @app_commands.describe(name="Naam van faq")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
         assert removeFaqAlias(name), quotes.NOT_FAQ_ERROR.format(name) 
@@ -97,7 +97,7 @@ class faqCog(commands.Cog):
        
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
     @app_commands.describe(label="Name of FAQ.")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
         assert isStaff(ctx.author), quotes.NOT_STAFF_ERROR
 

@@ -1,15 +1,17 @@
 import discord, asyncio
-import data.quotes as quotes, utils.utils as utils
-from localdata import serverId, leerkrachtRoleId
+import data.quotes as quotes, utils.genUtils as genUtils
+from localdata import serverId, leerkrachtRoleId, countryRoleColor
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
-from utils.utils import isStaff
+from utils.genUtils import isStaff
 from modules.roleManager.roleManager import *
+from discord.app_commands import Choice
+from fuzzywuzzy import fuzz
 
 class roleManagerCog(commands.Cog):
     def __init__(self, bot):
-        self.bot : discord.Client = bot
-        self.rolesPendingRemoval = getRolesPendingRemoval()
+        self.bot: discord.Client = bot
+        self.rolesPendingRemoval: list[PendingEntry] = getRolesPendingRemoval()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -20,10 +22,36 @@ class roleManagerCog(commands.Cog):
 
     @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
     @app_commands.describe(user="username", duration="duration in minutes")
-    @utils.catcherrors
+    @genUtils.catcherrors
     async def giveleerkrachtrole(self, i9n: Interaction, user: Member, duration: int = 180) -> None:
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, i9n.guild.get_role(leerkrachtRoleId), duration)
+
+    @app_commands.command(name="landrol", description="Assign country roles")
+    @app_commands.describe(land="De naam van het land")
+    @genUtils.catcherrors
+    async def landrol(self, i9n: discord.Interaction, land: str):
+        responseMsg = "Alsjeblieft!"
+        await i9n.user.add_roles([role for role in i9n.guild.roles if role.name == land][0])
+        await i9n.response.send_message(responseMsg)
+
+    @landrol.autocomplete('land')
+    async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
+        try: 
+            roles = sorted(
+                [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
+                key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
+                reverse=True
+            )
+            return [Choice(name=role, value=role) for role in roles[:10]] 
+        except Exception as e: print(e)
+
+    @app_commands.command(name="niveaurol", description="Assign level roles")
+    @genUtils.catcherrors
+    async def niveaurol(self, i9n: discord.Interaction):
+        await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
+        view = await roleSelectionView(i9n.guild, lambda x:"Niveau" in x.name, 1)
+        await i9n.response.send_message("Here you go!", view=view)
 
 async def setup(bot):
     await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])
