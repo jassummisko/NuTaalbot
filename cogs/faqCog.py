@@ -10,7 +10,7 @@ import utils.utils as utils
 import data.quotes as quotes
 from discord.ext.commands import CommandError
 from discord.app_commands import Choice
-from fuzzywuzzy import fuzz, process
+from fuzzywuzzy import fuzz 
 
 AssertionError = CommandError
 
@@ -73,7 +73,7 @@ class faqCog(commands.Cog):
             else: faq.check(msg)
 
     @faq.autocomplete('label')
-    async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
+    async def faq_autocomplete(self, _: discord.Interaction, current: str):
         registeredFaqs = [f[0] for f in getListOfFaqAliases()]
         registeredFaqs = sorted(registeredFaqs, key=(lambda role: fuzz.ratio(role.lower(), current.lower())), reverse=True)
         amountOfSuggestions = min(len(registeredFaqs), 10)
@@ -90,7 +90,7 @@ class faqCog(commands.Cog):
     @app_commands.command(name="deregisterfaq", description="FAQ verwijderen van register.")
     @app_commands.describe(name="Naam van faq")
     @utils.catcherrors
-    async def deregisterfaq(self, i9n, name: str):
+    async def deregisterfaq(self, i9n: discord.Interaction, name: str):
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
         assert removeFaqAlias(name), quotes.NOT_FAQ_ERROR.format(name) 
         await i9n.response.send_message(quotes.FAQ_DEREGISTERED.format(name))
@@ -98,7 +98,7 @@ class faqCog(commands.Cog):
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
     @app_commands.describe(label="Name of FAQ.")
     @utils.catcherrors
-    async def debug_faq(self, i9n, label: str): 
+    async def debug_faq(self, i9n: discord.Interaction, label: str): 
         assert isStaff(ctx.author), quotes.NOT_STAFF_ERROR
 
         ctx = await self.bot.get_context(i9n)
