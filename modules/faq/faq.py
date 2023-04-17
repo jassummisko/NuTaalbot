@@ -1,5 +1,5 @@
 from random import choice
-from utils.utils import loadYaml
+from utils.genUtils import loadYaml
 from modules.faq.faqResponses import correct, wrong
 from modules.faq.faqutils import *
 

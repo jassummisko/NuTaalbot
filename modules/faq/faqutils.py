@@ -1,5 +1,5 @@
 import json, requests, os, pickle, re
-from utils.utils import loadYaml, saveYaml
+from utils.genUtils import loadYaml, saveYaml
 import utils.queries as queries
 
 faqDataPath = "./modules/faq/data"
