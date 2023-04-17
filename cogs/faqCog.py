@@ -9,6 +9,8 @@ from utils.utils import isStaff
 import utils.utils as utils
 import data.quotes as quotes
 from discord.ext.commands import CommandError
+from discord.app_commands import Choice
+from fuzzywuzzy import fuzz, process
 
 AssertionError = CommandError
 
@@ -73,7 +75,9 @@ class faqCog(commands.Cog):
     @faq.autocomplete('label')
     async def faq_autocomplete(self, i9n: discord.Interaction, current: str):
         registeredFaqs = [f[0] for f in getListOfFaqAliases()]
-        return [app_commands.Choice(name=f, value=f) for f in registeredFaqs]
+        registeredFaqs = sorted(registeredFaqs, key=(lambda role: fuzz.ratio(role.lower(), current.lower())), reverse=True)
+        amountOfSuggestions = min(len(registeredFaqs), 10)
+        return [Choice(name=faqname, value=faqname) for faqname in registeredFaqs[:amountOfSuggestions]] 
     
     @app_commands.command(name="registerfaq", description="FAQ registreren.")
     @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")

@@ -21,7 +21,7 @@ class roleManagerCog(commands.Cog):
     @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
     @app_commands.describe(user="username", duration="duration in minutes")
     @utils.catcherrors
-    async def giveleerkrachtrole(self, i9n: Interaction, user : Member, duration : int = 180) -> None:
+    async def giveleerkrachtrole(self, i9n: Interaction, user: Member, duration: int = 180) -> None:
         assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, i9n.guild.get_role(leerkrachtRoleId), duration)
 
