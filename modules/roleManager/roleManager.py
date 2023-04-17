@@ -9,7 +9,7 @@ class PendingEntry:
     roleId: int
     time: dt.datetime
 
-filepath = "data/rolesPendingRemoval.pkl"
+filepath = "modules/roleManager/data/rolesPendingRemoval.pkl"
 
 def getRolesPendingRemoval() -> list[PendingEntry]:
     if os.path.isfile(filepath) and os.path.getsize(filepath) > 0:
