@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord import app_commands
 import discord
-from localdata import serverId
+from data.localdata import serverId
 import data.quotes as quotes
 import utils.genUtils as genUtils
 import modules.beginners.beginners as beginners

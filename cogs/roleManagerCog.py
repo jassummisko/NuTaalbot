@@ -1,6 +1,6 @@
 import discord, asyncio
 import data.quotes as quotes, utils.genUtils as genUtils
-from localdata import serverId, leerkrachtRoleId, countryRoleColor
+from data.localdata import serverId, leerkrachtRoleId, countryRoleColor
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 from utils.genUtils import isStaff

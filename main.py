@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from localdata import applicationId, serverId
+from data.localdata import applicationId, serverId
 
 with open(".token", "r") as file: TOKEN = file.read()
 

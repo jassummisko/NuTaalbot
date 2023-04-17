@@ -12,7 +12,7 @@ def catcherrors(func: callable):
     return wrapper
 
 def isStaff(user: Member):
-    from dataIds import staffRoles
+    from data.dataIds import staffRoles
     staffRoleIDs = [staffRole.value for staffRole in staffRoles]
     return len(set([role.id for role in user.roles]).intersection(staffRoleIDs))>0 
 

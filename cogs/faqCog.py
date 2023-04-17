@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 import asyncio
 from modules.faq.faq import *
-from localdata import serverId
+from data.localdata import serverId
 from utils.genUtils import isStaff
 import utils.genUtils as genUtils
 import data.quotes as quotes

@@ -2,8 +2,8 @@ from discord.ext import commands
 from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
 import discord
-from dataIds import kelderId, tagAnsweredId
-from localdata import serverId
+from data.dataIds import kelderId, tagAnsweredId
+from data.localdata import serverId
 from utils import genUtils
 import data.quotes as quotes
 
