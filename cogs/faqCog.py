@@ -65,7 +65,9 @@ class faqCog(commands.Cog):
                 return isSameUser and isSameChannel
 
             try: msg = await bot.wait_for("message", timeout=120, check=check)
-            except asyncio.TimeoutError: await ctx.send("Timed out!")
+            except asyncio.TimeoutError: 
+                await ctx.send("Timed out!")
+                break
             else: faq.check(msg)
 
     @faq.autocomplete('label')
