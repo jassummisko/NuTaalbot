@@ -19,13 +19,13 @@ class loggerCog(commands.Cog):
         await self.bot.get_channel(welcomeChannelId) \
             .send(f"Hallo, {member.mention}. Welkom op **Nederlands Leren**!")
         await self.bot.get_channel(logChannelId) \
-            .send(f"**{member.name}** has joined.")
+            .send(f"**{member.name}#{member.discriminator}** has joined.")
 
     @commands.Cog.listener()
     @genUtils.catcherrors
     async def on_member_remove(self, member: discord.Member):
         logChannel = self.bot.get_channel(logChannelId)
-        await logChannel.send(f"**{member.name}** has left.")
+        await logChannel.send(f"**{member.name}#{member.discriminator}** has left.")
 
 async def setup(bot):
     await bot.add_cog(loggerCog(bot), guilds = [discord.Object(id = serverId)])

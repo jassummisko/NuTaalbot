@@ -50,7 +50,7 @@ class roleManagerCog(commands.Cog):
     @genUtils.catcherrors
     async def niveaurol(self, i9n: discord.Interaction):
         await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
-        view = await roleSelectionView(i9n.guild, lambda x:"Niveau" in x.name, 1)
+        view = await roleSelectionView(i9n.guild, lambda x:("Niveau" in x.name) and not ("C+" in x.name), 1)
         await i9n.response.send_message("Here you go!", view=view)
 
 async def setup(bot):
