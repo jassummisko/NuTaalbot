@@ -165,5 +165,5 @@ cython_debug/
 **/*.yaml
 **/*.pkl
 **/*.pickle
-localdata.py
+**/localdata.py
 onboarding.md
