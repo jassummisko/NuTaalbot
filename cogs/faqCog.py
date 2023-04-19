@@ -56,7 +56,7 @@ class faqCog(commands.Cog):
         await i9n.response.send_message(quotes.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
-            await ctx.send(faq.getMessage())
+            await i9n.response.edit_message(faq.getMessage())
             if faq.isEnd: 
                 await ctx.send(quotes.FAQ_ENDED)
                 break
