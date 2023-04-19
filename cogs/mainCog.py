@@ -6,14 +6,7 @@ import data.quotes as quotes
 import utils.genUtils as genUtils
 import modules.beginners.beginners as beginners
 
-### TEMPORARY ###
-commandNames = [
-    'faq',
-    'faqlist',
-    'b1',
-    'beantwoord',
-    'limiet'
-] 
+AssertionError = CommandError
 
 class mainCog(commands.Cog):
     def __init__(self, bot):
@@ -22,14 +15,6 @@ class mainCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Main Cog is ready")
-
-    @commands.Cog.listener()
-    async def on_message(self, msg: discord.Message):
-        if len(msg.content) <= 1: return
-        cmd = msg.content.split()[0]
-        if (cmd[0] == "!") and (cmd[1:] in commandNames):
-            cmdName = msg.content[1:]
-            await msg.reply(content=quotes.USE_SLASH_COMMANDS.format(cmdName, cmdName))
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx: commands.Context):
@@ -45,6 +30,7 @@ class mainCog(commands.Cog):
     @app_commands.command(name="debug_textinput", description="Try text input")
     @genUtils.catcherrors
     async def debug_textInput(self, i9n: discord.Interaction):
+        assert genUtils.isStaff(i9n.member), quotes.NOT_STAFF_ERROR
         textbox = discord.ui.TextInput(required=True)
         view = discord.ui.View()
         await i9n.response.send_message("Done.", view=view)

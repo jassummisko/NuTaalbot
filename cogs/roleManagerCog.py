@@ -8,6 +8,8 @@ from modules.roleManager.roleManager import *
 from discord.app_commands import Choice
 from fuzzywuzzy import fuzz
 
+AssertionError = CommandError
+
 class roleManagerCog(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
