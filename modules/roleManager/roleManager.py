@@ -35,15 +35,16 @@ def dumpRolesPendingRemoval(list: list) -> None:
     with open(filepath, 'w+b') as f:
         pickle.dump(list, f)
 
-async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_values: int = 25) -> discord.ui.View:
-    roles = [role for role in filter(filterKey, guild.roles)]
+async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
+    roles = [role for role in guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
     dropdown = discord.ui.Select(
-        max_values = min([len(roles), max_values]),
-        placeholder = "Choose an option",
+        max_values = 1,
+        placeholder = "Choose a level",
         options = [discord.SelectOption(label=role.name) for role in roles]
     )
     
     async def callback(i9n: discord.Interaction):
+        await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
         rolesToAdd = [role for role in roles if role.name in dropdown.values]
         member = guild.get_member(i9n.user.id)
         await member.add_roles(*rolesToAdd)
