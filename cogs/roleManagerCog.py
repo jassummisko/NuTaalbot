@@ -51,10 +51,31 @@ class roleManagerCog(commands.Cog):
         except Exception as e: print(e)
 
     @app_commands.command(name="niveaurol", description="Assign level roles")
+    @app_commands.describe(niveau="CEFR niveau")
     @genUtils.catcherrors
-    async def niveaurol(self, i9n: discord.Interaction):
-        view = await niveauRolSelectionView(i9n.guild)
-        await i9n.response.send_message("Here you go!", view=view)
+    async def niveaurol(self, i9n: discord.Interaction, niveau: str = ""):
+        niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
+        niveauRoleNames = [role.name for role in niveauRoles]
+        if niveau in niveauRoleNames:
+            await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
+            rolesToAdd = [role for role in niveauRoles if role.name == niveau]
+            member = i9n.guild.get_member(i9n.user.id)
+            await member.add_roles(*rolesToAdd)
+            await i9n.response.send_message(f"Added role {', '.join([role.name for role in rolesToAdd])}")
+        else:
+            view = await niveauRolSelectionView(i9n.guild)
+            await i9n.response.send_message("Here you go!", view=view)
+
+    @niveaurol.autocomplete('niveau')
+    async def niveaurol_autocomplete(self, i9n: discord.Interaction, current: str):
+        niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
+        niveauRoleNames = [role.name for role in niveauRoles]
+        roles = sorted(
+            niveauRoleNames,
+            key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
+            reverse=True
+        )
+        return [Choice(name=role, value=role) for role in niveauRoleNames] 
 
 async def setup(bot):
     await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])

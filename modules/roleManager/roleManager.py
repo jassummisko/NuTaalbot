@@ -48,7 +48,7 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
         rolesToAdd = [role for role in roles if role.name in dropdown.values]
         member = guild.get_member(i9n.user.id)
         await member.add_roles(*rolesToAdd)
-        await i9n.response.send_message(f"Added roles {', '.join([role.name for role in rolesToAdd])}")
+        await i9n.response.send_message(f"Added role {', '.join([role.name for role in rolesToAdd])}")
 
     dropdown.callback = callback
     view = discord.ui.View()
