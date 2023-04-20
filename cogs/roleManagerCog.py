@@ -57,7 +57,7 @@ class roleManagerCog(commands.Cog):
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
         if niveau in niveauRoleNames:
-            oldrole = *[role for role in i9n.user.roles if "Niveau" in role.name]
+            oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
             await i9n.user.remove_roles(oldrole)
             rolesToAdd = [role for role in niveauRoles if role.name == niveau]
             member = i9n.guild.get_member(i9n.user.id)
