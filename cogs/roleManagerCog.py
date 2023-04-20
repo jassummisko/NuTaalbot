@@ -57,11 +57,12 @@ class roleManagerCog(commands.Cog):
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
         if niveau in niveauRoleNames:
-            await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
+            oldrole = *[role for role in i9n.user.roles if "Niveau" in role.name]
+            await i9n.user.remove_roles(oldrole)
             rolesToAdd = [role for role in niveauRoles if role.name == niveau]
             member = i9n.guild.get_member(i9n.user.id)
             await member.add_roles(*rolesToAdd)
-            await i9n.response.send_message(f"Added role {', '.join([role.name for role in rolesToAdd])}")
+            await i9n.response.send_message(f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}")
         else:
             view = await niveauRolSelectionView(i9n.guild)
             await i9n.response.send_message("Here you go!", view=view)

@@ -51,12 +51,12 @@ class faqCog(commands.Cog):
     async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
-        await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
+        await i9n.response.send_message(quotes.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
-            await i9n.response.edit_message(faq.getMessage())
+            await ctx.send(faq.getMessage())
             if faq.isEnd: 
-                await ctx.send(botResponses.FAQ_ENDED)
+                await ctx.send(quotes.FAQ_ENDED)
                 break
 
             def check(m):
