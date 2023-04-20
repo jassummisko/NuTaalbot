@@ -27,7 +27,7 @@ class loggerCog(commands.Cog):
     @genUtils.catcherrors
     async def on_member_remove(self, member: discord.Member):
         logChannel = self.bot.get_channel(logChannelId)
-        await logChannel.send(f"**{member.mention}** has left.")
+        await logChannel.send(f"**{member.name}#{member.discriminator}** has left.")
 
 async def setup(bot):
     await bot.add_cog(loggerCog(bot), guilds = [discord.Object(id = serverId)])
