@@ -25,3 +25,9 @@ FAQ_ENDED = "FAQ ended."
 FAQ_DEREGISTERED = "FAQ '{}' verwijderd." # ARGS: faqName
 FAQ_REGISTERED = "FAQ '{}' is geregistreerd met label '{}' als begin." # ARGS: faqName, label
 NOT_FAQ_ERROR = "Er zit geen FAQ met de '{}' in de lijst." # ARGS: faqName
+
+# Scraper quotes
+DEHET_NOWORD = "Ik heb geen woorden kunnen vinden voor '{}'"
+DEHET_NONOUN = "Ik heb geen substantieven kunnen vinden voor '{}'"
+DEHET_SINGLEWORD = "\"**{}** {}\""
+DEHET_MULTIWORD = "\"**{}** {}\" met de betekenis \"{}\"\n"
