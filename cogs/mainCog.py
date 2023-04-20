@@ -5,6 +5,7 @@ from data.localdata import serverId
 import data.quotes as quotes
 import utils.genUtils as genUtils
 import modules.beginners.beginners as beginners
+from discord.ext.commands import CommandError
 
 AssertionError = CommandError
 
@@ -26,14 +27,6 @@ class mainCog(commands.Cog):
     async def b1(self, i9n: discord.Interaction, woord: str):
         message = beginners.ScrapeB1(woord)
         await i9n.response.send_message(message)
-
-    @app_commands.command(name="debug_textinput", description="Try text input")
-    @genUtils.catcherrors
-    async def debug_textInput(self, i9n: discord.Interaction):
-        assert genUtils.isStaff(i9n.member), quotes.NOT_STAFF_ERROR
-        textbox = discord.ui.TextInput(required=True)
-        view = discord.ui.View()
-        await i9n.response.send_message("Done.", view=view)
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])

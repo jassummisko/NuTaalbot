@@ -13,12 +13,13 @@ COGNAMES = [
     "roleManagerCog",
     "channelManagerCog",
     "loggerCog",
+    "debugCog"
 ]
 
 class Taalbot(commands.Bot):
     def __init__(self):
         super().__init__(
-            command_prefix="!", 
+            command_prefix="!!!", 
             intents=intents, 
             member_cache_flags=discord.MemberCacheFlags.all(), 
             help_command=None,
@@ -29,7 +30,7 @@ class Taalbot(commands.Bot):
     async def setup_hook(self):
         for cogname in COGNAMES:
             await bot.load_extension(f'cogs.{cogname}')
-            await bot.tree.sync(guild = discord.Object(id = serverId))
+        await bot.tree.sync(guild = discord.Object(id = serverId))
 
 bot = Taalbot()
 bot.run(TOKEN)

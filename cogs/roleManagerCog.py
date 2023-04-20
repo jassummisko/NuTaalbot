@@ -7,6 +7,7 @@ from utils.genUtils import isStaff
 from modules.roleManager.roleManager import *
 from discord.app_commands import Choice
 from fuzzywuzzy import fuzz
+from discord.ext.commands import CommandError
 
 AssertionError = CommandError
 
