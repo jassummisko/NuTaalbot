@@ -1,5 +1,6 @@
-import discord, asyncio
-import data.quotes as quotes, utils.genUtils as genUtils
+import discord, asyncio, \
+    data.quotes as quotes, \
+    utils.genUtils as genUtils
 from data.localdata import serverId, leerkrachtRoleId, countryRoleColor
 from discord import Interaction, Member, app_commands
 from discord.ext import commands

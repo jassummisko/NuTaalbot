@@ -1,11 +1,10 @@
+import discord, data.quotes as quotes
 from discord.ext import commands
 from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
-import discord
 from data.dataIds import kelderId, tagAnsweredId
 from data.localdata import serverId
 from utils import genUtils
-import data.quotes as quotes
 
 AssertionError = CommandError
 
@@ -37,7 +36,7 @@ class channelManagerCog(commands.Cog):
     @commands.command(
         description="Get IDs of tags in forum. Staff only.")
     @genUtils.catcherrors
-    async def debug_gettagids(self, ctx):
+    async def debug_gettagids(self, ctx: commands.Context):
         assert genUtils.isStaff(ctx.message.author), quotes.NOT_STAFF_ERROR
         assert isinstance(ctx.channel.parent, ForumChannel), quotes.NOT_IN_FORUM_ERROR
         for tag in ctx.channel.parent.available_tags: await ctx.send(f"{tag.id} - {tag.emoji}")
@@ -55,5 +54,5 @@ class channelManagerCog(commands.Cog):
         await channel.edit(user_limit = limit)
         await i9n.response.send_message(quotes.KELDER_LIMIER_UPDATED.format(limit))
 
-async def setup(bot):
+async def setup(bot: discord.Client):
     await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverId)])

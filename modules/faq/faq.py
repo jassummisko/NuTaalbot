@@ -4,7 +4,7 @@ from modules.faq.faqResponses import correct, wrong
 from modules.faq.faqutils import *
 
 class FAQ:
-    def __init__(self, startingLabel, debug=False):
+    def __init__(self, startingLabel: str, debug=False):
         self._data = loadYaml(f"{faqDataPath}/faqdata.yaml")
         aliases = loadYaml(f"{faqDataPath}/faqaliases.yaml")
         if debug and (startingLabel in self._data):
@@ -20,7 +20,7 @@ class FAQ:
         self.updateMessage()
         self.checkParams()
 
-    def getMessage(self): return self._message 
+    def getMessage(self) -> str: return self._message 
 
     def checkParams(self):
         labelData = self._data[self._label]
@@ -28,11 +28,11 @@ class FAQ:
         if "CASE" in labelData: self.caseSensitive = labelData["CASE"]
         if "END" in labelData and labelData["END"]: self.isEnd = True
 
-    def updateMessage(self, prefix=""):
+    def updateMessage(self, prefix: str =""):
         message = self._data[self._label]["MESSAGE"]
         self._message = f"{prefix}\n{message}".strip()
 
-    def check(self, msg):
+    def check(self, msg: str):
         if msg.content.strip().lower() in ["!stop_faq", "!stopfaq", "!faqstop", "!faq_stop"]:
             self.isEnd, self._message = True, "FAQ stopped manually."
             return
@@ -49,6 +49,6 @@ class FAQ:
         else:
             self._message = choice(wrong) if "NO_MATCH" not in labelData else labelData["NO_MATCH"]
     
-    def switchToLabel(self, label):
+    def switchToLabel(self, label: str):
         self._label = label
         self.checkParams()

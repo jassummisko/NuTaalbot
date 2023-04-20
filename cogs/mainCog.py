@@ -1,10 +1,10 @@
+import discord, \
+    data.quotes as quotes, \
+    utils.genUtils as genUtils 
 from discord.ext import commands
 from discord import app_commands
-import discord
 from data.localdata import serverId
-import data.quotes as quotes
-import utils.genUtils as genUtils
-import modules.beginners.beginners as beginners
+from modules.beginners import beginners
 from discord.ext.commands import CommandError
 
 AssertionError = CommandError

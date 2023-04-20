@@ -1,12 +1,10 @@
+import discord, \
+    utils.genUtils as genUtils
 from discord.ext import commands
-import discord
 from data.localdata import serverId, logChannelId, welcomeChannelId
-import data.quotes as quotes
-import utils.genUtils as genUtils
-import modules.beginners.beginners as beginners
 
 class loggerCog(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: discord.Client):
         self.bot = bot
 
     @commands.Cog.listener()
@@ -29,5 +27,5 @@ class loggerCog(commands.Cog):
         logChannel = self.bot.get_channel(logChannelId)
         await logChannel.send(f"**{member.name}#{member.discriminator}** has left.")
 
-async def setup(bot):
+async def setup(bot: discord.Client):
     await bot.add_cog(loggerCog(bot), guilds = [discord.Object(id = serverId)])

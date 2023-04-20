@@ -1,13 +1,11 @@
-from typing import List
+import discord, asyncio, \
+    utils.genUtils as genUtils, \
+    data.quotes as quotes
 from discord.ext import commands
-import discord
 from discord import app_commands
-import asyncio
 from modules.faq.faq import *
 from data.localdata import serverId
 from utils.genUtils import isStaff
-import utils.genUtils as genUtils
-import data.quotes as quotes
 from discord.ext.commands import CommandError
 from discord.app_commands import Choice
 from fuzzywuzzy import fuzz 
@@ -118,5 +116,5 @@ class faqCog(commands.Cog):
             except asyncio.TimeoutError: await ctx.send("Timed out!")
             else: faq.check(msg)
 
-async def setup(bot):
+async def setup(bot: discord.Client):
     await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverId))

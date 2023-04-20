@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests as req
 
-def ScrapeB1(word):
+def ScrapeB1(word: str):
     site = bs(req.get(f"https://ishetb1.nl/search?word={word}").text)
     verdict = site.find("div", {"class": "ishetb1-verdict"})
     isHetB1 = verdict.find().text.strip()

@@ -5,11 +5,11 @@ import utils.queries as queries
 faqDataPath = "./modules/faq/data"
 faqFilePath = f"{faqDataPath}/faqaliases.yaml"
 
-def updateFaqFile(filename, data):
+def updateFaqFile(filename: str, data: str):
     with open(filename, 'w') as file:
         file.write(data)
 
-def getFaqTitlesFromWiki(url):
+def getFaqTitlesFromWiki(url: str):
     jsonTitles = json.loads(
         requests.get(url, params=queries.faqTitlesParams).text
     )['query']['prefixsearch']
@@ -57,7 +57,7 @@ def getListOfFaqAliases():
     aliases = loadYaml(f"{faqDataPath}/faqaliases.yaml")
     return [(key, aliases[key]['description']) for key in sorted(aliases.keys())]
 
-def addFaqAlias(name, label, description):
+def addFaqAlias(name: str, label: str, description: str):
     aliases = loadYaml(faqFilePath)
     aliases[name] = {
         "label": label,
@@ -65,7 +65,7 @@ def addFaqAlias(name, label, description):
     }
     saveYaml(aliases, faqFilePath)
 
-def removeFaqAlias(name):
+def removeFaqAlias(name: str):
     aliases = loadYaml(faqFilePath)
     popped = aliases.pop(name, False)
     saveYaml(aliases, faqFilePath)

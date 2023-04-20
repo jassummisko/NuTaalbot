@@ -1,7 +1,6 @@
+import discord, pickle, asyncio, os, data.quotes as quotes, datetime as dt
 from discord import Interaction, Role, Member, Guild
-import discord
 from dataclasses import dataclass
-import pickle, asyncio, os, data.quotes as quotes, datetime as dt
 
 @dataclass
 class PendingEntry:
@@ -21,8 +20,7 @@ def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry])
     queue = []
     for pendingEntry in rolesPendingRemoval:
         async def buff():
-            now = dt.datetime.now()
-            due = pendingEntry.time
+            now, due = dt.datetime.now(), pendingEntry.time
             await asyncio.sleep(0 if due < now else (due - now).seconds)
             user = server.get_member(pendingEntry.userId)
             role = server.get_role(pendingEntry.roleId)
@@ -37,7 +35,7 @@ def dumpRolesPendingRemoval(list: list) -> None:
     with open(filepath, 'w+b') as f:
         pickle.dump(list, f)
 
-async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_values: int = 25):
+async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_values: int = 25) -> discord.ui.View:
     roles = [role for role in filter(filterKey, guild.roles)]
     dropdown = discord.ui.Select(
         max_values = min([len(roles), max_values]),
@@ -56,7 +54,7 @@ async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_value
     view.add_item(dropdown)
     return view
 
-async def giveTemporaryRole(roleQueue: list[PendingEntry], i9n: Interaction, user : Member, role : Role, duration : int) -> None:
+async def giveTemporaryRole(roleQueue: list[PendingEntry], i9n: Interaction, user: Member, role: Role, duration: int):
     SECONDS_PER_MINUTE : int = 60
     await user.add_roles(role)
     await i9n.response.send_message(quotes.ROLE_GIVEN.format(role.name))
