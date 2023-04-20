@@ -1,5 +1,5 @@
 import discord, asyncio, \
-    data.quotes as quotes, \
+    data.botResponses as botResponses, \
     utils.genUtils as genUtils
 from data.localdata import serverId, leerkrachtRoleId, countryRoleColor
 from discord import Interaction, Member, app_commands
@@ -28,7 +28,7 @@ class roleManagerCog(commands.Cog):
     @app_commands.describe(user="username", duration="duration in minutes")
     @genUtils.catcherrors
     async def giveleerkrachtrole(self, i9n: Interaction, user: Member, duration: int = 180) -> None:
-        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
+        assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, i9n.guild.get_role(leerkrachtRoleId), duration)
 
     @app_commands.command(name="landrol", description="Assign country roles")

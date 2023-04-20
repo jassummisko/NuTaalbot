@@ -1,5 +1,5 @@
 import discord, \
-    data.quotes as quotes, \
+    data.botResponses as botResponses, \
     utils.genUtils as genUtils 
 from discord.ext import commands
 from discord import app_commands
@@ -33,17 +33,17 @@ class scraperCog(commands.Cog):
         words: list[WordEntry] = []
         embed = discord.Embed(title=f"Resultaten voor \"{woord}\"")
         
-        if not scraped: message = quotes.DEHET_NOWORD.format(woord)
+        if not scraped: message = botResponses.DEHET_NOWORD.format(woord)
         else: words: list[WordEntry] = [word for word in scraped if word.partOfSpeech == "znw"]
         
-        if (not words) or len(words) == 0: message = quotes.DEHET_NONOUN.format(woord)
+        if (not words) or len(words) == 0: message = botResponses.DEHET_NONOUN.format(woord)
         elif len(words) == 1:
-            message = quotes.DEHET_SINGLEWORD.format(words[0].grammaticalInfo['art'], words[0].lemma)
+            message = botResponses.DEHET_SINGLEWORD.format(words[0].grammaticalInfo['art'], words[0].lemma)
             embed.add_field(name = f"{words[0].grammaticalInfo['art']} {words[0].lemma}")
         elif len(words) > 1:
             message = ""
             for word in words:
-                message += quotes.DEHET_MULTIWORD.format(
+                message += botResponses.DEHET_MULTIWORD.format(
                     word.grammaticalInfo['art'],
                     word.lemma,
                     word.grammaticalInfo['gloss']

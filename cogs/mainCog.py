@@ -1,5 +1,5 @@
 import discord, \
-    data.quotes as quotes, \
+    data.botResponses as botResponses, \
     utils.genUtils as genUtils 
 from discord.ext import commands
 from data.localdata import serverId
@@ -17,7 +17,7 @@ class mainCog(commands.Cog):
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx: commands.Context):
-        await ctx.send(quotes.ELK_ZINNEN_DAH)
+        await ctx.send(botResponses.ELK_ZINNEN_DAH)
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])

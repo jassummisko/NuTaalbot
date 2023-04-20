@@ -1,6 +1,6 @@
 import discord, asyncio, \
     utils.genUtils as genUtils, \
-    data.quotes as quotes
+    data.botResponses as botResponses
 from discord.ext import commands
 from discord import app_commands
 from modules.faq.faq import *
@@ -29,11 +29,11 @@ class faqCog(commands.Cog):
     @app_commands.command(name="updatefaqs", description="FAQ updaten.")
     @genUtils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
-        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
-        await i9n.response.send_message(quotes.UPDATING_FAQ)
+        assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
+        await i9n.response.send_message(botResponses.UPDATING_FAQ)
         getFaqsFromWiki()
         msg = await i9n.original_response()
-        await msg.edit(content=quotes.FAQ_UPDATED)
+        await msg.edit(content=botResponses.FAQ_UPDATED)
 
     @app_commands.command(name="faqlist", description="Lists all available FAQs.")
     @genUtils.catcherrors
@@ -51,12 +51,12 @@ class faqCog(commands.Cog):
     async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
-        await i9n.response.send_message(quotes.RUNNING_FAQ.format(label))
+        await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
             await i9n.response.edit_message(faq.getMessage())
             if faq.isEnd: 
-                await ctx.send(quotes.FAQ_ENDED)
+                await ctx.send(botResponses.FAQ_ENDED)
                 break
 
             def check(m):
@@ -89,22 +89,22 @@ class faqCog(commands.Cog):
     @app_commands.describe(name="Naam van faq")
     @genUtils.catcherrors
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
-        assert isStaff(i9n.user), quotes.NOT_STAFF_ERROR
-        assert removeFaqAlias(name), quotes.NOT_FAQ_ERROR.format(name) 
-        await i9n.response.send_message(quotes.FAQ_DEREGISTERED.format(name))
+        assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
+        assert removeFaqAlias(name), botResponses.NOT_FAQ_ERROR.format(name) 
+        await i9n.response.send_message(botResponses.FAQ_DEREGISTERED.format(name))
        
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
     @app_commands.describe(label="Name of FAQ.")
     @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
-        assert isStaff(ctx.author), quotes.NOT_STAFF_ERROR
+        assert isStaff(ctx.author), botResponses.NOT_STAFF_ERROR
 
         ctx = await self.bot.get_context(i9n)
         faq = FAQ(label, debug=True)
         while True:
             await ctx.send(faq.getMessage())
             if faq.isEnd: 
-                await ctx.send(quotes.FAQ_ENDED)
+                await ctx.send(botResponses.FAQ_ENDED)
                 break
 
             def check(m):

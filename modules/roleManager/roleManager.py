@@ -1,4 +1,4 @@
-import discord, pickle, asyncio, os, data.quotes as quotes, datetime as dt
+import discord, pickle, asyncio, os, data.botResponses as botResponses, datetime as dt
 from discord import Interaction, Role, Member, Guild
 from dataclasses import dataclass
 
@@ -25,7 +25,7 @@ def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry])
             user = server.get_member(pendingEntry.userId)
             role = server.get_role(pendingEntry.roleId)
             await user.remove_roles(role)
-            await user.send(content=quotes.ROLE_REMOVED.format(role.name))
+            await user.send(content=botResponses.ROLE_REMOVED.format(role.name))
             rolesPendingRemoval.remove(pendingEntry)
             dumpRolesPendingRemoval(rolesPendingRemoval)
         queue.append(buff())
@@ -57,10 +57,10 @@ async def roleSelectionView(guild: discord.Guild, filterKey: callable, max_value
 async def giveTemporaryRole(roleQueue: list[PendingEntry], i9n: Interaction, user: Member, role: Role, duration: int):
     SECONDS_PER_MINUTE : int = 60
     await user.add_roles(role)
-    await i9n.response.send_message(quotes.ROLE_GIVEN.format(role.name))
+    await i9n.response.send_message(botResponses.ROLE_GIVEN.format(role.name))
     t = dt.datetime.now() + dt.timedelta(minutes = duration)
     roleQueue.append(PendingEntry(user.id, role.id, t))
     dumpRolesPendingRemoval(roleQueue)
     await asyncio.sleep(duration*SECONDS_PER_MINUTE)
     await user.remove_roles(role)
-    await user.send(content=quotes.ROLE_REMOVED.format(role.name))
+    await user.send(content=botResponses.ROLE_REMOVED.format(role.name))
