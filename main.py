@@ -8,13 +8,14 @@ intents = discord.Intents.all()
 intents.members = True
 
 COGNAMES = [
-    "faqCog",
-    "mainCog",
-    "roleManagerCog",
-    "channelManagerCog",
-    "loggerCog",
+    #"faqCog",
+    #"mainCog",
+    #"roleManagerCog",
+    #"channelManagerCog",
+    #"loggerCog",
     "debugCog",
-    "scraperCog"
+    #"scraperCog",
+    "quoteCog"
 ]
 
 class Taalbot(commands.Bot):

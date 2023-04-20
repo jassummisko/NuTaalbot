@@ -25,12 +25,25 @@ def createQuoteDict(quoteId: str, author: discord.Member, quote: str):
         'txt': quote,
     }
 
-def addQuote(author: discord.Member, trigger: str,  quote: str):
-    if not (trigger in quotes): quotes[trigger] = []
-    quotes[trigger].append(createQuoteDict(generateUniqueQuoteId(), author, quote))
+def addQuote(author: discord.Member, label: str,  quote: str):
+    label = label.upper()
+    id = generateUniqueQuoteId()
+    if not (label in quotes): quotes[label] = []
+    quotes[label].append(createQuoteDict(id, author, quote))
+    quoteIds.append(id)
     saveYaml(quotes, quoteFilePath)
 
-def getQuote(trigger: str) -> str:
-    trigger = trigger.lower()
-    if trigger in quotes: return random.choice(quotes[trigger])
-    return None
+def getQuote(label: str) -> str:
+    label = label.upper()
+    assert label in quotes, f"Label {label} not found"
+    return random.choice(quotes[label])
+
+def removeQuote(id: str):
+    assert id in quoteIds, f"ID {id} not found"
+    quoteIds.remove(id)
+    for lab in quotes:
+        for item in quotes[lab]:
+            if item['id'] == 'id':
+                quotes[lab].remove(item)
+                break
+    saveYaml(quotes, quoteFilePath)
