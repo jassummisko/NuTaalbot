@@ -16,7 +16,7 @@ def isStaff(user: Member):
     staffRoleIDs = [staffRole.value for staffRole in staffRoles]
     return len(set([role.id for role in user.roles]).intersection(staffRoleIDs))>0 
 
-def loadYaml(path: str):
+def loadYaml(path: str) -> dict:
     with open(path) as file:
         return yaml.load(file, Loader=yaml.Loader)
 
