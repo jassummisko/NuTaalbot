@@ -12,6 +12,8 @@ class loggerCog(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("Logger Cog is ready")
+        await self.bot.get_channel(logChannelId) \
+            .send(f"Bleep bloop. I am here, ready to serve requests!")
 
     @commands.Cog.listener()
     @genUtils.catcherrors
