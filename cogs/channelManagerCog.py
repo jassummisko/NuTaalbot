@@ -19,7 +19,6 @@ class channelManagerCog(commands.Cog):
         description="Mark forum post as answered.")
     @genUtils.catcherrors
     async def beantwoord(self, i9n: discord.Interaction):
-        raise CommandError("RPI")
         if not hasattr(i9n.channel, "parent"): raise CommandError(botResponses.NOT_IN_FORUM_ERROR)
         if not isinstance(i9n.channel.parent, ForumChannel): raise CommandError(botResponses.NOT_IN_FORUM_ERROR)
 
