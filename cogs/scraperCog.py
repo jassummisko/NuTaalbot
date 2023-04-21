@@ -8,8 +8,6 @@ from modules.scraper.scraper import *
 from modules.scraper.woordenlijst import *
 from discord.ext.commands import CommandError
 
-AssertionError = CommandError
-
 class scraperCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
