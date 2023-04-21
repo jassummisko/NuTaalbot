@@ -4,7 +4,8 @@ USE_SLASH_COMMANDS = "We have migrated to slash commands. Please use `/{}` inste
 NOT_STAFF_ERROR = "You must be a staff member to use this command."
 NOT_POST_OWNER_ERROR = "You must be the owner of the post."
 NOT_POST_OWNER_OR_STAFF_ERROR = "You must be the owner of the post or a staff member"
-THREAD_ANSWERED = "Thread already marked as answered"
+THREAD_ALREADY_ANSWERED = "Thread already marked as answered"
+THREAD_ANSWERED = "Thread marked as answered"
 TIMED_OUT = "Timed out!"
 
 # Role manager responses

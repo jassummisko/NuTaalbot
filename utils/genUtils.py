@@ -2,6 +2,8 @@ import functools, yaml
 from discord.ext.commands import CommandError
 from discord import Interaction, Member
 
+AssertionError = CommandError
+
 def catcherrors(func: callable):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
