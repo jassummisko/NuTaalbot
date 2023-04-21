@@ -26,7 +26,7 @@ class channelManagerCog(commands.Cog):
         if not isOwnerOrStaff: raise CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR)
 
         answeredTag = i9n.channel.parent.get_tag(tagAnsweredId)
-        if not answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ALREADY_ANSWERED)
+        if answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ALREADY_ANSWERED)
 
         await i9n.channel.add_tags(answeredTag)
         await i9n.response.send_message(botResponses.THREAD_ANSWERED)
