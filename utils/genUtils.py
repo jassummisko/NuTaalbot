@@ -1,6 +1,7 @@
 import functools, yaml
 from discord.ext.commands import CommandError
 from discord import Interaction, Member
+from discord.ext import menus
 
 def catcherrors(func: callable):
     @functools.wraps(func)
@@ -36,3 +37,7 @@ def lev_dist(a: str, b: str) -> int:
         )
 
     return min_dist(0, 0)
+
+class MultiPageEmbed(menus.ListPageSource):
+    async def format_page(self, menu, page):
+        return page
