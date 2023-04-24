@@ -30,7 +30,7 @@ def generateUniqueQuoteId() -> str:
     while (quoteId := generateQuoteId()) in getAllQuoteIds(): pass 
     return quoteId
 
-def createQuoteDict(quoteId: str, author: discord.Member, quote: str):
+def createQuoteDict(quoteId: str, author: discord.User | discord.Member, quote: str):
     return {
         'id': quoteId,
         'aid': author.id,
@@ -38,7 +38,7 @@ def createQuoteDict(quoteId: str, author: discord.Member, quote: str):
         'txt': quote,
     }
 
-def addQuote(author: discord.Member, label: str,  quote: str):
+def addQuote(author: discord.User | discord.Member, label: str,  quote: str):
     label = label.upper()
     id = generateUniqueQuoteId()
     if not (label in quotes): quotes[label] = []
@@ -67,6 +67,7 @@ def removeQuote(id: str):
     raise CommandError(f"ID {id} not found")
 
 def cleanQuotes():
+    global quotes
     quotes = {k: v for k, v in quotes.items() if v}
     saveYaml(quotes, quoteFilePath)
 

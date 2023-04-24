@@ -1,6 +1,5 @@
 import discord, \
-    data.botResponses as botResponses, \
-    utils.genUtils as genUtils 
+    data.botResponses as botResponses
 from discord.ext import commands
 from data.localdata import serverId
 from discord.ext.commands import CommandError
