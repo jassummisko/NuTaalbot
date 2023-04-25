@@ -1,7 +1,6 @@
 import discord, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
-import modules.quotes.quotes
 from modules.quotes.quotes import *
 from discord.ext import commands
 from data.localdata import serverId

@@ -29,7 +29,7 @@ class scraperCog(commands.Cog):
     @app_commands.describe(woord="Word to check.")
     @genUtils.catcherrors
     async def dehet(self, i9n: discord.Interaction, woord: str):
-        scraped: list[WordEntry] = checkWoordenlijst(woord)
+        scraped: list[WordEntry] | None = checkWoordenlijst(woord)
         words: list[WordEntry] = []
         embed = discord.Embed(title=f"Resultaten voor \"{woord}\"")
         
@@ -39,8 +39,8 @@ class scraperCog(commands.Cog):
         if (not words) or len(words) == 0: message = botResponses.DEHET_NONOUN.format(woord)
         elif len(words) == 1:
             message = botResponses.DEHET_SINGLEWORD.format(words[0].grammaticalInfo['art'], words[0].lemma)
-            embed.add_field(name = f"{words[0].grammaticalInfo['art']} {words[0].lemma}")
-        elif len(words) > 1:
+            embed.add_field(name = "", value = f"{words[0].grammaticalInfo['art']} {words[0].lemma}")
+        else:
             message = ""
             for word in words:
                 message += botResponses.DEHET_MULTIWORD.format(

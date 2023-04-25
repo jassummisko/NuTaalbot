@@ -45,7 +45,7 @@ def addQuote(author: discord.User | discord.Member, label: str,  quote: str):
     quotes[label].append(createQuoteDict(id, author, quote))
     saveYaml(quotes, quoteFilePath)
 
-def getQuote(label: str) -> str:
+def getQuote(label: str) -> dict:
     label = label.upper()
     if not label in quotes: raise CommandError(f"Label {label} not found")
     return random.choice(quotes[label])

@@ -1,9 +1,9 @@
 import functools, yaml
 from discord.ext.commands import CommandError
-from discord import Interaction, Member
+from discord import Interaction, Member, User
 from discord.ext import menus
 
-def catcherrors(func: callable):
+def catcherrors(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         i9n: Interaction = args[1]

@@ -29,6 +29,7 @@ class faqCog(commands.Cog):
     @app_commands.command(name="updatefaqs", description="FAQ updaten.")
     @genUtils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
+        assert isinstance(i9n.user, discord.Member)
         assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
         await i9n.response.send_message(botResponses.UPDATING_FAQ)
         getFaqsFromWiki()
@@ -54,7 +55,7 @@ class faqCog(commands.Cog):
         await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
-            await i9n.response.edit_message(faq.getMessage())
+            await i9n.response.edit_message(content=faq.getMessage())
             if faq.isEnd: 
                 await ctx.send(botResponses.FAQ_ENDED)
                 break
@@ -89,6 +90,7 @@ class faqCog(commands.Cog):
     @app_commands.describe(name="Naam van faq")
     @genUtils.catcherrors
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
+        assert isinstance(i9n.user, discord.Member)
         assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
         assert removeFaqAlias(name), botResponses.NOT_FAQ_ERROR.format(name) 
         await i9n.response.send_message(botResponses.FAQ_DEREGISTERED.format(name))
@@ -97,7 +99,8 @@ class faqCog(commands.Cog):
     @app_commands.describe(label="Name of FAQ.")
     @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
-        assert isStaff(ctx.author), botResponses.NOT_STAFF_ERROR
+        assert isinstance(i9n.user, discord.Member)
+        assert isStaff(i9n.user), botResponses.NOT_STAFF_ERROR
 
         ctx = await self.bot.get_context(i9n)
         faq = FAQ(label, debug=True)
@@ -116,5 +119,5 @@ class faqCog(commands.Cog):
             except asyncio.TimeoutError: await ctx.send("Timed out!")
             else: faq.check(msg)
 
-async def setup(bot: discord.Client):
+async def setup(bot: commands.Bot):
     await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverId))

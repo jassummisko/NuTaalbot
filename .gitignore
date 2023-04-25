@@ -167,3 +167,4 @@ cython_debug/
 **/*.pickle
 **/localdata.py
 onboarding.md
+pyrightconfig.json
