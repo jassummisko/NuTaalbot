@@ -12,7 +12,6 @@ COGNAMES = [
     "mainCog",
     "roleManagerCog",
     "channelManagerCog",
-    "loggerCog",
     "debugCog",
     "scraperCog"
 ]

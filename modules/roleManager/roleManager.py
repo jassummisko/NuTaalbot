@@ -1,3 +1,4 @@
+from typing import Callable
 import discord, pickle, asyncio, os, data.botResponses as botResponses, datetime as dt
 from discord import Interaction, Role, Member, Guild
 from dataclasses import dataclass
@@ -16,14 +17,19 @@ def getRolesPendingRemoval() -> list[PendingEntry]:
             return pickle.load(f)
     return []
 
-def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry]) -> callable:
+def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry]) -> list[Callable]:
     queue = []
     for pendingEntry in rolesPendingRemoval:
         async def buff():
             now, due = dt.datetime.now(), pendingEntry.time
             await asyncio.sleep(0 if due < now else (due - now).seconds)
+            
             user = server.get_member(pendingEntry.userId)
+            assert user
+            
             role = server.get_role(pendingEntry.roleId)
+            assert role
+
             await user.remove_roles(role)
             await user.send(content=botResponses.ROLE_REMOVED.format(role.name))
             rolesPendingRemoval.remove(pendingEntry)
@@ -44,10 +50,12 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
     )
     
     async def callback(i9n: discord.Interaction):
+        assert isinstance(i9n.user, discord.Member)
         oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
         await i9n.user.remove_roles(oldrole)
         rolesToAdd = [role for role in roles if role.name in dropdown.values]
         member = i9n.guild.get_member(i9n.user.id)
+        assert member
         await member.add_roles(*rolesToAdd)
         await i9n.response.send_message(f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}")
 

@@ -27,7 +27,7 @@ class scraperCog(commands.Cog):
     @app_commands.describe(woord="Word to check.")
     @genUtils.catcherrors
     async def dehet(self, i9n: discord.Interaction, woord: str):
-        scraped: list[WordEntry] = checkWoordenlijst(woord)
+        scraped: list[WordEntry] | None = checkWoordenlijst(woord)
         words: list[WordEntry] = []
         embed = discord.Embed(title=f"Resultaten voor \"{woord}\"")
         

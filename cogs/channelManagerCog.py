@@ -19,25 +19,18 @@ class channelManagerCog(commands.Cog):
         description="Mark forum post as answered.")
     @genUtils.catcherrors
     async def beantwoord(self, i9n: discord.Interaction):
-        if not hasattr(i9n.channel, "parent"): raise CommandError(botResponses.NOT_IN_FORUM_ERROR)
-        if not isinstance(i9n.channel.parent, ForumChannel): raise CommandError(botResponses.NOT_IN_FORUM_ERROR)
+        assert isinstance(i9n.channel, discord.Thread)
+        if not isinstance(i9n.channel.parent, ForumChannel): botResponses.NOT_IN_FORUM_ERROR
 
-        isOwnerOrStaff = (i9n.channel.owner == i9n.user) or genUtils.isStaff(i9n.user)
-        if not isOwnerOrStaff: raise CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR)
+        assert isinstance(user := i9n.user, discord.Member)
+        isOwnerOrStaff = (i9n.channel.owner == i9n.user) or genUtils.isStaff(user)
+        if not isOwnerOrStaff: CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR)
 
-        answeredTag = i9n.channel.parent.get_tag(tagAnsweredId)
-        if answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ALREADY_ANSWERED)
+        assert (answeredTag := i9n.channel.parent.get_tag(tagAnsweredId))
+        if answeredTag in i9n.channel.applied_tags: CommandError(botResponses.THREAD_ANSWERED)
 
         await i9n.channel.add_tags(answeredTag)
         await i9n.response.send_message(botResponses.THREAD_ANSWERED)
-
-    @commands.command(
-        description="Get IDs of tags in forum. Staff only.")
-    @genUtils.catcherrors
-    async def debug_gettagids(self, ctx: commands.Context):
-        if not genUtils.isStaff(ctx.message.author): CommandError(botResponses.NOT_STAFF_ERROR)
-        if not isinstance(ctx.channel.parent, ForumChannel): CommandError(botResponses.NOT_IN_FORUM_ERROR)
-        for tag in ctx.channel.parent.available_tags: await ctx.send(f"{tag.id} - {tag.emoji}")
 
     @app_commands.command(name="limiet",
         description="Sets the user limit of #kelder VC")
@@ -52,5 +45,5 @@ class channelManagerCog(commands.Cog):
         await channel.edit(user_limit = limit)
         await i9n.response.send_message(botResponses.KELDER_LIMIER_UPDATED.format(limit))
 
-async def setup(bot: discord.Client):
+async def setup(bot: commands.Bot):
     await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverId)])
