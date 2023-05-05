@@ -44,11 +44,12 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
     )
     
     async def callback(i9n: discord.Interaction):
-        await i9n.user.remove_roles(*[role for role in i9n.user.roles if "Niveau" in role.name])
+        oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
+        await i9n.user.remove_roles(oldrole)
         rolesToAdd = [role for role in roles if role.name in dropdown.values]
-        member = guild.get_member(i9n.user.id)
+        member = i9n.guild.get_member(i9n.user.id)
         await member.add_roles(*rolesToAdd)
-        await i9n.response.send_message(f"Added role {', '.join([role.name for role in rolesToAdd])}")
+        await i9n.response.send_message(f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}")
 
     dropdown.callback = callback
     view = discord.ui.View()

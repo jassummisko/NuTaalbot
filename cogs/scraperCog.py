@@ -8,8 +8,6 @@ from modules.scraper.scraper import *
 from modules.scraper.woordenlijst import *
 from discord.ext.commands import CommandError
 
-AssertionError = CommandError
-
 class scraperCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -39,7 +37,6 @@ class scraperCog(commands.Cog):
         if (not words) or len(words) == 0: message = botResponses.DEHET_NONOUN.format(woord)
         elif len(words) == 1:
             message = botResponses.DEHET_SINGLEWORD.format(words[0].grammaticalInfo['art'], words[0].lemma)
-            embed.add_field(name = f"{words[0].grammaticalInfo['art']} {words[0].lemma}")
         elif len(words) > 1:
             message = ""
             for word in words:
