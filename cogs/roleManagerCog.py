@@ -1,10 +1,9 @@
 import discord, asyncio, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
-from data.localdata import serverId, leerkrachtRoleId, countryRoleColor
+from data.localdata import serverId, leerkrachtRoleId, countryRoleColor, pronounRoles
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
-from utils.genUtils import isStaff
 from modules.roleManager.roleManager import *
 from discord.app_commands import Choice
 from fuzzywuzzy import fuzz
@@ -85,12 +84,26 @@ class roleManagerCog(commands.Cog):
         assert i9n.guild
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
-        roles = sorted(
-            niveauRoleNames,
-            key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
-            reverse=True
-        )
         return [Choice(name=role, value=role) for role in niveauRoleNames] 
+
+    @app_commands.command(name="voornaamwoordrol", description="Assign pronoun roles")
+    @app_commands.describe(vnw="The pronoun")
+    @genUtils.catcherrors
+    async def voornaamwoordrol(self, i9n: discord.Interaction, vnw: str):
+        assert i9n.guild
+        assert isinstance(callingUser := i9n.user, discord.Member)
+
+        responseMsg = "Alsjeblieft!"
+        await callingUser.add_roles([role for role in i9n.guild.roles if role.name == vnw][0])
+        await i9n.response.send_message(responseMsg)
+
+    @voornaamwoordrol.autocomplete('vnw') # type: ignore
+    async def landrol_autocomplete(self, i9n: discord.Interaction, current: str) -> app_commands.Choice[Role]:
+        try: 
+            assert i9n.guild
+            roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles]
+            return [Choice(role) for role in roles] 
+        except Exception as e: print(e)
 
 async def setup(bot):
     await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])
