@@ -98,11 +98,12 @@ class roleManagerCog(commands.Cog):
         await i9n.response.send_message(responseMsg)
 
     @voornaamwoordrol.autocomplete('vnw') # type: ignore
-    async def landrol_autocomplete(self, i9n: discord.Interaction, current: str) -> app_commands.Choice[Role]:
+    async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, current: str):
         try: 
             assert i9n.guild
             roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles]
-            return [Choice(role) for role in roles] 
+            print(roles)
+            return [Choice(name=role.name, value=role.name) for role in roles] 
         except Exception as e: print(e)
 
 async def setup(bot):
