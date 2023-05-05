@@ -27,7 +27,8 @@ class faqCog(commands.Cog):
     @app_commands.command(name="updatefaqs", description="FAQ updaten.")
     @genUtils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
-        if not isStaff(ctx.message.author): CommandError(botResponses.NOT_STAFF_ERROR)
+        assert isinstance(i9n.user, discord.Member)
+        if not isStaff(i9n.user): CommandError(botResponses.NOT_STAFF_ERROR)
         await i9n.response.send_message(botResponses.UPDATING_FAQ)
         getFaqsFromWiki()
         msg = await i9n.original_response()
@@ -52,7 +53,7 @@ class faqCog(commands.Cog):
         await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
-            await ctx.send(faq.getMessage())
+            await i9n.response.edit_message(content=faq.getMessage())
             if faq.isEnd: 
                 await ctx.send(botResponses.FAQ_ENDED)
                 break
@@ -87,7 +88,8 @@ class faqCog(commands.Cog):
     @app_commands.describe(name="Naam van faq")
     @genUtils.catcherrors
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
-        if not isStaff(ctx.message.author): CommandError(botResponses.NOT_STAFF_ERROR)
+        assert isinstance(i9n.user, discord.Member)
+        if not isStaff(i9n.user): CommandError(botResponses.NOT_STAFF_ERROR)
         if not removeFaqAlias(name): CommandError(botResponses.NOT_FAQ_ERROR.format(name))
         await i9n.response.send_message(botResponses.FAQ_DEREGISTERED.format(name))
        
@@ -95,6 +97,7 @@ class faqCog(commands.Cog):
     @app_commands.describe(label="Name of FAQ.")
     @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
+        assert isinstance(i9n.user, discord.Member)
         if not isStaff(ctx.message.author): CommandError(botResponses.NOT_STAFF_ERROR)
 
         ctx = await self.bot.get_context(i9n)
@@ -114,5 +117,5 @@ class faqCog(commands.Cog):
             except asyncio.TimeoutError: await ctx.send("Timed out!")
             else: faq.check(msg)
 
-async def setup(bot: discord.Client):
+async def setup(bot: commands.Bot):
     await bot.add_cog(faqCog(bot), guild = discord.Object(id = serverId))

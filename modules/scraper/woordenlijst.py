@@ -81,7 +81,7 @@ def getForms(word: dict):
     if word['gram']['pos'] == "NUM":    return getAdjectiveForms(word)
     return {}
 
-def checkWoordenlijst(word: str):
+def checkWoordenlijst(word: str) -> list[WordEntry] | None:
     words = scrapeWoordenlijst(word)
     if len(words) == 0: return None
     return [WordEntry(getLemma(word), getWordType(word), getForms(word)) for word in words]

@@ -19,27 +19,37 @@ class roleManagerCog(commands.Cog):
     async def on_ready(self):
         print("Role Manager Cog is ready")
 
-        queue = queuePendingRemovals(self.bot.get_guild(serverId), self.rolesPendingRemoval)
+        guild = self.bot.get_guild(serverId)        
+        assert guild
+        queue = queuePendingRemovals(guild, self.rolesPendingRemoval)
         if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True)
 
     @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
     @app_commands.describe(user="username", duration="duration in minutes")
     @genUtils.catcherrors
     async def giveleerkrachtrole(self, i9n: Interaction, user: Member, duration: int = 180) -> None:
-        if not genUtils.isStaff(ctx.message.author): CommandError(botResponses.NOT_STAFF_ERROR)
-        await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, i9n.guild.get_role(leerkrachtRoleId), duration)
+        assert i9n.guild
+        assert isinstance(callingUser := i9n.user, discord.Member)
+        assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
+
+        if not genUtils.isStaff(callingUser): CommandError(botResponses.NOT_STAFF_ERROR)
+        await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
     @app_commands.command(name="landrol", description="Assign country roles")
     @app_commands.describe(land="De naam van het land")
     @genUtils.catcherrors
     async def landrol(self, i9n: discord.Interaction, land: str):
+        assert i9n.guild
+        assert isinstance(callingUser := i9n.user, discord.Member)
+
         responseMsg = "Alsjeblieft!"
-        await i9n.user.add_roles([role for role in i9n.guild.roles if role.name == land][0])
+        await callingUser.add_roles([role for role in i9n.guild.roles if role.name == land][0])
         await i9n.response.send_message(responseMsg)
 
-    @landrol.autocomplete('land')
+    @landrol.autocomplete('land') # type: ignore
     async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
         try: 
+            assert i9n.guild
             roles = sorted(
                 [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
                 key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
@@ -52,8 +62,11 @@ class roleManagerCog(commands.Cog):
     @app_commands.describe(niveau="CEFR niveau")
     @genUtils.catcherrors
     async def niveaurol(self, i9n: discord.Interaction, niveau: str = ""):
+        assert i9n.guild
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
+        assert isinstance(callingUser := i9n.user, discord.Member)
+        ###TODO: Make this less ugly.
         if niveau in niveauRoleNames:
             oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
             await i9n.user.remove_roles(oldrole)
@@ -69,6 +82,7 @@ class roleManagerCog(commands.Cog):
 
     @niveaurol.autocomplete('niveau')
     async def niveaurol_autocomplete(self, i9n: discord.Interaction, current: str):
+        assert i9n.guild
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
         roles = sorted(

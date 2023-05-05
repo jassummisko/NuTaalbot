@@ -1,4 +1,5 @@
 from random import choice
+import discord
 from utils.genUtils import loadYaml
 from modules.faq.faqResponses import correct, wrong
 from modules.faq.faqutils import *
@@ -32,7 +33,7 @@ class FAQ:
         message = self._data[self._label]["MESSAGE"]
         self._message = f"{prefix}\n{message}".strip()
 
-    def check(self, msg: str):
+    def check(self, msg: discord.Message):
         if msg.content.strip().lower() in ["!stop_faq", "!stopfaq", "!faqstop", "!faq_stop"]:
             self.isEnd, self._message = True, "FAQ stopped manually."
             return
