@@ -3,7 +3,6 @@ import discord, \
     utils.genUtils as genUtils
 from discord.ext import commands
 from data.localdata import serverId
-from discord.ext.commands import CommandError
 from data.localdata import serverId, logChannelId, welcomeChannelId
 
 class mainCog(commands.Cog):
