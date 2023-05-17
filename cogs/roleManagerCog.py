@@ -21,7 +21,7 @@ class roleManagerCog(commands.Cog):
         guild = self.bot.get_guild(serverId)        
         assert guild
         queue = queuePendingRemovals(guild, self.rolesPendingRemoval)
-        if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True)
+        if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True) # type: ignore
 
     @app_commands.command(name="giveleerkrachtrole", description="Geef de leerkracht rol aan iemand")
     @app_commands.describe(user="username", duration="duration in minutes")
@@ -31,7 +31,9 @@ class roleManagerCog(commands.Cog):
         assert isinstance(callingUser := i9n.user, discord.Member)
         assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
 
-        if not genUtils.isStaff(callingUser): CommandError(botResponses.NOT_STAFF_ERROR)
+        if not genUtils.isStaff(callingUser): 
+            await i9n.response.send_message("You must be staff to use this command.") 
+            return
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
     @app_commands.command(name="landrol", description="Assign country roles")
@@ -62,6 +64,7 @@ class roleManagerCog(commands.Cog):
     @genUtils.catcherrors
     async def niveaurol(self, i9n: discord.Interaction, niveau: str = ""):
         assert i9n.guild
+        assert isinstance(i9n.user, discord.Member)
         niveauRoles = [role for role in i9n.guild.roles if ("Niveau" in role.name) and not ("C+" in role.name)]
         niveauRoleNames = [role.name for role in niveauRoles]
         assert isinstance(callingUser := i9n.user, discord.Member)
@@ -71,6 +74,7 @@ class roleManagerCog(commands.Cog):
             await i9n.user.remove_roles(oldrole)
             rolesToAdd = [role for role in niveauRoles if role.name == niveau]
             member = i9n.guild.get_member(i9n.user.id)
+            assert member
             await member.add_roles(*rolesToAdd)
             await i9n.response.send_message(
                 f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}"
@@ -100,8 +104,9 @@ class roleManagerCog(commands.Cog):
     @voornaamwoordrol.autocomplete('vnw') # type: ignore
     async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, current: str):
         try: 
+            roles: list
             assert i9n.guild
-            roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles]
+            roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles] 
             print(roles)
             return [Choice(name=role.name, value=role.name) for role in roles] 
         except Exception as e: print(e)

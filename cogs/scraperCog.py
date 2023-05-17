@@ -45,6 +45,7 @@ class scraperCog(commands.Cog):
                     word.lemma,
                     word.grammaticalInfo['gloss']
                 )
+        else: message = "ERROR"
 
         embed.description = message.strip()
         await i9n.response.send_message(embed = embed)
