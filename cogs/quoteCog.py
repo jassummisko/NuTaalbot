@@ -6,8 +6,6 @@ from data.localdata import serverId
 from discord.ext.commands import CommandError
 from discord import app_commands
 
-AssertionError = CommandError
-
 class quoteCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -20,7 +18,6 @@ class quoteCog(commands.Cog):
     @app_commands.describe(label='Label of quote')
     @genUtils.catcherrors
     async def quote(self, i9n: discord.Interaction, label: str):
-        raise CommandError("Testerror")
         quote = getQuote(label)
         await i9n.response.send_message(f"`id: {quote['id']}`: {quote['txt']}")
 

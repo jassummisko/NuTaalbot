@@ -20,7 +20,7 @@ class channelManagerCog(commands.Cog):
     @genUtils.catcherrors
     async def beantwoord(self, i9n: discord.Interaction):
         assert isinstance(i9n.channel, discord.Thread)
-        if not isinstance(i9n.channel.parent, ForumChannel): botResponses.NOT_IN_FORUM_ERROR
+        if not isinstance(i9n.channel.parent, ForumChannel): raise CommandError(botResponses.NOT_IN_FORUM_ERROR)
 
         assert isinstance(user := i9n.user, discord.Member)
         isOwnerOrStaff = (i9n.channel.owner == user) or genUtils.isStaff(user)
@@ -37,10 +37,10 @@ class channelManagerCog(commands.Cog):
     @genUtils.catcherrors
     async def limiet(self, i9n: discord.Interaction, limit: int):
         channel = self.bot.get_channel(kelderId)
-        if not (i9n.user in channel.members): CommandError(botResponses.NOT_IN_KELDER_ERROR)
+        if not (i9n.user in channel.members): raise CommandError(botResponses.NOT_IN_KELDER_ERROR)
 
         LOWER_LIMIT, UPPER_LIMIT = 3, 8
-        if not (LOWER_LIMIT <= limit <= UPPER_LIMIT): CommandError(botResponses.KELDER_LIMIET_ERROR)
+        if not (LOWER_LIMIT <= limit <= UPPER_LIMIT): raise CommandError(botResponses.KELDER_LIMIET_ERROR)
     
         await channel.edit(user_limit = limit)
         await i9n.response.send_message(botResponses.KELDER_LIMIER_UPDATED.format(limit))

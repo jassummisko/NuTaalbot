@@ -50,7 +50,7 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
     )
     
     async def callback(i9n: discord.Interaction):
-        assert isinstance(i9n.user, discord.Member)
+        assert isinstance(i9n.user, discord.Member) and i9n.guild
         oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
         await i9n.user.remove_roles(oldrole)
         rolesToAdd = [role for role in roles if role.name in dropdown.values]

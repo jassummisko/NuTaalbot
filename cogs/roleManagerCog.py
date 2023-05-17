@@ -5,7 +5,7 @@ from data.localdata import serverId, leerkrachtRoleId, countryRoleColor, pronoun
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 from modules.roleManager.roleManager import *
-from discord.app_commands import Choice
+from discord.app_commands import Choice, Command
 from fuzzywuzzy import fuzz
 from discord.ext.commands import CommandError
 
@@ -31,10 +31,8 @@ class roleManagerCog(commands.Cog):
         assert isinstance(callingUser := i9n.user, discord.Member)
         assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
 
-        if not genUtils.isStaff(callingUser): 
-            await i9n.response.send_message("You must be staff to use this command.") 
-            return
-        
+        if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR) 
+
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
     @app_commands.command(name="landrol", description="Assign country roles")
@@ -114,26 +112,3 @@ class roleManagerCog(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])
-
-### IGNORE FOR NOW ###
-        # channel = self.bot.get_channel(channelID)
-        # role = channel.guild.get_role(roleID)
-        # today = dt.datetime.now(dt.timezone.utc)
-
-        # def getHistory(): 
-        #     return channel.history(limit=None, after=today - dt.timedelta(days=60))
-
-        # users = set([msg.author async for msg in getHistory()])
-
-        # for user in set(role.members).difference(users): 
-        #     await user.remove_roles(role)
-
-        # warnedUsers = []
-        # async for message in getHistory():
-        #     user = message.author
-
-        #     if (today - message.created_at).days != 30: continue
-        #     if user not in role.members or user in warnedUsers: continue
-
-        #     await user.send("U r dum")
-        #     warnedUsers.append(user)

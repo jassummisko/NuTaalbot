@@ -90,7 +90,7 @@ class faqCog(commands.Cog):
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
         assert isinstance(i9n.user, discord.Member)
         if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
-        if not removeFaqAlias(name): CommandError(botResponses.NOT_FAQ_ERROR.format(name))
+        if not removeFaqAlias(name): raise CommandError(botResponses.NOT_FAQ_ERROR.format(name))
         await i9n.response.send_message(botResponses.FAQ_DEREGISTERED.format(name))
        
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
@@ -98,7 +98,7 @@ class faqCog(commands.Cog):
     @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
         assert isinstance(i9n.user, discord.Member)
-        if not isStaff(ctx.message.author): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
         ctx = await self.bot.get_context(i9n)
         faq = FAQ(label, debug=True)
         while True:
