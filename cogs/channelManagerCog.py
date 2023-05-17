@@ -23,11 +23,11 @@ class channelManagerCog(commands.Cog):
         if not isinstance(i9n.channel.parent, ForumChannel): botResponses.NOT_IN_FORUM_ERROR
 
         assert isinstance(user := i9n.user, discord.Member)
-        isOwnerOrStaff = (i9n.channel.owner == i9n.user) or genUtils.isStaff(user)
-        if not isOwnerOrStaff: CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR)
+        isOwnerOrStaff = (i9n.channel.owner == user) or genUtils.isStaff(user)
+        if not isOwnerOrStaff: raise CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR)
 
         assert (answeredTag := i9n.channel.parent.get_tag(tagAnsweredId))
-        if answeredTag in i9n.channel.applied_tags: CommandError(botResponses.THREAD_ANSWERED)
+        if answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ANSWERED)
 
         await i9n.channel.add_tags(answeredTag)
         await i9n.response.send_message(botResponses.THREAD_ANSWERED)

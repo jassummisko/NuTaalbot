@@ -20,6 +20,7 @@ class quoteCog(commands.Cog):
     @app_commands.describe(label='Label of quote')
     @genUtils.catcherrors
     async def quote(self, i9n: discord.Interaction, label: str):
+        raise CommandError("Testerror")
         quote = getQuote(label)
         await i9n.response.send_message(f"`id: {quote['id']}`: {quote['txt']}")
 

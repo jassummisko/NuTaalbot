@@ -34,6 +34,7 @@ class roleManagerCog(commands.Cog):
         if not genUtils.isStaff(callingUser): 
             await i9n.response.send_message("You must be staff to use this command.") 
             return
+        
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
     @app_commands.command(name="landrol", description="Assign country roles")
