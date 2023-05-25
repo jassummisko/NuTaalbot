@@ -2,8 +2,10 @@ import discord, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
 from discord.ext import commands
+from discord import app_commands
 from data.localdata import serverId
 from data.localdata import serverId, logChannelId, welcomeChannelId
+from modules.beginners.beginners import *
 
 class mainCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -41,6 +43,11 @@ class mainCog(commands.Cog):
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx: commands.Context):
         await ctx.send(botResponses.ELK_ZINNEN_DAH)
+
+    @app_commands.command(name="hoelaat", description="Hoe laat is het?")
+    @genUtils.catcherrors
+    async def hoelaat(self, i9n: discord.Interaction):
+        await i9n.response.send_message(content=getCurrentTimeInDutch())
 
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])
