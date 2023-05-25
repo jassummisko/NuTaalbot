@@ -25,19 +25,6 @@ def saveYaml(dict: dict, path: str):
     with open(path, "w") as file:
         file.write(yaml.dump(dict))
 
-def lev_dist(a: str, b: str) -> int:
-    @functools.lru_cache(None) 
-    def min_dist(s1, s2):
-        if s1 == len(a) or s2 == len(b): return len(a) - s1 + len(b) - s2
-        if a[s1] == b[s2]: return min_dist(s1 + 1, s2 + 1)
-        return 1 + min(
-            min_dist(s1, s2 + 1),      # insert character
-            min_dist(s1 + 1, s2),      # delete character
-            min_dist(s1 + 1, s2 + 1),  # replace character
-        )
-
-    return min_dist(0, 0)
-
 class MultiPageEmbed(menus.ListPageSource):
     async def format_page(self, menu, page):
         return page

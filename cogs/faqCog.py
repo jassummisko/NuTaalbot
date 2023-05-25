@@ -53,7 +53,7 @@ class faqCog(commands.Cog):
         await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
         faq = FAQ(label)
         while True:
-            await i9n.response.edit_message(content=faq.getMessage())
+            await ctx.reply(content=faq.getMessage())
             if faq.isEnd: 
                 await ctx.send(botResponses.FAQ_ENDED)
                 break
