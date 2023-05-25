@@ -50,7 +50,7 @@ def getTimeFromHrAndMin(hr: int, min: int) -> str:
     if hr >= 12 and hr <= 17: specifyer = " 's middags"
     elif hr < 12 and hr >= 5: specifyer = " 's ochtends"
     elif hr > 17 and hr <= 23: specifyer = " 's avonds"
-    elif hr >= 0 and hr < 5: specifyer = " 's nachts"
+    elif (hr >= 0 and hr < 5) or hr == 24: specifyer = " 's nachts"
 
     if hr == 24: hr = 0
     if hr > 12: hr -= 12
