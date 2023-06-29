@@ -1,4 +1,6 @@
 {
+    "venv": "venv",
+    "venvPath": "./",
     "include": [
          "utils",
          "data",
