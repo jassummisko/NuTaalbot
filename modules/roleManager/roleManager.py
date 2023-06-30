@@ -31,7 +31,7 @@ def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry])
             assert role
 
             await user.remove_roles(role)
-            await user.send(content=botResponses.ROLE_REMOVED.format(role.name))
+            await user.send(content=botResponses.ROLE_REMOVED(role.name))
             rolesPendingRemoval.remove(pendingEntry)
             dumpRolesPendingRemoval(rolesPendingRemoval)
         queue.append(buff())
@@ -68,10 +68,10 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
 async def giveTemporaryRole(roleQueue: list[PendingEntry], i9n: Interaction, user: Member, role: Role, duration: int):
     SECONDS_PER_MINUTE : int = 60
     await user.add_roles(role)
-    await i9n.response.send_message(botResponses.ROLE_GIVEN.format(role.name))
+    await i9n.response.send_message(botResponses.ROLE_GIVEN(role.name))
     t = dt.datetime.now() + dt.timedelta(minutes = duration)
     roleQueue.append(PendingEntry(user.id, role.id, t))
     dumpRolesPendingRemoval(roleQueue)
     await asyncio.sleep(duration*SECONDS_PER_MINUTE)
     await user.remove_roles(role)
-    await user.send(content=botResponses.ROLE_REMOVED.format(role.name))
+    await user.send(content=botResponses.ROLE_REMOVED(role.name))

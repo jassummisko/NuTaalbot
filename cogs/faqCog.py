@@ -28,11 +28,11 @@ class faqCog(commands.Cog):
     @genUtils.catcherrors
     async def updatefaqs(self, i9n: discord.Interaction):
         assert isinstance(i9n.user, discord.Member)
-        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
-        await i9n.response.send_message(botResponses.UPDATING_FAQ)
+        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR())
+        await i9n.response.send_message(botResponses.UPDATING_FAQ())
         getFaqsFromWiki()
         msg = await i9n.original_response()
-        await msg.edit(content=botResponses.FAQ_UPDATED)
+        await msg.edit(content=botResponses.FAQ_UPDATED())
 
     @app_commands.command(name="faqlist", description="Lists all available FAQs.")
     @genUtils.catcherrors
@@ -50,12 +50,12 @@ class faqCog(commands.Cog):
     async def faq(self, i9n: discord.Interaction, label: str):
         bot = self.bot
         ctx = await bot.get_context(i9n)
-        await i9n.response.send_message(botResponses.RUNNING_FAQ.format(label))
+        await i9n.response.send_message(botResponses.RUNNING_FAQ(label))
         faq = FAQ(label)
         while True:
             await ctx.reply(content=faq.getMessage())
             if faq.isEnd: 
-                await ctx.send(botResponses.FAQ_ENDED)
+                await ctx.send(botResponses.FAQ_ENDED())
                 break
 
             def check(m):
@@ -80,7 +80,7 @@ class faqCog(commands.Cog):
     @app_commands.describe(naam="Naam van faq", label="Beginlabel van faq", beschrijving="Beschrijving van faq")
     @genUtils.catcherrors
     async def registerfaq(self, i9n, naam: str, label: str, beschrijving: str):
-        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR())
         addFaqAlias(naam, label, beschrijving)
         await i9n.response.send_message(f"FAQ '{naam}' is geregistreerd met label '{label}' als begin.")
 
@@ -89,16 +89,16 @@ class faqCog(commands.Cog):
     @genUtils.catcherrors
     async def deregisterfaq(self, i9n: discord.Interaction, name: str):
         assert isinstance(i9n.user, discord.Member)
-        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
-        if not removeFaqAlias(name): raise CommandError(botResponses.NOT_FAQ_ERROR.format(name))
-        await i9n.response.send_message(botResponses.FAQ_DEREGISTERED.format(name))
+        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR())
+        if not removeFaqAlias(name): raise CommandError(botResponses.NOT_FAQ_ERROR(name))
+        await i9n.response.send_message(botResponses.FAQ_DEREGISTERED(name))
        
     @app_commands.command(name="debug_faq", description="Calls an unregistered FAQ from a label.")
     @app_commands.describe(label="Name of FAQ.")
     @genUtils.catcherrors
     async def debug_faq(self, i9n: discord.Interaction, label: str): 
         assert isinstance(i9n.user, discord.Member)
-        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not isStaff(i9n.user): raise CommandError(botResponses.NOT_STAFF_ERROR())
         ctx = await self.bot.get_context(i9n)
         faq = FAQ(label, debug=True)
         while True:

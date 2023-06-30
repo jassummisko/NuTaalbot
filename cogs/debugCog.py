@@ -16,7 +16,7 @@ class debugCog(commands.Cog):
     @commands.command()
     async def reloadcog(self, ctx: commands.Context, cog: str):
         assert isinstance(ctx.author, discord.Member)
-        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR())
         await ctx.send(f"Reloading cog {cog}")
         try:
             await self.bot.reload_extension(f"cogs.{cog}")
@@ -26,7 +26,7 @@ class debugCog(commands.Cog):
     @commands.command()
     async def loadcog(self, ctx: commands.Context, cog: str):
         assert isinstance(ctx.author, discord.Member)
-        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR())
         await ctx.send(f"Loading cog {cog}")
         try:
             await self.bot.load_extension(f"cogs.{cog}")
@@ -36,7 +36,7 @@ class debugCog(commands.Cog):
     @commands.command()
     async def unloadcog(self, ctx: commands.Context, cog: str):
         assert isinstance(ctx.author, discord.Member)
-        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR())
         await ctx.send(f"Unloading cog {cog}")
         try:
             await self.bot.unload_extension(f"cogs.{cog}")
@@ -46,7 +46,7 @@ class debugCog(commands.Cog):
     @commands.command()
     async def resynctree(self, ctx: commands.Context):
         assert isinstance(ctx.author, discord.Member)
-        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR)
+        if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR())
         await ctx.send(f"Resyncing tree")
         try:
             await self.bot.tree.sync(guild = discord.Object(id = serverId))

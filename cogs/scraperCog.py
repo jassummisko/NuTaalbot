@@ -6,7 +6,6 @@ from discord import app_commands
 from data.localdata import serverId
 from modules.scraper.scraper import *
 from modules.scraper.woordenlijst import *
-from discord.ext.commands import CommandError
 
 class scraperCog(commands.Cog):
     def __init__(self, bot):
@@ -31,16 +30,16 @@ class scraperCog(commands.Cog):
         words: list[WordEntry] = []
         embed = discord.Embed(title=f"Resultaten voor \"{woord}\"")
         
-        if not scraped: message = botResponses.DEHET_NOWORD.format(woord)
+        if not scraped: message = botResponses.DEHET_NOWORD(woord)
         else: words: list[WordEntry] = [word for word in scraped if word.partOfSpeech == "znw"]
         
-        if (not words) or len(words) == 0: message = botResponses.DEHET_NONOUN.format(woord)
+        if (not words) or len(words) == 0: message = botResponses.DEHET_NONOUN(woord)
         elif len(words) == 1:
-            message = botResponses.DEHET_SINGLEWORD.format(words[0].grammaticalInfo['art'], words[0].lemma)
+            message = botResponses.DEHET_SINGLEWORD(words[0].grammaticalInfo['art'], words[0].lemma)
         elif len(words) > 1:
             message = ""
             for word in words:
-                message += botResponses.DEHET_MULTIWORD.format(
+                message += botResponses.DEHET_MULTIWORD(
                     word.grammaticalInfo['art'],
                     word.lemma,
                     word.grammaticalInfo['gloss']

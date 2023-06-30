@@ -1,34 +1,60 @@
 # General responses
-ELK_ZINNEN_DAH = "Elk zinnen dah!"
-USE_SLASH_COMMANDS = "We have migrated to slash commands. Please use `/{}` instead of `!{}`." # ARGS: commandName, commandName
-NOT_STAFF_ERROR = "You must be a staff member to use this command."
-NOT_POST_OWNER_ERROR = "You must be the owner of the post."
-NOT_POST_OWNER_OR_STAFF_ERROR = "You must be the owner of the post or a staff member"
-THREAD_ALREADY_ANSWERED = "Thread already marked as answered"
-THREAD_ANSWERED = "Thread marked as answered"
-TIMED_OUT = "Timed out!"
+def ELK_ZINNEN_DAH(): 
+    return "Elk zinnen dah!"
+def USE_SLASH_COMMANDS(real_command: str, used_command: str): 
+    return f"We have migrated to slash commands. Please use `/{real_command}` instead of `!{used_command}`."
+def NOT_STAFF_ERROR(): 
+    return "You must be a staff member to use this command."
+def NOT_POST_OWNER_ERROR(): 
+    return "You must be the owner of the post."
+def NOT_POST_OWNER_OR_STAFF_ERROR(): 
+    return "You must be the owner of the post or a staff member"
+def THREAD_ALREADY_ANSWERED(): 
+    return "Thread already marked as answered"
+def THREAD_ANSWERED(): 
+    return "Thread marked as answered"
+def TIMED_OUT(): 
+    return "Timed out!"
 
 # Role manager responses
-ROLE_GIVEN = "Role '{}' given" # ARGS: roleName
-ROLE_REMOVED = "Role '{}' removed" # ARGS: roleName
+def ROLE_GIVEN(roleName: str): 
+    return f"Role '{roleName}' given"
+
+def ROLE_REMOVED(roleName: str): 
+    return f"Role '{roleName}' removed"
 
 # Channel manager responses
-NOT_IN_FORUM_ERROR = "Not in forum"
-NOT_IN_KELDER_ERROR = "Je zit niet in #kelder"
-KELDER_LIMIET_ERROR = "De limiet moet tussen 3 en 8 liggen."
-KELDER_LIMIER_UPDATED = "De limiet is nu {}." # ARGS: limit
+def NOT_IN_FORUM_ERROR(): 
+    return "Not in forum"
+def NOT_IN_KELDER_ERROR(): 
+    return "Je zit niet in #kelder"
+def KELDER_LIMIET_ERROR(): 
+    return "De limiet moet tussen 3 en 8 liggen."
+def KELDER_LIMIER_UPDATED(limit: int): 
+    return f"De limiet is nu {limit}."
 
 # FAQ responses
-UPDATING_FAQ = "Updating FAQs..."
-FAQ_UPDATED = "FAQ_s Updated"
-RUNNING_FAQ = "Running FAQ {}" # ARGS: label
-FAQ_ENDED = "FAQ ended."
-FAQ_DEREGISTERED = "FAQ '{}' verwijderd." # ARGS: faqName
-FAQ_REGISTERED = "FAQ '{}' is geregistreerd met label '{}' als begin." # ARGS: faqName, label
-NOT_FAQ_ERROR = "Er zit geen FAQ met de '{}' in de lijst." # ARGS: faqName
+def UPDATING_FAQ(): 
+    return f"Updating FAQs..."
+def FAQ_UPDATED(): 
+    return f"FAQ_s Updated"
+def RUNNING_FAQ(label: str): 
+    return f"Running FAQ {label}"
+def FAQ_ENDED(): 
+    return f"FAQ ended."
+def FAQ_DEREGISTERED(faqName: str): 
+    return f"FAQ '{faqName}' verwijderd."
+def FAQ_REGISTERED(faqName: str, label: str): 
+    return f"FAQ '{faqName}' is geregistreerd met label '{label}' als begin."
+def NOT_FAQ_ERROR(faqName: str): 
+    return f"Er zit geen FAQ met de '{faqName}' in de lijst."
 
 # Scraper responses
-DEHET_NOWORD = "Ik heb geen woorden kunnen vinden voor '{}'"
-DEHET_NONOUN = "Ik heb geen substantieven kunnen vinden voor '{}'"
-DEHET_SINGLEWORD = "\"**{}** {}\""
-DEHET_MULTIWORD = "\"**{}** {}\" met de betekenis \"{}\"\n"
+def DEHET_NOWORD(woord: str): 
+    return f"Ik heb geen woorden kunnen vinden voor '{woord}'"
+def DEHET_NONOUN(woord: str): 
+    return f"Ik heb geen substantieven kunnen vinden voor '{woord}'"
+def DEHET_SINGLEWORD(lidwoord: str, woord: str): 
+    return f"\"**{lidwoord}** {woord}\""
+def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str): 
+    return f"\"**{lidwoord}** {woord}\" met de betekenis \"{betekenis}\"\n"

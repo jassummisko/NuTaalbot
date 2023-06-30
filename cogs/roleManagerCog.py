@@ -31,7 +31,7 @@ class roleManagerCog(commands.Cog):
         assert isinstance(callingUser := i9n.user, discord.Member)
         assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
 
-        if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR) 
+        if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR()) 
 
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
@@ -101,7 +101,7 @@ class roleManagerCog(commands.Cog):
         await i9n.response.send_message(responseMsg)
 
     @voornaamwoordrol.autocomplete('vnw') # type: ignore
-    async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, current: str):
+    async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, _: str):
         try: 
             roles: list
             assert i9n.guild
