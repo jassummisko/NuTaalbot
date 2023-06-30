@@ -16,7 +16,8 @@ class channelManagerCog(commands.Cog):
 
     @app_commands.command(
         name="beantwoord", 
-        description="Mark forum post as answered.")
+        description="Mark forum post as answered."
+    )
     @genUtils.catcherrors
     async def beantwoord(self, i9n: discord.Interaction):
         assert isinstance(i9n.channel, discord.Thread)
@@ -32,8 +33,10 @@ class channelManagerCog(commands.Cog):
         await i9n.channel.add_tags(answeredTag)
         await i9n.response.send_message(botResponses.THREAD_ANSWERED)
 
-    @app_commands.command(name="limiet",
-        description="Sets the user limit of #kelder VC")
+    @app_commands.command(
+        name="limiet",
+        description="Sets the user limit of #kelder VC"
+    )
     @genUtils.catcherrors
     async def limiet(self, i9n: discord.Interaction, limit: int):
         channel = self.bot.get_channel(kelderId)

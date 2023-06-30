@@ -29,6 +29,7 @@ def catcherrors(func):
             authorName = user.name
             authorDisplayName = user.display_name
             extraInfo: list[tuple[str, str]] = []
+            errorMessage = str(e)
             if culprit.command: extraInfo.append(("Command called", culprit.command.name))
             if len(errorMessage := str(e)) > 1500:
                 errorMessage = "Error message too long, please log onto the server hosting the bot and read it."

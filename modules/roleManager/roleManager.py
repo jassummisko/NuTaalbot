@@ -35,6 +35,7 @@ def queuePendingRemovals(server: Guild, rolesPendingRemoval: list[PendingEntry])
             rolesPendingRemoval.remove(pendingEntry)
             dumpRolesPendingRemoval(rolesPendingRemoval)
         queue.append(buff())
+
     return queue
 
 def dumpRolesPendingRemoval(list: list) -> None:
@@ -59,7 +60,7 @@ async def niveauRolSelectionView(guild: discord.Guild) -> discord.ui.View:
         await member.add_roles(*rolesToAdd)
         await i9n.response.send_message(f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}")
 
-    dropdown.callback = callback
+    dropdown.callback = callback # type: ignore
     view = discord.ui.View()
     view.add_item(dropdown)
     return view
