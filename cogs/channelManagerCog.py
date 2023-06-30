@@ -2,7 +2,7 @@ import discord, data.botResponses as botResponses
 from discord.ext import commands
 from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
-from data.dataIds import kelderId, tagAnsweredId
+from data.localdata import kelderId, tagAnsweredId
 from data.localdata import serverId
 from utils import genUtils
 

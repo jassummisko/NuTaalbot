@@ -167,7 +167,7 @@ cython_debug/
 **/*.pickle
 **/localdata.py
 **/onboarding.md
-**/dataIds.py
+**/localdata.py
 pyrightconfig.json
 **/dutchtime.py
 .vscode/launch.json
