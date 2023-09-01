@@ -1,7 +1,7 @@
 from utils.genUtils import loadYaml, saveYaml
 import discord, random, string, dataclasses
 from discord.ext.commands import CommandError
-from discord.ext import menus
+from discord.ext import menus # type: ignore
 from utils.genUtils import MultiPageEmbed
 
 @dataclasses.dataclass

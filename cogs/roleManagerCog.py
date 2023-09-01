@@ -5,7 +5,7 @@ from data.localdata import serverId, leerkrachtRoleId, countryRoleColor, pronoun
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 from modules.roleManager.roleManager import *
-from discord.app_commands import Choice, Command
+from discord.app_commands import Choice
 from fuzzywuzzy import fuzz
 from discord.ext.commands import CommandError
 
@@ -31,7 +31,7 @@ class roleManagerCog(commands.Cog):
         assert isinstance(callingUser := i9n.user, discord.Member)
         assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
 
-        if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR) 
+        if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR()) 
 
         await giveTemporaryRole(self.rolesPendingRemoval, i9n, user, leerkrachtRole, duration)
 
@@ -47,16 +47,15 @@ class roleManagerCog(commands.Cog):
         await i9n.response.send_message(responseMsg)
 
     @landrol.autocomplete('land') # type: ignore
+    @genUtils.catcherrors
     async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
-        try: 
-            assert i9n.guild
-            roles = sorted(
-                [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
-                key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
-                reverse=True
-            )
-            return [Choice(name=role, value=role) for role in roles[:10]] 
-        except Exception as e: print(e)
+        assert i9n.guild
+        roles = sorted(
+            [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
+            key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
+            reverse=True
+        )
+        return [Choice(name=role, value=role) for role in roles[:10]] 
 
     @app_commands.command(name="niveaurol", description="Assign level roles")
     @app_commands.describe(niveau="CEFR niveau")
@@ -101,14 +100,13 @@ class roleManagerCog(commands.Cog):
         await i9n.response.send_message(responseMsg)
 
     @voornaamwoordrol.autocomplete('vnw') # type: ignore
-    async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, current: str):
-        try: 
-            roles: list
-            assert i9n.guild
-            roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles] 
-            print(roles)
-            return [Choice(name=role.name, value=role.name) for role in roles] 
-        except Exception as e: print(e)
+    @genUtils.catcherrors
+    async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, _: str):
+        roles: list
+        assert i9n.guild
+        roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles] 
+        print(roles)
+        return [Choice(name=role.name, value=role.name) for role in roles] 
 
 async def setup(bot):
     await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])

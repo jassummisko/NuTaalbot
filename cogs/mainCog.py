@@ -42,7 +42,7 @@ class mainCog(commands.Cog):
 
     @commands.command(description="Says hi to the bot!")
     async def hi(self, ctx: commands.Context):
-        await ctx.send(botResponses.ELK_ZINNEN_DAH)
+        await ctx.send(botResponses.ELK_ZINNEN_DAH())
 
     @app_commands.command(name="hoelaat", description="Hoe laat is het?")
     @genUtils.catcherrors
