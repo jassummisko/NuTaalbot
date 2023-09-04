@@ -63,5 +63,3 @@ def LOG_USER_JOINED_VC(user: str, vc: str) -> str:
     return f"**{user}** has joined {vc}."
 def LOG_USER_LEFT_VC(user: str, vc: str) -> str:
     return f"**{user}** has left {vc}."
-def LOG_USER_SWITCHED_VC(user: str, vc1: str, vc2: str) -> str:
-    return f"**{user}** has moved from {vc1} to {vc2}."
