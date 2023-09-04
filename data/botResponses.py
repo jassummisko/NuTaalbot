@@ -1,3 +1,5 @@
+import discord
+
 # General responses
 def ELK_ZINNEN_DAH() -> str: 
     return "Elk zinnen dah!"
@@ -19,7 +21,6 @@ def TIMED_OUT() -> str:
 # Role manager responses
 def ROLE_GIVEN(roleName: str) -> str: 
     return f"Role '{roleName}' given"
-
 def ROLE_REMOVED(roleName: str) -> str: 
     return f"Role '{roleName}' removed"
 
@@ -58,3 +59,17 @@ def DEHET_SINGLEWORD(lidwoord: str, woord: str) -> str:
     return f"\"**{lidwoord}** {woord}\""
 def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str) -> str: 
     return f"\"**{lidwoord}** {woord}\" met de betekenis \"{betekenis}\"\n"
+
+# Mod mail responses
+def EMBED_MAIL_RECEIVED(message: str, author: str) -> discord.Embed:
+    return discord.Embed(
+                title="Mail received",
+                description=
+f"""A user has sent you mail:
+`{message}`
+Username: {author}
+
+You may use the !!!inbox command to check all mod mail. (NOT IMPLEMENTED YET)
+"""
+            )
+def MOD_MAIL_SENT() -> str: return "Your message has been sent to the staff team."
