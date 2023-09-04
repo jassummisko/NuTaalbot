@@ -2,7 +2,7 @@ import discord, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
 from discord.ext import commands
-from discord import app_commands
+from discord import Member, app_commands, channel
 from data.localdata import serverId
 from data.localdata import serverId, logChannelId, welcomeChannelId
 from modules.beginners.beginners import *
@@ -34,6 +34,44 @@ class mainCog(commands.Cog):
     async def on_member_join(self, member: discord.Member):
         await self.welcomeChannel.send(f"Hallo, {member.mention}. Welkom op **Nederlands Leren**!")
         await self.logChannel.send(f"**{member.mention}** has joined.")
+
+    @commands.Cog.listener()
+    @genUtils.catcherrors
+    async def on_voice_state_update(self, member: discord.Member, m_before: discord.VoiceState, m_after: discord.VoiceState):
+        assert m_before
+        assert m_after
+
+        #User joined
+        if not m_before.channel and m_after.channel:
+            await self.logChannel.send(
+                botResponses.LOG_USER_JOINED_VC(
+                    member.mention,
+                    m_after.channel.mention,
+                )
+            )
+        #User left
+        elif m_before.channel and not m_after.channel:
+            await self.logChannel.send(
+                botResponses.LOG_USER_LEFT_VC(
+                    member.mention,
+                    m_before.channel.mention,
+                )
+            )
+        #User switched VC
+        elif m_before.channel and m_after.channel:
+            if not (m_before.channel is m_after.channel):
+                await self.logChannel.send(
+                    botResponses.LOG_USER_LEFT_VC(
+                        member.mention,
+                        m_before.channel.mention,
+                    )
+                )
+                await self.logChannel.send(
+                    botResponses.LOG_USER_JOINED_VC(
+                        member.mention,
+                        m_after.channel.mention,
+                    )
+                )
 
     @commands.Cog.listener()
     @genUtils.catcherrors

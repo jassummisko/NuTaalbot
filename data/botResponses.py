@@ -58,3 +58,10 @@ def DEHET_SINGLEWORD(lidwoord: str, woord: str) -> str:
     return f"\"**{lidwoord}** {woord}\""
 def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str) -> str: 
     return f"\"**{lidwoord}** {woord}\" met de betekenis \"{betekenis}\"\n"
+
+def LOG_USER_JOINED_VC(user: str, vc: str) -> str:
+    return f"**{user}** has joined {vc}."
+def LOG_USER_LEFT_VC(user: str, vc: str) -> str:
+    return f"**{user}** has left {vc}."
+def LOG_USER_SWITCHED_VC(user: str, vc1: str, vc2: str) -> str:
+    return f"**{user}** has moved from {vc1} to {vc2}."
