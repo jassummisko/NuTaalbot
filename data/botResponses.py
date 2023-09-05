@@ -61,7 +61,7 @@ def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str) -> str:
     return f"\"**{lidwoord}** {woord}\" met de betekenis \"{betekenis}\"\n"
 
 # Mod mail responses
-def EMBED_MAIL_RECEIVED(message: str, author: str) -> discord.Embed:
+def MAIL_EMBED_RECEIVED(message: str, author: str) -> discord.Embed:
     return discord.Embed(
                 title="Mail received",
                 description=
@@ -72,4 +72,15 @@ Username: {author}
 You may use the !!!inbox command to check all mod mail. (NOT IMPLEMENTED YET)
 """
             )
-def MOD_MAIL_SENT() -> str: return "Your message has been sent to the staff team."
+def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown."
+def MAIL_CHOOSE_MAILTYPE() -> str: return """What kind of mail are you sending?
+```
+1. A user report
+2. A complaint about the server or staff team
+3. A suggestion for the staff
+0. Other
+```
+Type the number as a message"""
+def MAIL_TYPE_YOUR_MESSAGE() -> str: return "You may now type your message. You will be given a chance to edit the message before sending."
+def MAIL_TYPE_SEND() -> str: return "If you have no more edits to make, type \"send\" to send the message."
+def MAIL_SENT() -> str: return "Your message has been sent to the staff team."

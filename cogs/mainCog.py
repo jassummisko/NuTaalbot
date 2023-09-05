@@ -50,26 +50,5 @@ class mainCog(commands.Cog):
     async def hoelaat(self, i9n: discord.Interaction):
         await i9n.response.send_message(content=getCurrentTimeInDutch())
 
-    @app_commands.command(name="sendmail", description="Send a message to the mods.")
-    @app_commands.describe(message="The message you want to send", anon = "Whether the message should be anonymous (defaults to True).")
-    @genUtils.catcherrors
-    async def sendmail(self, i9n: discord.Interaction, message: str, anon: bool = True):
-        logChannel = self.bot.get_channel(logChannelId)
-        assert isinstance(logChannel, discord.channel.TextChannel)
-        author = "ANONYMOUS"
-
-        if not anon:
-            assert i9n.message
-            author = i9n.message.author.name
-
-        mail = NewMail(message, author)
-
-        AddNewMailToInbox(mail)
-
-        await logChannel.send(embed=botResponses.EMBED_MAIL_RECEIVED(mail.message, mail.author))
-
-        await i9n.response.send_message(botResponses.MOD_MAIL_SENT(), ephemeral=True)
-
-
 async def setup(bot):
     await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])

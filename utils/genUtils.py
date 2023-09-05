@@ -44,6 +44,12 @@ def catcherrors(func):
 
     return wrapper
 
+def mentionToId(mention: str) -> int:
+    user_id = mention \
+        .removeprefix("<@") \
+        .removesuffix(">")
+    return int(user_id)
+
 def isStaff(user: Member):
     from data.localdata import staffRoles
     staffRoleIDs = [staffRole.value for staffRole in staffRoles]
