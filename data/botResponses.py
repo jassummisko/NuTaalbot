@@ -62,16 +62,11 @@ def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str) -> str:
 
 # Mod mail responses
 def MAIL_EMBED_RECEIVED(message: str, author: str) -> discord.Embed:
+    if author == "/": author = "Anonymous"
     return discord.Embed(
                 title="Mail received",
-                description=
-f"""A user has sent you mail:
-`{message}`
-Username: {author}
-
-You may use the !!!inbox command to check all mod mail. (NOT IMPLEMENTED YET)
-"""
-            )
+                description=message,
+            ).set_footer(text=author)
 def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown."
 def MAIL_CHOOSE_MAILTYPE() -> str: return """What kind of mail are you sending?
 ```

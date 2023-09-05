@@ -17,7 +17,7 @@ class Mail:
     author: str
     date: datetime
 
-def NewMail(
+def newMail(
     message: str, 
     mailtype: MailType,
     author: str = "/",
@@ -25,7 +25,7 @@ def NewMail(
     if date == None: date = datetime.utcnow() 
     return Mail(message, mailtype, author, date)
 
-def MailAsDict(mail: Mail) -> dict:
+def mailAsDict(mail: Mail) -> dict:
     return {
         "message": mail.message,
         "mailtype": mail.mailtype.value,
@@ -33,7 +33,7 @@ def MailAsDict(mail: Mail) -> dict:
         "date": mail.date.isoformat(),
     }
 
-def DictAsMail(d: dict) -> Mail:
+def dictAsMail(d: dict) -> Mail:
     message = d.get("message")
     mailtype = d.get("mailtype")
     author = d.get("author", "/")
@@ -43,15 +43,15 @@ def DictAsMail(d: dict) -> Mail:
     if not mailtype: mailtype = MailType.OTHER
     if not date: date = datetime(1,1,1,1,1)
 
-    return NewMail(message, mailtype, author, date)
+    return newMail(message, mailtype, author, date)
 
-def AddNewMailToInbox(mail: Mail):
+def addNewMailToInbox(mail: Mail):
     inbox_path = "modules/modmail/data/mail.yaml"
 
     if fileExists(inbox_path): currentInbox = loadYaml(inbox_path)
     else: currentInbox = {}
 
     if not 'mail' in currentInbox: currentInbox['mail'] = []
-    currentInbox['mail'].append(MailAsDict(mail))
+    currentInbox['mail'].append(mailAsDict(mail))
 
     saveYaml(currentInbox, "modules/modmail/data/mail.yaml")

@@ -6,7 +6,6 @@ from discord import app_commands
 from data.localdata import serverId
 from data.localdata import serverId, logChannelId, welcomeChannelId
 from modules.beginners.beginners import *
-from modules.modmail.modmail import NewMail, AddNewMailToInbox
 
 class mainCog(commands.Cog):
     def __init__(self, bot: commands.Bot):

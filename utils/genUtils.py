@@ -50,6 +50,11 @@ def mentionToId(mention: str) -> int:
         .removesuffix(">")
     return int(user_id)
 
+def memberByName(guild: discord.Guild, name: str) -> discord.Member|None:
+    for member in guild.members:
+        if member.name == name:
+            return member
+
 def isStaff(user: Member):
     from data.localdata import staffRoles
     staffRoleIDs = [staffRole.value for staffRole in staffRoles]
