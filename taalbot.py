@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from data.localdata import applicationId, serverId
+from data.localdata import id_application, id_server
 
 intents = discord.Intents.all()
 intents.members = True
@@ -22,13 +22,13 @@ class Taalbot(commands.Bot):
             intents=intents, 
             member_cache_flags=discord.MemberCacheFlags.all(), 
             help_command=None,
-            application_id = applicationId,
+            application_id = id_application,
             case_insensitive=True
         )
     
     async def setup_hook(self):
         for cogname in self.cogNames:
             await self.load_extension(f'cogs.{cogname}')
-        await self.tree.sync(guild = discord.Object(id = serverId))
+        await self.tree.sync(guild = discord.Object(id = id_server))
 
 BOT = Taalbot(intents, cogsToLoad)
