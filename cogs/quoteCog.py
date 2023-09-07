@@ -2,7 +2,7 @@ import discord, \
     utils.genUtils as genUtils
 from modules.quotes.quotes import *
 from discord.ext import commands
-from data.localdata import serverId
+from data.localdata import id_server
 from discord import app_commands
 
 class quoteCog(commands.Cog):
@@ -51,4 +51,4 @@ class quoteCog(commands.Cog):
         await menu.start(ctx)
 
 async def setup(bot):
-    await bot.add_cog(quoteCog(bot), guilds = [discord.Object(id = serverId)])
+    await bot.add_cog(quoteCog(bot), guilds = [discord.Object(id = id_server)])

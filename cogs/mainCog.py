@@ -3,8 +3,8 @@ import discord, \
     utils.genUtils as genUtils
 from discord.ext import commands
 from discord import Member, app_commands, channel
-from data.localdata import serverId
-from data.localdata import serverId, logChannelId, welcomeChannelId
+from data.localdata import id_server
+from data.localdata import id_server, id_log_channel, id_welcome_channel
 from modules.beginners.beginners import *
 
 class mainCog(commands.Cog):
@@ -17,14 +17,14 @@ class mainCog(commands.Cog):
     async def on_ready(self):
         print("Logger Cog is ready")
 
-        logChannel = self.bot.get_channel(logChannelId)
+        logChannel = self.bot.get_channel(id_log_channel)
         assert isinstance(logChannel, discord.TextChannel), \
-            Exception(f"Text channel with ID {logChannelId} not found")
+            Exception(f"Text channel with ID {id_log_channel} not found")
         self.logChannel = logChannel
         
-        welcomeChannel = self.bot.get_channel(welcomeChannelId)
+        welcomeChannel = self.bot.get_channel(id_welcome_channel)
         assert isinstance(welcomeChannel, discord.TextChannel), \
-            Exception(f"Text channel with ID {welcomeChannelId} not found")
+            Exception(f"Text channel with ID {id_welcome_channel} not found")
         self.welcomeChannel = welcomeChannel
 
         await logChannel.send(f"Bleep bloop. I am here, ready to serve requests!")
@@ -88,4 +88,4 @@ class mainCog(commands.Cog):
         await i9n.response.send_message(content=getCurrentTimeInDutch())
 
 async def setup(bot):
-    await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = serverId)])
+    await bot.add_cog(mainCog(bot), guilds = [discord.Object(id = id_server)])

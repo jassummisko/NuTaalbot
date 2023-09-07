@@ -3,7 +3,7 @@ import discord, \
     utils.genUtils as genUtils 
 from discord.ext import commands
 from discord import app_commands
-from data.localdata import serverId
+from data.localdata import id_server
 from modules.scraper.scraper import *
 from modules.scraper.woordenlijst import *
 
@@ -50,4 +50,4 @@ class scraperCog(commands.Cog):
         await i9n.response.send_message(embed = embed)
 
 async def setup(bot):
-    await bot.add_cog(scraperCog(bot), guilds = [discord.Object(id = serverId)])
+    await bot.add_cog(scraperCog(bot), guilds = [discord.Object(id = id_server)])

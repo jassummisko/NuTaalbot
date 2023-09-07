@@ -1,9 +1,9 @@
 import functools, yaml
 from taalbot import BOT
 from re import error
-from data.localdata import logChannelId
+from data.localdata import id_log_channel
 from discord.ext.commands import CommandError, Context
-from discord import Interaction, Member, message
+from discord import Interaction, Member
 import discord
 from discord.ext import menus # type: ignore
 
@@ -18,7 +18,7 @@ def catcherrors(func):
                 await args[1].response.send_message(e.args[0], ephemeral=True)
         except Exception as e: 
             assert isinstance(
-                (logChannel := BOT.get_channel(logChannelId)), 
+                (logChannel := BOT.get_channel(id_log_channel)), 
                 discord.TextChannel
             )
 
@@ -45,8 +45,8 @@ def catcherrors(func):
     return wrapper
 
 def isStaff(user: Member):
-    from data.localdata import staffRoles
-    staffRoleIDs = [staffRole.value for staffRole in staffRoles]
+    from data.localdata import StaffRoles
+    staffRoleIDs = [staffRole.value for staffRole in StaffRoles]
     return len(set([role.id for role in user.roles]).intersection(staffRoleIDs))>0 
 
 def loadYaml(path: str) -> dict:
