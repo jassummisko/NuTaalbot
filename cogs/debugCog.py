@@ -2,7 +2,7 @@ import discord, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
 from discord.ext import commands
-from data.localdata import serverId
+from data.localdata import id_server
 from discord.ext.commands import CommandError
 
 class debugCog(commands.Cog):
@@ -49,7 +49,7 @@ class debugCog(commands.Cog):
         if not genUtils.isStaff(ctx.author): raise CommandError(botResponses.NOT_STAFF_ERROR())
         await ctx.send(f"Resyncing tree")
         try:
-            await self.bot.tree.sync(guild = discord.Object(id = serverId))
+            await self.bot.tree.sync(guild = discord.Object(id = id_server))
             await ctx.send(f"Tree resynced.")
         except Exception as e: await ctx.send(e) # type: ignore
 
@@ -59,4 +59,4 @@ class debugCog(commands.Cog):
         raise Exception("Test")
 
 async def setup(bot):
-    await bot.add_cog(debugCog(bot), guilds = [discord.Object(id = serverId)])
+    await bot.add_cog(debugCog(bot), guilds = [discord.Object(id = id_server)])

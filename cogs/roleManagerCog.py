@@ -1,7 +1,7 @@
 import discord, asyncio, \
     data.botResponses as botResponses, \
     utils.genUtils as genUtils
-from data.localdata import serverId, leerkrachtRoleId, countryRoleColor, pronounRoles
+from data.localdata import id_server, id_leerkracht_role, color_country_role, pronoun_roles
 from discord import Interaction, Member, app_commands
 from discord.ext import commands
 from modules.roleManager.roleManager import *
@@ -18,7 +18,7 @@ class roleManagerCog(commands.Cog):
     async def on_ready(self):
         print("Role Manager Cog is ready")
 
-        guild = self.bot.get_guild(serverId)        
+        guild = self.bot.get_guild(id_server)        
         assert guild
         queue = queuePendingRemovals(guild, self.rolesPendingRemoval)
         if len(queue) > 0: await asyncio.gather(*queue, return_exceptions=True) # type: ignore
@@ -29,7 +29,7 @@ class roleManagerCog(commands.Cog):
     async def giveleerkrachtrole(self, i9n: Interaction, user: Member, duration: int = 180) -> None:
         assert i9n.guild
         assert isinstance(callingUser := i9n.user, discord.Member)
-        assert (leerkrachtRole := i9n.guild.get_role(leerkrachtRoleId))
+        assert (leerkrachtRole := i9n.guild.get_role(id_leerkracht_role))
 
         if not genUtils.isStaff(callingUser): raise CommandError(botResponses.NOT_STAFF_ERROR()) 
 
@@ -51,7 +51,7 @@ class roleManagerCog(commands.Cog):
     async def landrol_autocomplete(self, i9n: discord.Interaction, current: str):
         assert i9n.guild
         roles = sorted(
-            [role.name for role in i9n.guild.roles if role.color == countryRoleColor], 
+            [role.name for role in i9n.guild.roles if role.color == color_country_role], 
             key=(lambda role: fuzz.ratio(role.lower(), current.lower())), 
             reverse=True
         )
@@ -70,12 +70,12 @@ class roleManagerCog(commands.Cog):
         if niveau in niveauRoleNames:
             oldrole = [role for role in i9n.user.roles if "Niveau" in role.name][0]
             await i9n.user.remove_roles(oldrole)
-            rolesToAdd = [role for role in niveauRoles if role.name == niveau]
+            roles_to_add = [role for role in niveauRoles if role.name == niveau]
             member = i9n.guild.get_member(i9n.user.id)
             assert member
-            await member.add_roles(*rolesToAdd)
+            await member.add_roles(*roles_to_add)
             await i9n.response.send_message(
-                f"Changed role {oldrole.name} to {[role.name for role in rolesToAdd][0]} for user {i9n.user.mention}"
+                f"Changed role {oldrole.name} to {[role.name for role in roles_to_add][0]} for user {i9n.user.mention}"
             )
         else:
             view = await niveauRolSelectionView(i9n.guild)
@@ -93,20 +93,20 @@ class roleManagerCog(commands.Cog):
     @genUtils.catcherrors
     async def voornaamwoordrol(self, i9n: discord.Interaction, vnw: str):
         assert i9n.guild
-        assert isinstance(callingUser := i9n.user, discord.Member)
+        assert isinstance(calling_user := i9n.user, discord.Member)
 
-        responseMsg = "Alsjeblieft!"
-        await callingUser.add_roles([role for role in i9n.guild.roles if role.name == vnw][0])
-        await i9n.response.send_message(responseMsg)
+        response_msg = "Alsjeblieft!"
+        await calling_user.add_roles([role for role in i9n.guild.roles if role.name == vnw][0])
+        await i9n.response.send_message(response_msg)
 
     @voornaamwoordrol.autocomplete('vnw') # type: ignore
     @genUtils.catcherrors
     async def voornaamwoordrol_autocomplete(self, i9n: discord.Interaction, _: str):
         roles: list
         assert i9n.guild
-        roles = [i9n.guild.get_role(roleId) for roleId in pronounRoles] 
+        roles = [i9n.guild.get_role(role_id) for role_id in pronoun_roles] 
         print(roles)
         return [Choice(name=role.name, value=role.name) for role in roles] 
 
 async def setup(bot):
-    await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=serverId)])
+    await bot.add_cog(roleManagerCog(bot), guilds=[discord.Object(id=id_server)])

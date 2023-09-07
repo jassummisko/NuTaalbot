@@ -2,8 +2,8 @@ import discord, data.botResponses as botResponses
 from discord.ext import commands
 from discord.ext.commands import CommandError
 from discord import ForumChannel, app_commands
-from data.localdata import kelderId, tagAnsweredId
-from data.localdata import serverId
+from data.localdata import id_kelder, id_tag_answered
+from data.localdata import id_server
 from utils import genUtils
 
 class channelManagerCog(commands.Cog):
@@ -27,7 +27,7 @@ class channelManagerCog(commands.Cog):
         isOwnerOrStaff = (i9n.channel.owner == user) or genUtils.isStaff(user)
         if not isOwnerOrStaff: raise CommandError(botResponses.NOT_POST_OWNER_OR_STAFF_ERROR())
 
-        assert (answeredTag := i9n.channel.parent.get_tag(tagAnsweredId))
+        assert (answeredTag := i9n.channel.parent.get_tag(id_tag_answered))
         if answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ANSWERED())
 
         await i9n.channel.add_tags(answeredTag)
@@ -39,7 +39,7 @@ class channelManagerCog(commands.Cog):
     )
     @genUtils.catcherrors
     async def limiet(self, i9n: discord.Interaction, limit: int):
-        channel = self.bot.get_channel(kelderId)
+        channel = self.bot.get_channel(id_kelder)
         if not (i9n.user in channel.members): raise CommandError(botResponses.NOT_IN_KELDER_ERROR())
 
         LOWER_LIMIT, UPPER_LIMIT = 3, 8
@@ -49,4 +49,4 @@ class channelManagerCog(commands.Cog):
         await i9n.response.send_message(botResponses.KELDER_LIMIER_UPDATED(limit))
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = serverId)])
+    await bot.add_cog(channelManagerCog(bot), guilds=[discord.Object(id = id_server)])
