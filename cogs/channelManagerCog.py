@@ -31,7 +31,7 @@ class channelManagerCog(commands.Cog):
         if answeredTag in i9n.channel.applied_tags: raise CommandError(botResponses.THREAD_ANSWERED())
 
         await i9n.channel.add_tags(answeredTag)
-        await i9n.response.send_message(botResponses.THREAD_ANSWERED)
+        await i9n.response.send_message(botResponses.THREAD_ANSWERED())
 
     @app_commands.command(
         name="limiet",

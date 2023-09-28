@@ -90,3 +90,7 @@ def MAIL_NO_REPLY_MESSAGE() -> str: return "No reply message found."
 def MAIL_NOT_APPROVED(needed_count: int) -> str: return f"The message has not been approved by enough staff members ({needed_count}). Place 📨 as a reaction to the message to approve it."
 def MAIL_RESPOND() -> str: return "If you would like to respond to this user, reply to a given message using `!!!sendmessage`."
 
+def LOG_USER_JOINED_VC(user: str, vc: str) -> str:
+    return f"**{user}** has joined {vc}."
+def LOG_USER_LEFT_VC(user: str, vc: str) -> str:
+    return f"**{user}** has left {vc}."

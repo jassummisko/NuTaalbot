@@ -3,7 +3,7 @@ from taalbot import BOT
 from re import error
 from data.localdata import id_log_channel
 from discord.ext.commands import CommandError, Context
-from discord import Interaction, Member, message
+from discord import Interaction, Member
 import discord
 from discord.ext import menus # type: ignore
 
