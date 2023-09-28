@@ -67,7 +67,7 @@ def MAIL_EMBED_RECEIVED(message: str, author: str) -> discord.Embed:
                 title="Mail received",
                 description=message,
             ).set_footer(text=author)
-def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown."
+def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown. Keep in mind that sending anonymous mail means that the staff cannot respond to your message."
 def MAIL_CHOOSE_MAILTYPE() -> str: return """What kind of mail are you sending?
 ```
 1. A user report
@@ -87,6 +87,6 @@ def MAIL_NOT_IN_THREAD() -> str: return "Not in thread."
 def MAIL_NOT_IN_FORUM() -> str: return "Not in forum channel."
 def MAIL_NOT_IN_MAIL_CHANNEL() -> str: return "Not in mail channel."
 def MAIL_NO_REPLY_MESSAGE() -> str: return "No reply message found."
-def MAIL_NOT_APPROVED(needed_count: int) -> str: return f"The message has not been approved by enough staff members ({needed_count})"
+def MAIL_NOT_APPROVED(needed_count: int) -> str: return f"The message has not been approved by enough staff members ({needed_count}). Place 📨 as a reaction to the message to approve it."
 def MAIL_RESPOND() -> str: return "If you would like to respond to this user, reply to a given message using `!!!sendmessage`."
 
