@@ -70,9 +70,11 @@ def MAIL_EMBED_RECEIVED(message: str, author: str) -> discord.Embed:
 def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown. Keep in mind that sending anonymous mail means that the staff cannot respond to your message."
 def MAIL_CHOOSE_MAILTYPE() -> str: return """What kind of mail are you sending?
 ```
-1. A user report
-2. A complaint about the server or staff team
-3. A suggestion for the staff
+1. Feedback (about the server or staff team)
+2. Report (a behavior or user/s)
+3. Niveau (checking your own or another user's level)
+4. Sessie (ideas for sessions, or a request to host one yourself)
+5. Bot (bug reports, ideas for extra functions, etc.) 
 0. Other
 ```
 Type the number as a message"""

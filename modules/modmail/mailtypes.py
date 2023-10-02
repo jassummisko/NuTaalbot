@@ -6,9 +6,11 @@ from enum import Enum
 
 class MailType(Enum):
     OTHER = 0
-    REPORT = 1
-    COMPLAINT = 2
-    SUGGESTION = 3
+    FEEDBACK = 1
+    REPORT = 2
+    NIVEAU = 3
+    SESSIE = 4
+    BOT = 5
 
 @dataclass
 class Mail:
