@@ -68,6 +68,30 @@ def saveYaml(dict: dict, path: str):
     with open(path, "w") as file:
         file.write(yaml.dump(dict))
 
+
+BASE62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def encode(num: int, alphabet=BASE62) -> str:
+    if num == 0:
+        return alphabet[0]
+    arr = []
+    base = len(alphabet)
+    while num:
+        num, rem = divmod(num, base)
+        arr.append(alphabet[rem])
+    arr.reverse()
+    return ''.join(arr)
+
+def decode(string: str, alphabet=BASE62) -> int:
+    base = len(alphabet)
+    strlen = len(string)
+    num = 0
+    idx = 0
+    for char in string:
+        power = (strlen - (idx + 1))
+        num += alphabet.index(char) * (base ** power)
+        idx += 1
+    return num
+
 class MultiPageEmbed(menus.ListPageSource):
     async def format_page(self, _, page):
         return page

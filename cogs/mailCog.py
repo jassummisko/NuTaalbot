@@ -10,6 +10,7 @@ class mailCog(commands.Cog):
     def __init__(self, bot):
         self.bot: discord.Client = bot
         self.active_members: list[discord.Member|discord.User] = []
+
         self.sendmail_command = "sendmail"
 
     @commands.Cog.listener()
@@ -39,6 +40,26 @@ class mailCog(commands.Cog):
 
         dm_channel = msg.author.dm_channel
         if not dm_channel: dm_channel = await msg.author.create_dm()
+
+        if msg.reference:
+            assert(msg.reference.message_id)
+            responded_message = await dm_channel.fetch_message(msg.reference.message_id)
+            assert(isinstance(responded_message, discord.Message)) 
+
+            if len(responded_message.embeds) > 0:
+                embed = responded_message.embeds[0]
+                footer_text = embed.footer.text
+                assert(footer_text)
+                ticket_id = footer_text.split("\n")[-1].split()[-1]
+
+                thread_id = genUtils.decode(ticket_id)
+                thread = await self.bot.fetch_channel(thread_id)
+                assert(isinstance(thread, discord.Thread))
+
+                await dm_channel.send("Your reply has been sent to the staff team.")
+                await thread.send(embed=botResponses.MAIL_EMBED_RECEIVED("Mail received", msg.content, msg.author.name))
+            return
+
         if msg.channel.id == dm_channel.id:
             if msg.content.strip() == self.sendmail_command:
                 #Check for spam

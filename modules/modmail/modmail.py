@@ -55,9 +55,10 @@ async def sendMessage(bot: discord.Client, ctx: commands.Context):
             staff_member_count = len(role.members)
 
     needed_staff_count = math.ceil(staff_member_count/3)
+    footer = f"---\nReply to this embed to respond to this mod mail.\nTicket ID: {genUtils.encode(ctx.channel.id)}"
     for reaction in mail_message.reactions:
         if reaction.emoji == "📨" and reaction.count >= needed_staff_count:
-            await recipient.send(embed=botResponses.MAIL_EMBED_RECEIVED(mail_message.content, ctx.author.name))
+            await recipient.send(embed=botResponses.MAIL_EMBED_RECEIVED(f"**Mail van {ctx.author.name}, namens de staff**.", mail_message.content, footer))
             await ctx.send(botResponses.MAIL_SENT(recipient_mention))
             break
     else:
@@ -121,7 +122,7 @@ async def sendMailWizard(bot: discord.Client, msg: discord.Message):
     if author != "/": mail_title += f" by {author}"
     
     thread_w_message = await mail_channel.create_thread(
-        embed=botResponses.MAIL_EMBED_RECEIVED(mail.message, mention_author), 
+        embed=botResponses.MAIL_EMBED_RECEIVED("Mail received", mail.message, mention_author), 
         name=mail_title,
     )
     if author != "/": await thread_w_message.thread.send(botResponses.MAIL_RESPOND())

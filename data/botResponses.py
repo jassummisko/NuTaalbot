@@ -61,10 +61,10 @@ def DEHET_MULTIWORD(lidwoord: str, woord: str, betekenis: str) -> str:
     return f"\"**{lidwoord}** {woord}\" met de betekenis \"{betekenis}\"\n"
 
 # Mod mail responses
-def MAIL_EMBED_RECEIVED(message: str, author: str) -> discord.Embed:
+def MAIL_EMBED_RECEIVED(title: str, message: str, author: str) -> discord.Embed:
     if author == "/": author = "Anonymous"
     return discord.Embed(
-                title="Mail received",
+                title=title,
                 description=message,
             ).set_footer(text=author)
 def MAIL_ISANON() -> str: return "Would you like to send the message anonymously? Type \"yes\" to send anonymously or \"no\" to have your name shown. Keep in mind that sending anonymous mail means that the staff cannot respond to your message."
@@ -84,7 +84,7 @@ def MAIL_SENT(recipient: str) -> str: return f"Your message has been sent to {re
 def MAIL_REPLY_WITH_SENDMESSAGE() -> str: return "Reply to the message using the command `!!!sendmessage` send it."
 def MAIL_NO_SPAM() -> str: return "You've already sent 3 modmails today. Please wait until tomorrow."
 def MAIL_TIMED_OUT() -> str: return  "Your request timed out. Please start the mod mail process over."
-def MAIL_USE_SENDMAIL(cmd: str) -> str: return f"If you want to send mod mail, first type the message \"{cmd}\"."
+def MAIL_USE_SENDMAIL(cmd: str) -> str: return f"If you want to send mod mail, first type the message \"{cmd}\". If you meant to reply to a mod-mail, please reply to the embed of the message instead using Discord's native reply feature."
 def MAIL_NOT_IN_THREAD() -> str: return "Not in thread."
 def MAIL_NOT_IN_FORUM() -> str: return "Not in forum channel."
 def MAIL_NOT_IN_MAIL_CHANNEL() -> str: return "Not in mail channel."
