@@ -6,13 +6,13 @@ intents = discord.Intents.all()
 intents.members = True
 
 cogsToLoad = [
-    "faqCog",
     "mainCog",
-    "roleManagerCog",
-    "channelManagerCog",
     "debugCog",
+    #"faqCog",
+    #"roleManagerCog",
+    #"channelManagerCog",
     "scraperCog",
-    "mailCog",
+    #"mailCog",
 ]
 
 class Taalbot(commands.Bot):

@@ -55,7 +55,7 @@ class debugCog(commands.Cog):
 
     @commands.command()
     @genUtils.catcherrors
-    async def debugtest(self, ctx: commands.Context):
+    async def debugtest(self, _: commands.Context):
         raise Exception("Test")
 
 async def setup(bot):
