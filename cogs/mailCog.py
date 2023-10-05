@@ -61,7 +61,7 @@ class mailCog(commands.Cog):
             return
 
         if msg.channel.id == dm_channel.id:
-            if msg.content.strip() == self.sendmail_command:
+            if msg.content.strip().lower() == self.sendmail_command:
                 #Check for spam
                 amount_sent_today = 0 
                 async for msg_in_history in dm_channel.history():

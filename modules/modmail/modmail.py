@@ -73,12 +73,12 @@ async def sendMailWizard(bot: discord.Client, msg: discord.Message):
 
     def anonCheck(m: discord.Message) -> bool:
         if m.channel.id != channel.id: return False
-        if m.content.strip() in ["yes", "no"]:
+        if m.content.strip().lower() in ["yes", "no"]:
             return True
         return False
 
     msg = await bot.wait_for("message", check=anonCheck, timeout=30)
-    if msg.content == "yes": 
+    if msg.content.lower() == "yes": 
         author = "/"
         mention_author = "Anonymous"
     else: 
@@ -105,7 +105,7 @@ async def sendMailWizard(bot: discord.Client, msg: discord.Message):
     await msg.channel.send(botResponses.MAIL_TYPE_SEND())
     def sendCheck(m: discord.Message) -> bool:
         if m.channel.id != channel.id: return False
-        if m.content.strip() == "send":
+        if m.content.strip().lower() == "send":
             return True
         return False
 
