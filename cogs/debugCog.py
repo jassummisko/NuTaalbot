@@ -54,6 +54,19 @@ class debugCog(commands.Cog):
         except Exception as e: await ctx.send(e) # type: ignore
 
     @commands.command()
+    async def print_tags(self, ctx: commands.Context):
+        assert isinstance(ctx.channel, discord.Thread)
+        assert isinstance(ctx.channel.parent, discord.ForumChannel)
+
+        forum = ctx.channel.parent
+
+        buffer = ""
+        for tag in forum.available_tags:
+            buffer += f"{tag.emoji} - {tag.id}\n"
+
+        await ctx.channel.send(buffer.strip())
+
+    @commands.command()
     @genUtils.catcherrors
     async def debugtest(self, ctx: commands.Context):
         raise Exception("Test")
