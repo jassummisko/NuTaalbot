@@ -74,7 +74,7 @@ class mailCog(commands.Cog):
                 try:
                     self.active_members.append(msg.author)
                     await modmail.sendMailWizard(self.bot, msg)
-                except TimeoutError as te:
+                except TimeoutError:
                     await dm_channel.send(botResponses.MAIL_TIMED_OUT())
                 finally:
                     self.active_members.remove(msg.author)

@@ -126,4 +126,36 @@ async def sendMailWizard(bot: discord.Client, msg: discord.Message):
         name=mail_title,
     )
     if author != "/": await thread_w_message.thread.send(botResponses.MAIL_RESPOND())
+
+    in_tag = mail_channel.get_tag(ModMailRoles.In)
+    assert(in_tag)
+    await thread_w_message.thread.add_tags(in_tag)
+
+    def _getTag(enum: ModMailRoles) -> discord.ForumTag:
+        tag = mail_channel.get_tag(enum)
+        assert isinstance(tag, discord.ForumTag)
+        return tag
+
+    type_tag: discord.ForumTag | None = None
+    staff_tag: discord.ForumTag | None = None
+
+    match mailtype:
+        case MailType.OTHER:
+            pass
+        case MailType.FEEDBACK:
+            type_tag = _getTag(ModMailRoles.Server)
+            staff_tag = _getTag(ModMailRoles.Mod)
+        case MailType.REPORT:
+            type_tag = _getTag(ModMailRoles.Report)
+            staff_tag = _getTag(ModMailRoles.Mod)
+        case MailType.NIVEAU:
+            type_tag = _getTag(ModMailRoles.Niveau)
+        case MailType.SESSIE:
+            type_tag = _getTag(ModMailRoles.Server)
+        case MailType.BOT:
+            type_tag = _getTag(ModMailRoles.Server)
+
+    if type_tag: await thread_w_message.thread.add_tags(type_tag)
+    if staff_tag: await thread_w_message.thread.add_tags(staff_tag)
+
     await msg.channel.send(botResponses.MAIL_SENT("the staff team"))
