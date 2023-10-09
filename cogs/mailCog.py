@@ -35,6 +35,13 @@ class mailCog(commands.Cog):
                 await thread.send(botResponses.MAIL_REPLY_WITH_SENDMESSAGE())
                 if out_tag: await thread.add_tags(out_tag)
 
+                starter_message = thread.starter_message
+                assert(starter_message)
+                person = genUtils.mentionToId(starter_message.content.strip().split()[0])
+                if not self.bot.get_user(person):
+                    await thread.send(botResponses.MAIL_NO_USER_FOUND_IN_THREAD())
+
+
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
         if msg.author.bot: return

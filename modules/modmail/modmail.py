@@ -17,7 +17,7 @@ async def sendMessage(bot: discord.Client, ctx: commands.Context):
         return recipient
 
     def getRecipientFromStarterMessage(ctx: commands.Context, msg: discord.Message) -> discord.User | discord.Member:
-        member_mention = starter_message.content.strip()
+        member_mention = starter_message.content.strip().split()[0]
         member_id = genUtils.mentionToId(member_mention)
         if not member_id: raise commands.CommandError(f"Cannot find user {member_mention}.")
         recipient = bot.get_user(member_id)

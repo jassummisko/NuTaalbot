@@ -48,7 +48,8 @@ def mentionToId(mention: str) -> int:
     user_id = mention \
         .removeprefix("<@") \
         .removesuffix(">")
-    return int(user_id)
+    try: return int(user_id)
+    except: return 0
 
 def memberByName(guild: discord.Guild, name: str) -> discord.Member|None:
     for member in guild.members:

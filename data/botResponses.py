@@ -91,6 +91,7 @@ def MAIL_NOT_IN_MAIL_CHANNEL() -> str: return "Not in mail channel."
 def MAIL_NO_REPLY_MESSAGE() -> str: return "No reply message found."
 def MAIL_NOT_APPROVED(needed_count: int) -> str: return f"The message has not been approved by enough staff members ({needed_count}). Place 📨 as a reaction to the message to approve it."
 def MAIL_RESPOND() -> str: return "If you would like to respond to this user, reply to a given message using `!!!sendmessage`."
+def MAIL_NO_USER_FOUND_IN_THREAD() -> str: return "No user found in the starter message. Please edit your message to start with a mention of the receiving user."
 
 def LOG_USER_JOINED_VC(user: str, vc: str) -> str:
     return f"**{user}** has joined {vc}."
