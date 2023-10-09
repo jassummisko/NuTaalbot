@@ -1,6 +1,6 @@
 from discord.ext import commands
 import discord
-from data.localdata import id_server, id_mail_channel
+from data.localdata import ModMailRoles, id_server, id_mail_channel
 from modules.modmail.mailtypes import *
 import modules.modmail.modmail as modmail
 from data import botResponses
@@ -31,7 +31,9 @@ class mailCog(commands.Cog):
 
         if isinstance(thread, discord.Thread) and isinstance(thread.parent, discord.ForumChannel):
             if thread.parent.id == id_mail_channel:
+                out_tag = thread.parent.get_tag(ModMailRoles.Out)
                 await thread.send(botResponses.MAIL_REPLY_WITH_SENDMESSAGE())
+                if out_tag: await thread.add_tags(out_tag)
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
